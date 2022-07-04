@@ -1,0 +1,51 @@
+<kt-portlet #mcardinfo [options]="{headLarge: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<span class="kt-portlet__head-icon kt-hide">
+					<i class="la la-gear"></i>
+				</span>
+				<h3 class="kt-portlet__head-title">
+			<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>{{getTitle()}}</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnClose" class="btn-icon" (click)="close()">
+				<i class="la la-remove mt-icon-resizeable-xs" matTooltip="{{'General.Close' | translate}}"></i>
+			</a>
+		</ng-container>
+
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div class="alert alert-danger kt-alert__icon" *ngIf="hasFormErrors">
+			<i class="flaticon-exclamation-1"></i> &nbsp;&nbsp;
+			<span>{{errorMessage}}</span>
+		</div>
+
+		<form [formGroup]="form" class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div *ngFor="let langItem of langItems" class="col-md-6 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input id="{{langItem.lang}}" matInput placeholder="{{getLangTitle(langItem)}}" formControlName="{{langItem.lang}}">
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+
+	<kt-portlet-footer>
+		<div class="row text-right kt-margin-10">
+			<div class="col-lg-12">
+				<a id="btnSave" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span> <i class="la la-check mt-icon-resizeable-xs"></i> <span>{{'General.Save' | translate}}</span></span>
+				</a>
+			</div>
+		</div>
+	</kt-portlet-footer>
+
+</kt-portlet>

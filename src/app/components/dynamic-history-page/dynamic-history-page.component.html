@@ -1,0 +1,169 @@
+<kt-alert *ngIf="dataSource.hasError()" type="warn" (close)="dataSource.clearError()">{{dataSource.getErrorMessage()}}</kt-alert>
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="dataSource.loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Monitoring.History' | translate}}
+				</h3>
+			</div>
+		</ng-container>
+		<ng-container ktPortletTools *ngIf="!isScreenTool">
+			<a id="btnGet" class="btn-icon" *ngIf="!isLogTool" (click)="loadDataSource()"><i class="la la-search mt-icon-resizeable" matTooltip="{{'General.Get' | translate}}"></i></a>
+			<a id="btnCancel" class="btn-icon" (click)="cancel()"> <i class="la la-remove mt-icon-resizeable" matTooltip="{{'General.Close' | translate}}"></i> </a>
+		</ng-container>
+		<ng-container ktPortletTools *ngIf="isScreenTool">
+			<a id="btnGet" class="kt-margin-l-5 btn btn-brand" [class.disabled]="!dataSource.loading$" (click)="loadDataSource()">
+				<span> <i class="la la-search"></i> <span>{{'General.Get' | translate}}</span> </span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div class="kt-form">
+			<form [formGroup]="filterForm" class="kt-form" autocomplete="off">
+				<div class="kt-form__group row">
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="!isLogTool || isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput [matDatepicker]="actionDateStart" formControlName="actionDateStart" placeholder="{{'General.StartDate' | translate }}">
+							<mat-datepicker-toggle matSuffix [for]="actionDateStart"></mat-datepicker-toggle>
+							<mat-datepicker #actionDateStart></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="!isLogTool || isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput [matDatepicker]="actionDateEnd" formControlName="actionDateEnd" placeholder="{{'General.EndDate' | translate }}">
+							<mat-datepicker-toggle matSuffix [for]="actionDateEnd"></mat-datepicker-toggle>
+							<mat-datepicker #actionDateEnd></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="{{'General.CorrelationId' | translate}}" formControlName="correlationId" type="text">
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="{{'General.TableName' | translate}}" formControlName="tableName" type="text">
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="{{'General.Key' | translate}}" formControlName="key" type="text">
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select formControlName="channelCode" placeholder="{{'General.ChannelCode' | translate}}">
+								<ngx-mat-select-search [formControl]="frmControlSearch" #filterChannel placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+								</ngx-mat-select-search>
+								<mat-option id="chooseChannel">{{'General.None' | translate}}</mat-option>
+								<mat-option id="channel.code" [value]="channel.code" *ngFor="let channel of cfgChannel | filterByProperty: ['description',filterChannel.value]; ">{{channel.description}} </mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="{{'General.UserCode' | translate}}" formControlName="userCode" type="text">
+						</mat-form-field>
+					</div>
+					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select formControlName="type" placeholder="{{'System.Member.TraceType' | translate}}">
+								<ngx-mat-select-search [formControl]="frmControlSearch" #filterType placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+								</ngx-mat-select-search>
+								<mat-option id="typeChannel">{{'General.None' | translate}}</mat-option>
+								<mat-option id="type.code" [value]="type.code" *ngFor="let type of cfgTraceType | filterByProperty: ['description',filterType.value]; ">{{type.description}} </mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+				</div>
+			</form>
+			<div class="col-md-12 kt-margin-b-10-mobile kt-margin-b-10">
+				<div ngbDropdown class="d-inline-block float-right kt-margin-b-10">
+					<button class="kt-margin-l-5 btn btn-success" id="dropdownBasic1" (click)="exportAsXLSX()"> <i class="la la-ellipsis-h"></i> {{'General.Export' | translate}}</button>
+				</div>
+			</div>
+		</div>
+		<div class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="header-above-scroller" #headerScroller (scroll)="scrollHead()">
+					<div class="header-scroller" [ngStyle]="{'width': scrollWidth + 'px'}"></div>
+				</div>
+				<div class="mat-table__wrapper" #tableScroller  (scroll)="scrollFoot()">
+					<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+					<mat-table mat-table class="mat-elevation-z8" [dataSource]="dataSource" #nationSort="matSort" matSort matSortActive="actionDate" matSortDirection="desc" matSortDisableClear>
+						<ng-container matColumnDef="className">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.ClassName' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{findTranslateObject(element.className, 1)}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="type">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.TraceType' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{element.type | lookup:cfgTraceType}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="field">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.FieldName' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{findTranslateObject(element.field, 0)}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="oldValue">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.OldValue' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{findLookupObjcet(element.field, element.oldValue)  | langparser }}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="newValue">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.NewValue' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{findLookupObjcet(element.field, element.newValue)  | langparser }}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="actionDate">
+							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.ActionDate' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{element.actionDate | date:'dd.MM.yyyy'}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="actionTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.ActionTime' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{element.actionTime?.substr(0,8)}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="userCode">
+							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.UserCode' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{element.userCode}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="channelCode">
+							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'System.Member.ChannelCode' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{element.channelCode | lookup:cfgChannel}}</span>
+							</mat-cell>
+						</ng-container>
+						<ng-container matColumnDef="correlationId">
+							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.CorrelationId' | translate}} </mat-header-cell>
+							<mat-cell *matCellDef="let element" class="mat-column">
+								<span>{{element.correlationId}}</span>
+							</mat-cell>
+						</ng-container>
+						<mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></mat-header-row>
+						<mat-row *matRowDef="let element; columns: columnsToDisplay;"> </mat-row>
+					</mat-table>
+					<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+				</div>
+				<div class="mat-table__bottom">
+					<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+					<mat-paginator #paginator [pageSize]="500" [pageSizeOptions]="[100, 500, 1000]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="height: 50px;"></div>
+	</kt-portlet-body>
+</kt-portlet>

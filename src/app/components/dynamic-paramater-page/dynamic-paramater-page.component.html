@@ -1,0 +1,155 @@
+<kt-alert *ngIf='dataSource.hasError()' type='warn' (close)='dataSource.clearError()'>{{dataSource.getErrorMessage()}}</kt-alert>
+<kt-portlet [options]="{headLarge: true}" [loading$]="dataSource.loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{page.title | translate}}
+				</h3>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
+			<div *ngIf="page.addLink">
+				<a [routerLink]="page.addLink" class="kt-margin-l-5 btn btn-brand dropdown-toggle" matTooltip="{{'General.CreateNew' | translate}}">
+					<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i><span>{{'General.CreateNew' | translate}}</span></span>
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div class="kt-form">
+			<div class="kt-form__filtration">
+				<div class="row align-items-center">
+					<div class="col-md-3 kt-margin-b-10-mobile" *ngIf="page.filter.select">
+						<div class="kt-form__control">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select [(value)]="filterStatus" (selectionChange)="loadData()" class="mat-form-field mat-form-field-fluid">
+									<mat-option value="">{{'General.All' | translate}}</mat-option>
+									<mat-option *ngFor="let option of page.filter.select.options;" value="{{option.value}}">{{option.title | translate}}</mat-option>
+								</mat-select>
+								<mat-hint align="start">
+									<strong>{{page.filter.select.title | translate}} </strong>
+								</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput placeholder="{{'General.Search' | translate}}" #searchInput placeholder="{{'General.Search' | translate}}" class="mat-form-field mat-form-field-fluid">
+						</mat-form-field>
+					</div>
+					<div class="col-md-9 kt-margin-b-10-mobile kt-margin-b-10">
+						<div ngbDropdown class="d-inline-block float-right kt-margin-b-10">
+							<button class="kt-margin-l-5 btn btn-success" id="dropdownBasic1" ngbDropdownToggle> <i class="la la-ellipsis-h"></i> {{'General.Export' | translate}}</button>
+							<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+								<button class="dropdown-item" id="excelExport" (click)="exportAsXLSX(true)"><i class="kt-nav__link-icon la la-file-excel-o"></i>{{'General.ExcelExportAll' | translate}}</button>
+								<button id="excelExport" (click)="exportAsXLSX(false)" class="dropdown-item"> <i class="m-nav__link-icon la la-file-excel-o"></i>{{'General.ExcelExportCurrent' | translate}}</button>
+								<button id="excelExport" class="dropdown-item"> <i class="m-nav__link-icon la la-file-excel-o"></i>Print</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- MATERIAL TABLE | Binded to datasources -->
+		<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+		<!-- <div>
+			<div class="dropdown dropdown-inline dropdown--arrow dropdown--align-right dropdown--align-push float-right kt-margin-b-10" dropdown-toggle="hover" aria-expanded="true">
+				<a id="btnExport" class="kt-margin-l-5 btn btn-success btn-sm btn-icon dropdown-toggle"><span> <i class="la la-ellipsis-h"></i> <span>{{'General.Export' | translate}}</span> </span></a>
+				<div class="dropdown__wrapper">
+					<span class="dropdown__arrow dropdown__arrow--right dropdown__arrow--adjust"></span>
+					<div class="dropdown__inner">
+						<div class="dropdown__body">
+							<div class="dropdown__content">
+								<ul class="kt-nav">
+									<li class="kt-nav__section kt-nav__section--first kt-hide">
+										<span class="kt-nav__section-text">Quick Actions</span>
+									</li>
+									<li class="kt-nav__item">
+										<a id="excelExport" (click)="exportAsXLSX(true)" class="kt-nav__link">
+											<i class="kt-nav__link-icon la la-file-excel-o"></i>
+											<span class="kt-nav__link-text">{{'General.ExcelExportAll' | translate}}</span>
+										</a>
+									</li>
+									<li class="kt-nav__item">
+										<a id="excelExport" (click)="exportAsXLSX(false)" class="kt-nav__link">
+											<i class="kt-nav__link-icon la la-file-excel-o"></i>
+											<span class="kt-nav__link-text">{{'General.ExcelExportCurrent' | translate}}</span>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+
+		<div class="mat-table__wrapper">
+			<br>
+			<mat-table class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="{{page.table.sortKey}}" matSortDirection="asc" matSortDisableClear>
+
+				<ng-container *ngFor="let column of page.table.columns;" [ngSwitch]="column.type" matColumnDef="{{column.name}}">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>{{column.title | translate}}</mat-header-cell>
+					<div *ngSwitchCase="'text'">
+						<mat-cell *matCellDef="let row">{{row[column.name]}}</mat-cell>
+					</div>
+					<div *ngSwitchCase="'multilangtext'">
+						<mat-cell *matCellDef="let row">{{row[column.name] | langparser}}</mat-cell>
+					</div>
+					<div *ngSwitchCase="'badge'">
+						<mat-cell *matCellDef="let row"> <span mbadgeBool="{{row[column.name]}}">{{ getItemStatusString(row[column.name],column.badgeTitle) }}</span> </mat-cell>
+					</div>
+					<div *ngSwitchCase="'lookup'">
+						<mat-cell *matCellDef="let row">
+							<div lookup="{{column.lookup.api}}" query="{{column.lookup.query}}" [code]="row[column.name]" [withCode]="column.lookup.withCode"></div>
+						</mat-cell>
+					</div>
+					<div *ngSwitchCase="'date'">
+						<mat-cell *matCellDef="let row">{{row[column.name] | date:column.format}}</mat-cell>
+					</div>
+				</ng-container>
+
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>
+						{{'General.Actions' | translate }}
+					</mat-header-cell>
+					<mat-cell *matCellDef="let row">
+						<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="{{'General.MoreActions' | translate }}">
+							<mat-icon>more_vert</mat-icon>
+						</button>
+						<mat-menu #menu="matMenu">
+							<div *ngIf="page.editLink">
+								<a mat-menu-item *ngIf="'edit'|checkauth" [routerLink]="page.editLink" [queryParams]="{key: row[page.editKey]}" color="primary" matTooltip="{{'General.Edit' | translate }}">
+									<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
+								</a>
+							</div>
+							<a mat-menu-item *ngIf="page.viewLink" [routerLink]="page.viewLink" [queryParams]="{key: row[page.editKey], type:'show'}" color="primary" matTooltip="{{'General.ShowRecord' | translate }}">
+								<mat-icon>search</mat-icon><span> {{'General.ShowRecord' | translate }}</span>
+							</a>
+							<div *ngIf="page.deleteTitle">
+								<a mat-menu-item *ngIf="'delete'|checkauth" color="warn" (click)="delete(row)" matTooltip="{{'General.Delete' | translate }}">
+									<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
+								</a>
+							</div>
+						</mat-menu>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+			</mat-table>
+
+			<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+		</div>
+
+		<!-- start: BOTTOM -->
+		<div class="mat-table__bottom">
+			<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+			<mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 50]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+		</div>
+		<!-- end: BOTTOM -->
+	</kt-portlet-body>
+</kt-portlet>

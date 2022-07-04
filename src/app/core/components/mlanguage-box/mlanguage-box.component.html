@@ -1,0 +1,10 @@
+<mat-form-field class="mat-form-field-fluid">
+<mat-select placeholder="{{'Translator.Select' | translate}}" (selectionChange)="changeLanguage()" [(value)]="language">
+	<mat-option [value]="item" *ngFor="let item of languages;">
+		<span class="kt-nav__link-icon">
+			<img class="m-topbar__language-img" style="width:30px; height:30px" src="{{item.flag}}">
+		</span>
+		<span class="kt-nav__link-title m-topbar__language-text kt-nav__link-text">{{getCultureLang(item)}}</span>
+	</mat-option>
+</mat-select>
+</mat-form-field>

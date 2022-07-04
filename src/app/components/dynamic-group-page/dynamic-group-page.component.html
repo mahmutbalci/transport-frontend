@@ -1,0 +1,110 @@
+<form [formGroup]="groupFilterForm" class="kt-form" autocomplete="off">
+	<div (click)="showIcon=!showIcon" class="col-1 kt-margin-b-10-mobile" *ngIf="options.isGroupBy">
+		<a class="btn-icon" (click)="acc11.toggle('toggle-11')">
+			<i class="la la-chevron-circle-up mt-icon-resizeable" *ngIf="showIcon"></i><i class="la la-chevron-circle-down mt-icon-resizeable" *ngIf="!showIcon"></i>
+		</a>
+	</div>
+
+	<ngb-accordion #acc11="ngbAccordion">
+		<ngb-panel id="toggle-11">
+			<ng-template ngbPanelContent>
+
+				<div class="mat-table__wrapper">
+					<div class="kt-form__group">
+						<div cdkDropList cdkDropListOrientation="horizontal" class="dynamic-group-list" (cdkDropListDropped)="drop($event)">
+							<div class="dynamic-group-box" *ngFor="let disp of column" cdkDrag>
+								<mat-checkbox id="{{disp.key}}" formControlName="{{disp.key}}" (change)="onChangeGroupValue()">{{disp.text | translate}}</mat-checkbox>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="d-inline-block float-right kt-margin-b-10">
+					<button class="kt-margin-l-5 btn btn-brand" (click)="expandAllGroups()"> {{'General.ExpandGroup' | translate}}</button>
+					<button class="kt-margin-l-5 btn btn-secondary" (click)="collapseAllGroups()"> {{'General.CollapseGroup' | translate}}</button>
+				</div>
+			</ng-template>
+		</ngb-panel>
+	</ngb-accordion>
+</form>
+<form [formGroup]="tableFilterForm" class="kt-form" autocomplete="off">
+	<div class="mat-table__wrapper">
+		<table mat-table [dataSource]="groupModel" class="mat-elevation-z8" #variableSort="matSort" matSort [matSortActive]="sortActive" [matSortDirection]="sortDirection" matSortDisableClear>
+			<ng-container matColumnDef="{{cl.key}}" *ngFor="let cl of column">
+				<mat-header-cell *matHeaderCellDef
+				[ngClass]="(cl.pipe==='interest' || cl.pipe==='currency' || cl.isSumBy)?'dynamic-mat-row-cell-currency':''"
+				[ngStyle]="(cl.key===getColumnsLastKeys())?{'padding-right':'5px'}:''">
+					<table>
+						<tr mat-sort-header>
+							<td>
+								{{cl.text | translate}}
+								<span *ngIf="cl.pipe==='percent'"> (%)</span>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div *ngIf="cl.filterable">
+									<i class="la la-search mt-icon-resizeable-xs" (click)="focusElement(cl.key+'_filter')">
+										<input matInput id="{{cl.key}}_filter" type="text" formControlName="{{cl.key}}_filter" (keyup)="onKeyupFilter($event)">
+									</i>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</mat-header-cell>
+				<mat-cell *matCellDef="let element">
+					<div [ngClass]="element['isSumBy']?'dynamic-mat-row-cell-sumby':((cl.pipe==='currency' || cl.pipe==='interest')?'dynamic-mat-row-cell-currency':'')"
+						[ngStyle]="(cl.key===getColumnsLastKeys())?{'padding-right':'5px'}:''">
+						<div *ngIf="cl.pipe==='currency'">
+							<span [ngClass]="(!element['isSumBy'] && cl.detailColumn && element[cl.detailColumn] && element[cl.detailColumn].length>0)?'kt-tooltip':''">{{element[cl.key] | currency:" ":"symbol-narrow" }}
+								<span *ngIf="(!element['isSumBy'] && cl.detailColumn && element[cl.detailColumn] && element[cl.detailColumn].length>0)" class="kt-tooltiptext">
+									<mat-table class="lmat-elevation-z8 tooltip-table" [dataSource]="element[cl.detailColumn]" matSort matSortDisableClear>
+										<ng-container matColumnDef="stmtDate">
+											<mat-header-cell style="width: 50%;" *matHeaderCellDef>{{'Issuing.Statement.StmtDate' | translate}}</mat-header-cell>
+											<mat-cell *matCellDef="let row">{{row.stmtDate | date:'dd.MM.yyyy'}}</mat-cell>
+										</ng-container>
+										<ng-container matColumnDef="bucketAmnt">
+											<mat-header-cell style="width: 50%;" *matHeaderCellDef>{{'Issuing.Statement.Balance' | translate}}</mat-header-cell>
+											<mat-cell *matCellDef="let row">{{row.bucketAmnt | currency:" ":"symbol-narrow"}}</mat-cell>
+										</ng-container>
+										<mat-header-row *matHeaderRowDef="displayedColumnsDetail"></mat-header-row>
+										<mat-row *matRowDef="let row; columns: displayedColumnsDetail"></mat-row>
+									</mat-table>
+								</span>
+							</span>
+						</div>
+						<div *ngIf="cl.pipe==='interest'">
+							<span>{{element[cl.key] | number:".4"}}</span>
+						</div>
+						<div *ngIf="cl.pipe==='langparser'">
+							<span>{{element[cl.key] | langparser }}</span>
+						</div>
+						<div *ngIf="cl.pipe==='date'">
+							<span>{{element[cl.key] | date:'dd.MM.yyyy'}}</span>
+						</div>
+						<div *ngIf="cl.pipe==='time'">
+							<span>{{element[cl.key]?.substr(0,8)}}</span>
+						</div>
+						<div *ngIf="cl.pipe==='percent'">
+							<span>{{getPercent(element[cl.key])}}</span>
+						</div>
+						<div *ngIf="!cl.pipe">
+							<span>{{element[cl.key] | lookup : cl.lookup }}</span>
+						</div>
+					</div>
+				</mat-cell>
+			</ng-container>
+
+			<mat-header-row *matHeaderRowDef="getColumnsKeys()"></mat-header-row>
+			<mat-row *matRowDef="let row; columns: getColumnsKeys();"></mat-row>
+			<ng-container matColumnDef="groupHeader">
+				<td mat-cell [attr.colspan]="column.length" *matCellDef="let groupBy" (click)="groupClick(groupBy.key)">
+					<span><i [ngClass]="groupBy.down ? 'la la-arrow-circle-down mt-icon-resizeable-xs':'la la-arrow-circle-right mt-icon-resizeable-xs'" class="la la-arrow-circle-down mt-icon-resizeable-xs"></i><span> <strong>{{groupBy.initial}}</strong></span></span>
+				</td>
+			</ng-container>
+			<mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"> </mat-row>
+		</table>
+		<div class="mat-table__message kt-font-danger" *ngIf="!model.hasItems && model.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+	</div>
+	<div class="row" style="height: 100px;"></div>
+</form>

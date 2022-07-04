@@ -1,0 +1,318 @@
+<kt-alert *ngIf="dataSource.hasError()" type="warn" (close)="dataSource.clearError()">{{dataSource.getErrorMessage()}}</kt-alert>
+<kt-portlet [options]="{headLarge: true}" [loading$]="dataSource.loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Monitoring.ApiCallLog' | translate}}
+				</h3>
+			</div>
+		</ng-container>
+		
+		<ng-container ktPortletTools>
+			<a id="btnGet" class="kt-margin-l-5 btn btn-brand" [class.disabled]="!dataSource.loading$" (click)="loadDataSource()">
+				<span> <i class="la la-search"></i> <span>{{'General.Get' | translate}}</span> </span>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="filterForm" class="kt-form " autocomplete="off">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="requestDateStart" formControlName="requestDateStart" placeholder="{{'System.Member.RequestDateStart' | translate }}">
+								<mat-datepicker-toggle matSuffix [for]="requestDateStart"></mat-datepicker-toggle>
+								<mat-datepicker #requestDateStart></mat-datepicker>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="requestDateEnd" formControlName="requestDateEnd" placeholder="{{'System.Member.RequestDateEnd' | translate }}">
+								<mat-datepicker-toggle matSuffix [for]="requestDateEnd"></mat-datepicker-toggle>
+								<mat-datepicker #requestDateEnd></mat-datepicker>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.CorrelationId' | translate}}" formControlName="guid" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.RequestKey' | translate}}" formControlName="requestKey" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.LogApplicationName' | translate}}" formControlName="applicationName" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.ActionName' | translate}}" formControlName="actionName" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.ApiRoute' | translate}}" formControlName="apiRoute" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.Request' | translate}}" formControlName="request" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.UserCode' | translate}}" formControlName="userCode" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.Operator' | translate}}" formControlName="operatorId" type="text">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="menuGuid" placeholder="{{'System.Authority.MenuName' | translate}}">
+									<ngx-mat-select-search [formControl]="frmControlSearch" #filtermenu placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+									</ngx-mat-select-search>
+									<mat-option id="chooseMenu">{{'General.None' | translate}}</mat-option>
+									<mat-option id="menu.code" [value]="menu.code" *ngFor="let menu of entMenuTree | filterByProperty: ['description',filtermenu.value]; ">{{menu.description}} </mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="channel" placeholder="{{'General.ChannelCode' | translate}}">
+									<ngx-mat-select-search [formControl]="frmControlSearch" #filterChannel placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+									</ngx-mat-select-search>
+									<mat-option id="chooseChannel">{{'General.None' | translate}}</mat-option>
+									<mat-option id="channel.code" [value]="channel.code" *ngFor="let channel of cfgChannel | filterByProperty: ['description',filterChannel.value]; ">{{channel.description}} </mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<div class="header-above-scroller" #headerScroller (scroll)="scrollHead()">
+			<div class="header-scroller" [ngStyle]="{'width': scrollWidth+'px'}"></div>
+		</div>
+		<div class="mat-table__wrapper" #tableScroller  (scroll)="scrollFoot()">
+			<table mat-table class="detail-grid-expanded-container mat-elevation-z8" [dataSource]="dataSource" multiTemplateDataRows #nationSort="matSort" matSort matSortActive="requestDate" matSortDirection="desc" matSortDisableClear>
+				<ng-container matColumnDef="guid">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.CorrelationId' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.guid}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="applicationName">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.LogApplicationName' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.applicationName}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="actionName">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.ActionName' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.actionName}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="requestKey">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.RequestKey' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.requestKey}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="apiRoute">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.ApiRoute' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.apiRoute}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="direction">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.Direction' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.direction | lookup:ioFlagDef }}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="httpStatusCode">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.HttpStatusCode' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.httpStatusCode }}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="elapsedMs">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.ElapsedMs' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{formatTime(element.parentLog.elapsedMs)}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="requestDate">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.RequestDate' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.requestDate | date:'dd.MM.yyyy'}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="requestTime">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.RequestTime' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.requestTime?.substr(0,8)}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="userCode">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.UserCode' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.userCode}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="operatorId">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.Operator' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.operatorId}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="menuGuid">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'System.Authority.MenuName' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.menuGuid | lookup:entMenuTree | translate}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="channel">
+					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'System.Member.ChannelCode' | translate}} </th>
+					<td mat-cell *matCellDef="let element" class="mat-column">
+						<span>{{element.parentLog.channel | lookup:cfgChannel}}</span>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="actions">
+					<th mat-header-cell *matHeaderCellDef>{{'General.Actions' | translate }}</th>
+					<td mat-cell *matCellDef="let element">
+						<button mat-icon-button id="history" (click)="openHistory(element.parentLog.guid)" type="button" color="primary" matTooltip="{{'General.History' | translate }}">
+							<mat-icon>history</mat-icon>
+						</button>
+					</td>
+				</ng-container>
+				<ng-container matColumnDef="expandedDetail">
+					<td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+						<div class="detail-grid-expanded-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+							<div *ngIf="element.childLog.length>0">
+								<table mat-table class="mat-elevation-z8" multiTemplateDataRows [dataSource]="element.childLog" matSort matSortDisableClear>
+									<ng-container matColumnDef="guid">
+										<th mat-header-cell *matHeaderCellDef>{{'General.CorrelationId' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.guid}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="applicationName">
+										<th mat-header-cell *matHeaderCellDef>{{'General.LogApplicationName' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.applicationName}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="actionName">
+										<th mat-header-cell *matHeaderCellDef>{{'General.ActionName' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.actionName}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="requestKey">
+										<th mat-header-cell *matHeaderCellDef>{{'General.RequestKey' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.requestKey}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="apiRoute">
+										<th mat-header-cell *matHeaderCellDef> {{'General.ApiRoute' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.apiRoute}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="direction">
+										<th mat-header-cell *matHeaderCellDef> {{'General.Direction' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.direction | lookup:ioFlagDef }}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="httpStatusCode">
+										<th mat-header-cell *matHeaderCellDef> {{'General.HttpStatusCode' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.httpStatusCode }}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="elapsedMs">
+										<th mat-header-cell *matHeaderCellDef> {{'General.ElapsedMs' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{formatTime(element.elapsedMs)}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="requestDate">
+										<th mat-header-cell *matHeaderCellDef> {{'General.RequestDate' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.requestDate | date:'dd.MM.yyyy'}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="requestTime">
+										<th mat-header-cell *matHeaderCellDef> {{'General.RequestTime' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.requestTime?.substr(0,8)}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="userCode">
+										<th mat-header-cell *matHeaderCellDef> {{'General.UserCode' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.userCode}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="operatorId">
+										<th mat-header-cell *matHeaderCellDef> {{'General.Operator' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.operatorId}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="menuGuid">
+										<th mat-header-cell *matHeaderCellDef> {{'System.Authority.MenuName' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.menuGuid | lookup:entMenuTree | translate}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="channel">
+										<th mat-header-cell *matHeaderCellDef> {{'System.Member.ChannelCode' | translate}} </th>
+										<td mat-cell *matCellDef="let element" class="mat-column">
+											<span>{{element.channel | lookup:cfgChannel}}</span>
+										</td>
+									</ng-container>
+									<ng-container matColumnDef="actions">
+										<th mat-header-cell *matHeaderCellDef>{{'General.Actions' | translate }}</th>
+										<td mat-cell *matCellDef="let element">
+											<button mat-icon-button id="history" (click)="openHistory(element.guid)" type="button" color="primary" matTooltip="{{'General.History' | translate }}">
+												<mat-icon>history</mat-icon>
+											</button>
+										</td>
+									</ng-container>
+									<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+									<tr mat-row *matRowDef="let row; columns: displayedColumns" (dblclick)="openDetail(row)"></tr>
+								</table>
+							</div>
+							<div class="mat-table__message kt-font-danger" *ngIf="element.childLog.length==0">{{'General.NoRecordsFound' | translate }}</div>
+						</div>
+					</td>
+				</ng-container>
+				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+				<tr mat-row *matRowDef="let element; columns: displayedColumns;" class="detail-grid-expanded-element-row" [class.detail-grid-expanded-expanded-row]="expandedElement === element" (click)="expandedElement = expandedElement === element ? null : element" (dblclick)="openDetail(element.parentLog)"> </tr>
+				<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-grid-expanded-detail-row"></tr>
+			</table>
+			<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+		</div>
+		<div class="mat-table__bottom">
+			<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+			<mat-paginator #paginator [pageSize]="500" [pageSizeOptions]="[100, 500, 1000]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+		</div>
+		<div class="row" style="height: 50px;"></div>
+	</kt-portlet-body>
+</kt-portlet>

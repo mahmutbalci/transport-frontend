@@ -1,0 +1,10 @@
+<ul class="workflows">
+	<li *ngFor="let item of workflowProcessList" (click)="valueSelected(item)">
+		<span class="badge">{{ item.refNumber }}</span>
+		{{ item.menuDescription }}
+
+		{{ item.processKey }}
+
+		{{ item.apiMethod }}
+	</li>
+</ul>

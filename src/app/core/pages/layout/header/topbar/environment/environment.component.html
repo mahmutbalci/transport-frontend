@@ -1,0 +1,4 @@
+<!-- <div [ngClass]="'kt-spinner kt-spinner--v2 kt-spinner--sm kt-environment-spinner-' + envName" *ngIf="showEnvName"></div> -->
+<a><span [ngClass]="'kt-environment kt-memberName'" *ngIf="memberName">{{ memberName }}</span></a>
+<a><span [ngClass]="'kt-environment kt-memberName'" *ngIf="memberName && showEnvName"> - </span></a>
+<a><span [ngClass]="'kt-environment kt-environment-' + envName" *ngIf="showEnvName">{{ envName }}</span></a>

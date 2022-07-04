@@ -1,0 +1,93 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{ 'Menu.Common.Member.CfgDashboard' | translate }} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<span><i class="la la-mail-reply"></i><span>{{ 'General.Back' | translate }}</span></span>
+			</a>
+
+			<a id="btnPreview" class="kt-margin-l-5 btn btn-secondary" (click)="preview()">
+				<span><i class="la la-search-plus"></i><span>{{ 'General.Preview' | translate }}</span></span>
+			</a>
+
+			<a id="btnClear" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()">
+				<span><i class="la la-recycle"></i><span>{{ 'General.Clear' | translate }}</span></span>
+			</a>
+
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-save"></i><span>{{ 'General.Save' | translate }}</span></span>
+				</a>
+
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-edit"></i><span>{{ 'General.Update' | translate }}</span></span>
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="entityForm" [checkauth]="isReadonly" class="kt-form kt-margin-b-30">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput id="contentHeader" formControlName="contentHeader" placeholder="{{ 'System.Member.ContentHeader' | translate }}" maxlength="400" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="startDate" id="startDate" formControlName="startDate" placeholder="{{ 'System.Member.StartDate' | translate }}" required readonly="true">
+								<mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+								<mat-datepicker #startDate></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="endDate" id="endDate" formControlName="endDate" placeholder="{{ 'System.Member.EndDate' | translate }}" required readonly="true">
+								<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+								<mat-datepicker #endDate></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+							<mat-checkbox id="highlight" formControlName="highlight" class="mat-form-field mat-form-field-fluid ">{{ 'System.Member.Highlight' | translate }}</mat-checkbox>
+						</div>
+
+						<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+							<angular-editor name="timelineContent" [(ngModel)]="htmlContent"  formControlName="timelineContent" [config]="config"></angular-editor>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-2 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="!isReadonly">
+							<label for="upload" class="file-upload__label">{{ 'System.Member.PictureFile' | translate }}</label>
+							<input #fileInput id="upload" class="file-upload__input" (click)="fileInput.value = null" (change)="changeListener($event)" type="file" name="file-upload" accept=".jpg,.png">
+						</div>
+
+						<div class="col-md-1 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="!isReadonly && imageData">
+							<a id="btnRemoveFile" class="kt-margin-l-5 btn btn-secondary" (click)="removeFile()">
+								<span><i class="la la-recycle"></i><span>{{'General.Remove' | translate}}</span></span>
+							</a>
+						</div>
+
+						<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile">
+							<img id="imgData" width="400" height="400" class mat-card-image src="{{ imageData | pictureConvert }}">
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,11 @@
+<mat-form-field class="mat-form-field-fluid">
+	<mat-select [placeholder]="selectPlaceHolder" name="CrdProducts" class="filter-select" (selectionChange)="change()" [(ngModel)]="selected" [ngModelOptions]="{standalone: true}" [compareWith]="equals" multiple #selectedItem="ngModel">
+		<mat-option *ngFor="let item of items" [value]="item">
+			{{item.code}} - {{item.description}}
+		</mat-option>
+		<div class="centerbutton">
+			<button mat-button color="primary" (click)="selectAll(selectedItem, items)">Select All</button>
+			<button mat-button color="primary" (click)="deselectAll(selectedItem)">Deselect All</button>
+		</div>
+	</mat-select>
+</mat-form-field>

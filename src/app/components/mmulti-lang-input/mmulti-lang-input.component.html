@@ -1,0 +1,4 @@
+<div (click)="openMultiLangPopup()" style="min-height: 15px; color: steelblue;">
+	<input matInput [(ngModel)]="value" readonly style="display:none" placeholder="_placeholder">
+	{{ !_value ? (_required ? _placeholder + ' *' :  _placeholder) : _value | langparser}}
+</div>

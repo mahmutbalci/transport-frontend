@@ -1,0 +1,74 @@
+{
+	"compileOnSave": false,
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"paths": {
+			"@acquiring/*": [
+				"app/pages/acquiring/*",
+				"app/models/acquiring/*",
+				"app/services/acquiring/*"
+			],
+			"@clearing/*": [
+				"app/pages/clearing/*",
+				"app/models/clearing/*",
+				"app/services/clearing/*"
+			],
+			"@common/*": [
+				"app/pages/common/*",
+				"app/models/common/*",
+				"app/services/common/*"
+			],
+			"@cleveract/*": [
+				"app/pages/cleveract/*",
+				"app/models/cleveract/*",
+				"app/services/cleveract/*"
+			],
+			"@issuing/*": [
+				"app/pages/issuing/*",
+				"app/models/issuing/*",
+				"app/services/issuing/*"
+			],
+			"@core/*": [
+				"app/core/*"
+			],
+			"@pages/*": [
+				"app/pages/*"
+			],
+			"@services/*": [
+				"app/services/*"
+			],
+			"@models/*": [
+				"app/models/*"
+			],
+			"@components/*": [
+				"app/components/*"
+			],
+			"@config/*": [
+				"app/config/*"
+			],
+			"@assets/*": [
+				"assets/*"
+			],
+			"jszip": [
+				"../node_modules/jszip/dist/jszip.js"
+			]
+		},
+		"outDir": "./dist/out-tsc",
+		"sourceMap": false,
+		"declaration": false,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"importHelpers": true,
+		"target": "es5",
+		"typeRoots": [
+			"node_modules/@types"
+		],
+		"lib": [
+			"es2018",
+			"dom"
+		],
+		"allowSyntheticDefaultImports": true
+	}
+}

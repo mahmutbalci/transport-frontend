@@ -1,0 +1,68 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title" id="title">
+					{{'Menu.Common.Auth.ApiDef' | translate}} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<i class="la la-mail-reply"></i>{{'General.Back' | translate}}
+			</a>
+
+			<a id="btnClear" *ngIf="model._isNew" class="kt-margin-l-5 btn btn-secondary" (click)="clear()">
+				<i class="la la-recycle"></i>{{'General.Clear' | translate}}
+			</a>
+
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSave" *ngIf="model._isNew" [class.disabled]="processing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<i class="la la-save"></i>{{'General.Save' | translate}}
+				</a>
+
+				<a id="btnUpdate" *ngIf="model._isEditMode" [class.disabled]="processing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<i class="la la-edit"></i>{{'General.Update' | translate}}
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="form" [checkauth]="isDisable" class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput id="guid" placeholder="Guid" formControlName="guid" [textMask]="{mask : guidMask}" [readonly]="model._isEditMode">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="parentApiGuid" placeholder="{{'General.ParentApi' | translate}}" required>
+									<mat-option id="parentApi" [value]="item.code" *ngFor="let item of parentApiDefs;">{{ item.code }} -{{ item.description }}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.Description' | translate}}" formControlName="description" maxlength="4000" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.ApiRoute' | translate}}" formControlName="apiRoute" maxlength="500" required>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,32 @@
+<div class="kt-widget5">
+	<ng-container *ngFor="let item of data">
+		<ng-container [ngTemplateOutlet]="itemTemplate" [ngTemplateOutletContext]="{item: item}"></ng-container>
+	</ng-container>
+</div>
+
+<div class="kt-form__section kt-form__section--first kt-form">
+	<ng-template #itemTemplate let-item="item">
+		<div class="kt-widget5__section">
+			<h5 class="kt-portlet__head-title">
+				<a href="javascript:;" (click)="showDetail(item)">{{ item.contentHeader }}</a>
+			</h5>
+
+			<div style="display: inline-flex; max-height: 110px;">
+				<a href="javascript:;" (click)="showDetail(item)" *ngIf="item.picture">
+					<img id="imgFile" width="110px" height="110px" class="kt-widget7__img" src="{{ item.picture | pictureConvert }}">
+				</a>
+
+				<div class="kt-widget5__content" style="white-space: pre-wrap; overflow: hidden;" [innerHTML]=" item.timelineContent?.substring(0, 500)"></div>
+			</div>
+			<br>
+
+			<div>
+				<strong>{{ item.insertUser }} &nbsp; {{ item.insertDateTime | date:'dd.MM.yyyy HH:mm:ss' }} &nbsp; &nbsp;</strong>
+
+				<a href="javascript:;" (click)="showDetail(item)" class="kt-widget5__info">{{ 'General.Details' | translate }}</a>
+			</div>
+		</div>
+
+		<br>
+	</ng-template>
+</div>

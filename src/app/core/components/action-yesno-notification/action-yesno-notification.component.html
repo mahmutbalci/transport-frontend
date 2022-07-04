@@ -1,0 +1,15 @@
+<div class="alert alert-outline-primary fade show" role="alert">
+	<div class="alert-icon">
+		<i class="flaticon-exclamation-1"></i>
+	</div>
+	<div class="alert-text align-self-center">
+		<strong>{{data.title}}</strong> {{ viewLoading ? data.waitDesciption : data.description}}
+		<div class="kt-portlet__head-progress">
+			<mat-progress-bar mode="indeterminate" *ngIf="viewLoading"></mat-progress-bar>
+		</div>
+	</div>
+	<div class="alert-close">
+		<button type="button" class="btn btn-primary btn-icon kt-margin-r-5" id="btnYes" cdkFocusInitial [class.disabled]="viewLoading" (click)="onYesClick()" matTooltip="{{'General.Yes' | translate}}"><i class="fa fa-check btn-color"></i></button>
+		<button type="button" class="btn btn-danger btn-icon" (click)="onNoClick()" matTooltip="{{'General.No' | translate}}"><i class="fa fa-times btn-color"></i></button>
+	</div>
+</div>

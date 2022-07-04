@@ -1,0 +1,79 @@
+<kt-portlet [options]="{headLarge: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{ getTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSaveMenu" *ngIf="!this.data.guid" class="btn-icon" (click)="save()" [class.disabled]="processing">
+					<i class="la la-save mt-icon-resizeable" matTooltip="{{'General.Save' | translate}}"></i>
+				</a>
+
+				<a id="btnEditMenu" *ngIf="this.data.guid > 0" class="btn-icon" (click)="save()" [class.disabled]="processing">
+					<i class="la la-edit mt-icon-resizeable" matTooltip="{{'General.Update' | translate}}"></i>
+				</a>
+			</div>
+
+			<a id="btnCloseMenu" class="btn-icon" (click)="onNoClick()">
+				<i class="la la-remove mt-icon-resizeable" matTooltip="{{'General.Close' | translate}}"></i>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="entMenuTreeForm" class="kt-form " autocomplete="off">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput id="guid" placeholder="Guid" formControlName="guid" [textMask]="{mask : guidMask}" [readonly]="entMenuTreeModel._isEditMode">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'System.Authority.MenuName' | translate}}" formControlName="description" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.OrderNo' | translate}}" formControlName="screenOrder" maxlength="3" [textMask]="{mask: maskNumber}">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.IconName' | translate}}" formControlName="iconPath">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'System.Authority.MenuUrl' | translate}}" formControlName="routeUrl">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{'System.Authority.Apis' | translate}}" [multiple]="true" formControlName="menuApis">
+									<ngx-mat-select-search [formControl]="frmControlSearch" #filter placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+									</ngx-mat-select-search>
+									<mat-option id="menuApis" [value]="item.code" *ngFor="let item of entApiDefs | sortByChecked:entMenuTreeForm.controls['menuApis'].value: ['description',filter.value];">{{ item.description }}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

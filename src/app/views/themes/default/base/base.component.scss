@@ -1,0 +1,153 @@
+// load base demo styles. for demo purpose, the style will be loaded here
+// for production, include the demo base style in /src/index.html file to load the css earlier
+@import "../../../../../assets/demo/default/base/style.bundle.css";
+// static skins css
+@import "../../../../../assets/demo/default/skins/header/base/light.css";
+@import "../../../../../assets/demo/default/skins/brand/dark.css";
+@import "../../../../../assets/demo/default/skins/aside/dark.css";
+
+kt-base {
+  height: 100%;
+  .kt-grid--root {
+    height: 100%;
+  }
+}
+.kt-content {
+  padding: 5px 15px 15px 15px !important;
+}
+#dynamicComponentTabToogle > .mat-tab-body-wrapper > .mat-tab-body > .mat-tab-body-content {
+  padding-top: 0px !important;
+}
+#dynamicComponentTabToogle > .mat-tab-header > .mat-tab-label-container {
+  background-color: white !important;
+}
+#dynamicComponentTabToogle
+  > .mat-tab-header
+  > .mat-tab-label-container
+  > .mat-tab-list
+  > .mat-tab-labels
+  > .mat-tab-label:hover {
+	background-color: #e4e4e4;
+	color: #4444f2;
+}
+#dynamicComponentTabToogle
+  > .mat-tab-header
+  > .mat-tab-label-container
+  > .mat-tab-list
+  > .mat-tab-labels
+  > .mat-tab-label.mat-tab-label-active {
+	background-color: #e4e4e4;
+	color: #4444f2;
+}
+
+#dynamicComponentTabToogle > .mat-tab-header {
+  position: sticky;
+  top: 65px;
+  z-index: 3;
+  margin-top: -40px;
+}
+#dynamicComponentTabToogle
+  > .mat-tab-header
+  > .mat-tab-label-container
+  > .mat-tab-list
+  > .mat-tab-labels
+  > .mat-tab-label {
+  margin-right: 3px;
+  background-color:white
+}
+
+div.loading{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	// background-color: rgba(16, 16, 16, 0.5);
+	background: rgb(255, 255, 255);
+  }
+
+.lds-roller {
+	top:50%;
+	left:50%;
+	position: fixed;
+	width: 64px;
+	height: 64px;
+  }
+  .lds-roller div {
+	animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+	transform-origin: 32px 32px;
+  }
+  .lds-roller div:after {
+	content: " ";
+	display: block;
+	position: absolute;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: rgb(26, 34, 120);
+	margin: -3px 0 0 -3px;
+  }
+  .lds-roller div:nth-child(1) {
+	animation-delay: -0.036s;
+  }
+  .lds-roller div:nth-child(1):after {
+	top: 50px;
+	left: 50px;
+  }
+  .lds-roller div:nth-child(2) {
+	animation-delay: -0.072s;
+  }
+  .lds-roller div:nth-child(2):after {
+	top: 54px;
+	left: 45px;
+  }
+  .lds-roller div:nth-child(3) {
+	animation-delay: -0.108s;
+  }
+  .lds-roller div:nth-child(3):after {
+	top: 57px;
+	left: 39px;
+  }
+  .lds-roller div:nth-child(4) {
+	animation-delay: -0.144s;
+  }
+  .lds-roller div:nth-child(4):after {
+	top: 58px;
+	left: 32px;
+  }
+  .lds-roller div:nth-child(5) {
+	animation-delay: -0.18s;
+  }
+  .lds-roller div:nth-child(5):after {
+	top: 57px;
+	left: 25px;
+  }
+  .lds-roller div:nth-child(6) {
+	animation-delay: -0.216s;
+  }
+  .lds-roller div:nth-child(6):after {
+	top: 54px;
+	left: 19px;
+  }
+  .lds-roller div:nth-child(7) {
+	animation-delay: -0.252s;
+  }
+  .lds-roller div:nth-child(7):after {
+	top: 50px;
+	left: 14px;
+  }
+  .lds-roller div:nth-child(8) {
+	animation-delay: -0.288s;
+  }
+  .lds-roller div:nth-child(8):after {
+	top: 45px;
+	left: 10px;
+  }
+  @keyframes lds-roller {
+	0% {
+	  transform: rotate(0deg);
+	}
+	100% {
+	  transform: rotate(360deg);
+	}
+  }

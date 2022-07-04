@@ -1,0 +1,26 @@
+<div class="alert alert-icon alert-icon-solid alert-outline alert alert-danger alert-dismissible fade show" role="alert">
+	<div class="alert-icon kt-margin-r-20"><i class="flaticon-exclamation-1"></i></div>
+
+	<div class="alert-text">
+		<div class="kt-section">
+			<span class="kt-section__sub row kt-margin-b-5">
+				<strong class="kt-margin-r-10">{{data.title}}</strong> {{data.code}}
+			</span>
+			<span class="kt-section__sub row kt-margin-b-5">
+				<div class="kt-margin-r-10">
+					<pre class="kt-margin-r-10" style="font-size: 13px;font-weight: 300;font-family: Poppins; color:white">{{ viewLoading ? data.waitDesciption : data.description}}</pre>
+				</div>
+			</span>
+			<span class="kt-section__sub row">
+				<mat-progress-bar mode="indeterminate" *ngIf="viewLoading"></mat-progress-bar>
+			</span>
+		</div>
+	</div>
+
+	<div class="alert-close">
+		<a id="btnYes" cdkFocusInitial [class.disabled]="viewLoading" class="kt-margin-l-5 btn btn-danger kt-margin-l-5 btn btn-icon" (click)="onYesClick()" matTooltip="{{'General.Delete' | translate}}">
+			<span> <i class="flaticon-delete-1"></i> </span></a>
+		<a id="btnClose" class="kt-margin-l-5 btn btn-danger kt-margin-l-5 btn btn-icon" (click)="onNoClick()" matTooltip="{{'General.Close' | translate}}">
+			<span> <i class="la la-remove"></i> </span></a>
+	</div>
+</div>

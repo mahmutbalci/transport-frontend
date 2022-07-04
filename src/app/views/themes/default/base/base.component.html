@@ -1,0 +1,54 @@
+<ng-container *ngIf="selfLayout !== 'blank'; else blankLayout">
+	<div class="kt-grid kt-grid--hor kt-grid--root">
+		<kt-header-mobile></kt-header-mobile>
+		<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page" [class.disabled]="isLoadingIndicator">
+			<ng-container *ngIf="asideDisplay">
+				<button class="kt-aside-close" id="kt_aside_close_btn"><i class="la la-close"></i></button>
+				<kt-aside-left></kt-aside-left>
+			</ng-container>
+			<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+				<kt-header></kt-header>
+				<!-- <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor"> -->
+				<mat-tab-group id="dynamicComponentTabToogle" *ngIf='dynamicTabs?.length>0' [(selectedIndex)]="selectedTab" (selectedTabChange)="selectedTabChanged($event)">
+					<mat-tab *ngFor='let tab of dynamicTabs' class="kt-header kt-grid__item kt-header--fixed">
+						<ng-template mat-tab-label>
+							<div (mousedown)="$event.button==1?closeTab(tab):null">{{tab.title | translate}}</div>
+							<i class="fa fa-times kt-margin-l-10" (click)="closeTab(tab)" matTooltip="{{'General.Close' | translate}}"></i>
+						</ng-template>
+						<div class="kt-content" #mContent>
+							<ng-template #dynamicComponent></ng-template>
+						</div>
+					</mat-tab>
+				</mat-tab-group>
+				<div class="loading" *ngIf="isLoadingIndicator">
+					<div class="lds-roller">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+					</div>
+				</div>
+
+				<!-- <kt-subheader *ngIf="subheaderDisplay"></kt-subheader> -->
+				<div ktContentAnimate class="kt-content kt-grid__item kt-grid__item--fluid" id="kt_content" *ngIf='dynamicTabs?.length==0'>
+					<router-outlet></router-outlet>
+					<!-- <h1>{{title}}</h1> -->
+				</div>
+
+
+				<!-- </div> -->
+				<kt-footer></kt-footer>
+			</div>
+		</div>
+		<kt-quick-panel></kt-quick-panel>
+		<kt-scroll-top></kt-scroll-top>
+		<!-- <kt-sticky-toolbar></kt-sticky-toolbar> -->
+	</div>
+</ng-container>
+<ng-template #blankLayout>
+	<router-outlet></router-outlet>
+</ng-template>

@@ -1,0 +1,161 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Monitoring.ApiCallLog' | translate}}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnCancel" class="btn-icon" (click)="cancel()"> <i class="la la-remove mt-icon-resizeable" matTooltip="{{'General.Close' | translate}}"></i> </a>
+		</ng-container>
+
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div class="kt-form">
+			<form [formGroup]="detailForm" [checkauth]="true" class="kt-form" autocomplete="off">
+				<div class="kt-form__group row">
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="guid" placeholder="{{'General.CorrelationId' | translate}}" formControlName="guid">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="requestKey" placeholder="{{'General.RequestKey' | translate}}" formControlName="requestKey">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="applicationName" placeholder="{{'General.LogApplicationName' | translate}}" formControlName="applicationName">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="actionName" placeholder="{{'General.ActionName' | translate}}" formControlName="actionName">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="apiRoute" placeholder="{{'General.ApiRoute' | translate}}" formControlName="apiRoute">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="httpMethod" placeholder="{{'General.HttpMethod' | translate}}" formControlName="httpMethod">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="httpStatusCode" placeholder="{{'General.HttpStatusCode' | translate}}" formControlName="httpStatusCode">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="version" placeholder="{{'General.Version' | translate}}" formControlName="version">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'General.Direction' | translate}}" formControlName="direction" required>
+								<mat-option id="direction" [value]="item.code" *ngFor="let item of ioFlagDef"> {{item.description}} </mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="userCode" placeholder="{{'General.UserCode' | translate}}" formControlName="userCode">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="operatorId" placeholder="{{'General.Operator' | translate}}" formControlName="operatorId">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput [matDatepicker]="requestDate" formControlName="requestDate" placeholder="{{'General.RequestDate' | translate}}">
+							<mat-datepicker-toggle matSuffix [for]="requestDate"></mat-datepicker-toggle>
+							<mat-datepicker #requestDate></mat-datepicker>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="requestTime" placeholder="{{'General.RequestTime' | translate}}" formControlName="requestTime">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="elapsedMs" placeholder="{{'General.ElapsedMs' | translate}}" formControlName="elapsedMs">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'General.ChannelCode' | translate}}" formControlName="channel" required>
+								<mat-option id="channel" [value]="item.code" *ngFor="let item of cfgChannel"> {{item.description}} </mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'System.Authority.MenuName' | translate}}" formControlName="menuGuid" required>
+								<mat-option id="menuGuid" [value]="item.code" *ngFor="let item of entMenuTree"> {{item.description | translate}} </mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="eventName" placeholder="{{'General.EventName' | translate}}" formControlName="eventName">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="deviceId" placeholder="{{'General.DeviceId' | translate}}" formControlName="deviceId">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="machineName" placeholder="{{'General.MachineName' | translate}}" formControlName="machineName">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="parentGuid" placeholder="{{'General.ParentGuid' | translate}}" formControlName="parentGuid">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="sessionGuid" placeholder="{{'General.SessionGuid' | translate}}" formControlName="sessionGuid">
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="requestHeaders" placeholder="{{'General.RequestHeader' | translate}}" formControlName="requestHeaders">
+							<a id="btnDetailRequestHeaders" class="btn-icon" (click)="jsonViewer('requestHeaders')"><i class="la la-chain mt-icon-resizeable"></i> </a>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="request" placeholder="{{'General.Request' | translate}}" formControlName="request">
+							<a id="btnDetailRequestHeaders" class="btn-icon" (click)="jsonViewer('request')"><i class="la la-chain mt-icon-resizeable"></i> </a>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="response" placeholder="{{'General.Response' | translate}}" formControlName="response">
+							<a id="btnDetailRequestHeaders" class="btn-icon" (click)="jsonViewer('response')"><i class="la la-chain mt-icon-resizeable"></i> </a>
+						</mat-form-field>
+					</div>
+					<div class="col-md-3 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput id="exceptionCode" placeholder="{{'General.ExceptionCode' | translate}}" formControlName="exceptionCode">
+						</mat-form-field>
+					</div>
+				</div>
+			</form>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

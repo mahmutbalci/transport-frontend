@@ -1,0 +1,30 @@
+<div class="alert alert-danger fade show" role="alert">
+	<div class="alert-icon kt-margin-r-20"><i class="flaticon-warning"></i></div>
+	<div class="alert-text">
+		<div class="kt-section">
+			<span class="kt-section__sub row" *ngIf="data.code">
+				<strong class="kt-margin-r-10">{{'General.ErrorCode' | translate}}:</strong> {{data.code}}
+			</span>
+			<span class="kt-section__sub row" *ngIf="data.message">
+				<strong class="kt-margin-r-10">{{'General.ErrorMessage' | translate}}:</strong>
+				<div *ngIf="!isNewLine" [innerHTML]="data.message"></div>
+				<pre *ngIf="isNewLine" class="kt-margin-r-10" style="font-size: 13px;font-weight: 300;font-family: Poppins; color:white">{{ data.message }}</pre>
+			</span>
+			<span class="kt-section__sub row" *ngIf="data.validation?.length > 0">
+				<strong class="kt-margin-r-10">{{'General.ValidationMessages' | translate}}:</strong>
+				<span *ngFor="let val of data.validation; index as i" [attr.data-index]="i">
+					<div>{{(i+1)+" - "+val}}</div>
+				</span>
+			</span>
+			<span class="kt-section__sub row" *ngIf="data.correlationId">
+				<strong class="kt-margin-r-10">{{'General.CorrelationId' | translate}}:</strong> {{data.correlationId}}
+			</span>
+		</div>
+	</div>
+	<div class="alert-close">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close" *ngIf="data.showCloseButton" (click)="closeAlert()" matTooltip="{{'General.Close' | translate}}">
+			<span aria-hidden="true"><i class="la la-close"></i></span>
+		</button>
+	</div>
+
+</div>

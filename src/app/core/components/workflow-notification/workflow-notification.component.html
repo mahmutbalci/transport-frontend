@@ -1,0 +1,13 @@
+<div class="alert alert-icon alert-icon-solid alert-outline alert alert-warning alert-dismissible fade show" role="alert">
+	<div class="alert-icon">
+		<i class="la la-check"></i>
+		<span></span>
+	</div>
+	<div class="alert-text">
+		<strong>{{ data.message }}</strong>
+	</div>
+	<div class="kt-alert__actions">
+		<a *ngIf="data.showUndoButton" class="kt-margin-l-5 btn btn btn-icon" (click)="onDismissWithAction()" matTooltip="{{ 'General.Back' | translate }}"><span> <i class="la la-mail-reply"></i> </span></a>
+		<a *ngIf="data.showCloseButton" class="kt-margin-l-5 btn btn btn-icon" (click)="onDismiss()" matTooltip="{{ 'General.Close' | translate }}"><span> <i class="la la-close"></i> </span></a>
+	</div>
+</div>

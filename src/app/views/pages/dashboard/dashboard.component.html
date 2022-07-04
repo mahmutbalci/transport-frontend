@@ -1,0 +1,29 @@
+<div class="row">
+	<div class="col-xl-12">
+		<kt-portlet [class]="'kt-portlet--height-fluid'">
+			<kt-portlet-header>
+				<ng-container ktPortletTitle>
+					<div class="kt-portlet__head-title">
+						<h3 class="kt-portlet__head-title">
+							{{ 'General.ApplicationName' | translate }}
+						</h3>
+					</div>
+				</ng-container>
+			</kt-portlet-header>
+
+			<kt-portlet-body>
+				<kt-widget5 [data]="data"></kt-widget5>
+
+				<div class="mat-table__bottom" [class.disabled]="isLoading">
+					<a id="btnGet" class="kt-margin-l-5" (click)="getData()">
+						<i class="la la-refresh"></i>
+					</a>
+					&nbsp;&nbsp;
+
+					<mat-spinner [diameter]="20" *ngIf="isLoading"></mat-spinner>
+					<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 15]" [length]="paginatorTotal" [showFirstLastButtons]="true"></mat-paginator>
+				</div>
+			</kt-portlet-body>
+		</kt-portlet>
+	</div>
+</div>

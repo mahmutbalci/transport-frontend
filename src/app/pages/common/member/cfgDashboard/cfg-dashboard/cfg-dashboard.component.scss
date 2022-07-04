@@ -1,0 +1,43 @@
+.file-upload {
+	position: relative;
+	display: inline-block;
+}
+
+.file-upload__label {
+  padding: 0.5em 1em;
+  color: #fff;
+  background: #222;
+  border-radius: .4em;
+  transition: background .3s;
+  background-color: #716aca;
+  
+  &:hover {
+     cursor: pointer;
+     background: #3f3a80;
+  }
+}
+    
+.file-upload__input {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 1;
+    width:0;
+	height: 50%;
+	opacity: 0;
+}
+
+/*****************************************
+ design styles
+******************************************/
+html {
+   font-family: 'helvetica neue', 'arial', sans-serif;
+   font-size: 10px;
+   font-weight: bold;
+   padding-top: 1em;
+   -webkit-font-smoothing: antialiased;
+   text-align: center;
+   background: #EE4F47;
+}

@@ -1,0 +1,187 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Member.MessageTemplateDef'| translate}} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()" [hidden]="isVisibleDialog"><span> <i class="la la-reply"></i> <span>{{'General.Back' | translate}}</span> </span></a>&nbsp;
+			<a id="btnClear" class="kt-margin-l-5 btn btn-secondary" [class.disabled]="isDisabled" (click)="reset()" [hidden]="isVisibleDialog"><span> <i class="la la-eraser"></i> <span>{{'General.Clear' | translate}}</span> </span></a>&nbsp;
+			<a id="btnSave" class="kt-margin-l-5 btn btn-brand" [class.disabled]="isDisabled" (click)="onSubmit()" [hidden]="isVisibleDialog"><span> <i class="la la-save"></i> <span>{{'General.Save' | translate}}</span> </span></a>
+			<a id="btnCancel" class="kt-margin-l-5 btn btn-brand" (click)="cancel()" [hidden]="!isVisibleDialog"> <i class="la la-remove mt-icon-resizeable" matTooltip="{{'General.Cancel' | translate}}"></i> </a>
+		</ng-container>
+
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<form [formGroup]="msnMessageTemplateModelForm" class="kt-form" autocomplete="off">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input id="code" maxlength="4000" matInput placeholder="{{'General.Code' | translate}}" formControlName="code" required>
+								<mat-error>
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input id="txtDescription" maxlength="4000" matInput placeholder="{{'General.Description' | translate}}" formControlName="description" required>
+								<mat-error>
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput formControlName="mailFrom" placeholder="{{'Issuing.Customer.MailFrom' | translate}}">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput formControlName="smsFrom" placeholder="{{'Issuing.Customer.SmsFrom' | translate}}">
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select id="type" placeholder="{{'Issuing.Customer.TemplateType' | translate}}" formControlName="type" required>
+									<mat-option [value]="templateTypeDef.code" *ngFor="let templateTypeDef of templateTypeDefs;">{{templateTypeDef.code}} - {{templateTypeDef.description}}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input type="number" [min]="0" [max]="23" matInput formControlName="allowedMinSendTime" placeholder="{{'Issuing.Customer.AllowedMinSendTime' | translate}}">
+								<mat-error>
+									<strong>{{'General.InvalidData' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input type="number" [min]="0" [max]="23" matInput formControlName="allowedMaxSendTime" placeholder="{{'Issuing.Customer.AllowedMaxSendTime' | translate}}">
+								<mat-error>
+									<strong>{{'General.InvalidData' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-checkbox id="isBodyHtml" formControlName="isBodyHtml">{{'Issuing.Customer.IsBodyHtml' | translate}}</mat-checkbox>	
+						</div>
+						
+					</div>
+				</div>
+
+				<div class="kt-form__section kt-form__section--first">
+					<mat-tab-group>
+						<mat-tab id="tab" label="{{'Issuing.Customer.MessageTemplateText' | translate}}">
+							<div class="row m-row--no-padding m-row--col-separator-xl">
+								<div class="col-xl-6">
+									<div class="col-md-10 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+										<mat-form-field class="mat-form-field-fluid">
+											<mat-select placeholder="{{'Issuing.Customer.CommLanguage' | translate}}" formControlName="language">
+												<mat-option id="languageOption" [value]="item.code" *ngFor="let item of cfgLanguageDefs;">{{item.code}} -{{item.description | langparser}}</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+
+									<div class="col-md-10 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput formControlName="smsBody" placeholder="{{'Issuing.Customer.SmsBody' | translate}}">
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="col-xl-6">
+									<div class="col-md-10 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+										<mat-form-field class="mat-form-field-fluid">
+											<input matInput formControlName="mailSubject" placeholder="{{'Issuing.Customer.MailSubject' | translate}}">
+										</mat-form-field>
+									</div>
+									
+									<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+										<label class="mat-form-field-fluid">{{'Issuing.Customer.MailBody' | translate}}</label>
+									</div>
+
+									<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
+										<angular-editor name="htmlContent" [(ngModel)]="htmlContent" formControlName="htmlContent" [config]="config"></angular-editor>
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="kt-form">
+								<div class="row align-items-center">
+									<div class="col-md-2 kt-margin-b-10 kt-margin-b-10-mobile"></div>
+									<div class="col-md-8 kt-margin-b-10 kt-margin-b-10-mobile"></div>
+									<div class="col-md-2 text-right kt-margin-b-10 kt-margin-b-10-mobile">
+										<a id="btnCreate" class="btn btn-brand" (click)="addMsnMessageTemplateText()"><span> <i class="la la-plus-circle mt-icon-resizeable-xs"></i> <span>{{'Issuing.Customer.AddTemplateText' | translate}}</span> </span></a>
+									</div>
+								</div>
+							</div>
+							<br>
+							<div class="mat-table__wrapper">
+								<mat-table id="tblMsnMessageTemplateText" class="lmat-elevation-z8" cdkDropList (cdkDropListDropped)="dropped($event)" [cdkDropListData]="dataSource" [dataSource]="dataSource" matSort matSortActive="mailSubject" matSortDirection="asc" matSortDisableClear>
+									<ng-container matColumnDef="language">
+										<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'Issuing.Customer.CommLanguage' | translate}}</mat-header-cell>
+										<mat-cell *matCellDef="let row">{{row.language}}</mat-cell>
+									</ng-container>
+
+									<ng-container matColumnDef="mailSubject">
+										<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'Issuing.Customer.MailSubject' | translate}}</mat-header-cell>
+										<mat-cell *matCellDef="let row">{{row.mailSubject}}</mat-cell>
+									</ng-container>
+
+									<ng-container matColumnDef="mailFrom">
+										<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'Issuing.Customer.MailFrom' | translate}}</mat-header-cell>
+										<mat-cell *matCellDef="let row">{{row.mailFrom}}</mat-cell>
+									</ng-container>
+
+									<ng-container matColumnDef="mailBody">
+										<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'Issuing.Customer.MailBody' | translate}}</mat-header-cell>
+										<mat-cell *matCellDef="let row">{{row.mailBody}}</mat-cell>
+									</ng-container>
+
+									<ng-container matColumnDef="smsFrom">
+										<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'Issuing.Customer.SmsFrom' | translate}}</mat-header-cell>
+										<mat-cell *matCellDef="let row">{{row.smsFrom}}</mat-cell>
+									</ng-container>
+
+									<ng-container matColumnDef="smsBody">
+										<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'Issuing.Customer.SmsBody' | translate}}</mat-header-cell>
+										<mat-cell *matCellDef="let row">{{row.smsBody}}</mat-cell>
+									</ng-container>
+
+									<ng-container matColumnDef="actions">
+										<mat-header-cell *matHeaderCellDef>{{'General.Actions' | translate }}</mat-header-cell>
+										<mat-cell *matCellDef="let row">
+											<button mat-icon-button [matMenuTriggerFor]="menu" id="moreAction">
+												<mat-icon>more_vert</mat-icon>
+											</button>
+											<mat-menu #menu="matMenu">
+												<a mat-menu-item id="edit" *ngIf="'edit'|checkauth" [disabled]="isDisabled" (click)="editMsnMessageTextButtonOnClick(row)" class="btn">
+													<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
+												</a>
+												<a mat-menu-item id="delete" *ngIf="'delete'|checkauth" [disabled]="isDisabled" (click)="deleteMsnMessageTexttButtonOnClick(row)" class="btn">
+													<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
+												</a>
+											</mat-menu>
+										</mat-cell>
+									</ng-container>
+									<mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'mat-row-editing' : row._isEditMode}" cdkDrag [cdkDragData]="row"></mat-row>
+									<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+								</mat-table>
+								<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+							</div>
+						</mat-tab>
+					</mat-tab-group>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

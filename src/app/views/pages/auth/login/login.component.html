@@ -1,0 +1,85 @@
+<!--begin::Head-->
+<!-- <div class="kt-login__head">
+	<span class="kt-login__signup-label">Don't have an account yet?</span>&nbsp;&nbsp;
+	<a href="javascript:;" routerLink="/auth/register" class="kt-link kt-login__signup-link">{{ 'Auth.General.SignupButton' | translate }}</a>
+</div> -->
+<!--end::Head-->
+
+<!--begin::Body-->
+<div class="kt-login__body">
+	<!--begin::Signin-->
+	<div class="kt-login__form">
+		<!-- <div class="kt-login__title">
+			<h3>{{ 'Auth.Login.Title' | translate }}</h3>
+		</div> -->
+
+		<kt-auth-notice></kt-auth-notice>
+
+		<!--begin::Form-->
+		<form class="kt-form" [formGroup]="loginForm" autocomplete="off">
+			<div class="form-group">
+				<mat-form-field>
+					<mat-select placeholder="{{ 'Auth.Input.MbrId' | translate }}" formControlName="mbrId">
+						<mat-option id="mbrId" [value]="item.mbrId" *ngFor="let item of memberDefList"> {{item.description}} </mat-option>
+					</mat-select>
+					<mat-error *ngIf="isControlHasError('mbrId','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>{{ 'Auth.Input.UserCode' | translate }}</mat-label>
+					<input matInput type="text" placeholder="{{ 'Auth.Input.UserCode' | translate }}" formControlName="userCode" autocomplete="off" />
+
+					<mat-error *ngIf="isControlHasError('userCode','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+
+					<!-- <mat-error *ngIf="isControlHasError('userCode','email')">
+						<strong>{{ 'Auth.Validation.InvalidField' | translate }}</strong>
+					</mat-error> -->
+
+					<mat-error *ngIf="isControlHasError('userCode','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 1</strong>
+					</mat-error>
+
+					<mat-error *ngIf="isControlHasError('userCode','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 320</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>{{ 'Auth.Input.Password' | translate }}</mat-label>
+					<input matInput type="password" placeholder="{{ 'Auth.Input.Password' | translate }}" formControlName="password" autocomplete="off" />
+
+					<mat-error *ngIf="isControlHasError('password','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+
+					<mat-error *ngIf="isControlHasError('password','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
+					</mat-error>
+
+					<mat-error *ngIf="isControlHasError('password','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 100</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+
+			<div class="form-group">
+				<m-mlanguage-box (onLanguageChange)="onLanguageChange($event)"></m-mlanguage-box>
+			</div>
+
+			<div class="kt-login__actions">
+				<!-- <a href="javascript:;" routerLink="/auth/forgot-password" class="kt-link kt-login__link-forgot">
+					{{ 'Auth.Forgot.Title' | translate }}
+				</a> -->
+
+				<button (click)="submit()" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}" [disabled]="isDisable" id="kt_login_signin_submit" class="kt-margin-l-5 btn btn-primary btn-elevate kt-login__btn-primary">{{ 'Auth.Login.Button' | translate }}</button>
+			</div>
+		</form>
+	</div>
+</div>

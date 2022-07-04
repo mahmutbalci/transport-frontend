@@ -1,0 +1,34 @@
+<kt-portlet [options]="{headLarge: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					{{ detailItem.contentHeader }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnClose" class="btn-icon" (click)="close()">
+				<i class="la la-remove mt-icon-resizeable"></i>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<div class="kt-widget5__item">
+			<div class="kt-widget5__content">
+				<div class="kt-widget5__pic" *ngIf="detailItem.picture" style="text-align: center;">
+					<img id="imgFile" width="400" height="500" class="kt-widget7__img" src="{{ detailItem.picture | pictureConvert }}">
+				</div>
+			</div>
+
+			<div class="kt-widget5__content" style="white-space: pre-wrap;" [innerHTML]="detailItem.timelineContent"></div>
+			<br>
+
+			<div>
+				<strong>{{ detailItem.insertUser }} &nbsp; {{ detailItem.insertDateTime | date:'dd.MM.yyyy HH:mm:ss' }} &nbsp; &nbsp;</strong>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

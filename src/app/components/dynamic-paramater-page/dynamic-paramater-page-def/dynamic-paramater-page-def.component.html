@@ -1,0 +1,113 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<button id="btnGoBack" type="button" (click)="goBack()" class="kt-margin-l-5 btn btn-brand">
+				<span><i class="la la-mail-reply"></i><span>{{'General.Back' | translate}}</span></span>
+			</button>
+
+			<button id="btnClear" [disabled]="!isAdd" class="kt-margin-l-5 btn btn-brand" (click)="clear()">
+				<span><i class="la la-recycle"></i><span>{{'General.Clear' | translate}}</span></span>
+			</button>
+
+			<div *ngIf="'add'|checkauth" class="m-buttons--wrapper">
+				<button id="btnSave" type="button" *ngIf="isAdd" [disabled]="isDisabled" (click)="save()" class="kt-margin-l-5 btn btn-brand">
+					<span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span>
+				</button>
+
+				<button id="btnUpdate" type="button" *ngIf="!isAdd" [disabled]="isDisabled" (click)="save()" class="kt-margin-l-5 btn btn-brand">
+					<span><i class="la la-edit"></i><span>{{'General.Update' | translate}}</span></span>
+				</button>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="form" [checkauth]="isDisabled" class="kt-form " autocomplete="off">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-{{input.colmd?input.colmd:4}} kt-margin-b-10-mobile" *ngFor="let input of page.inputs;" [ngSwitch]="input.type">
+							<mat-form-field *ngSwitchCase="'text'" class="mat-form-field-fluid">
+								<input matInput id="{{input.key}}" placeholder="{{input.title | translate}}" formControlName="{{input.key}}" maxlength="{{input.maxlength}}">
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+								<mat-hint align="end">{{form.value[input.key]?.length}} / {{input.maxlength}}</mat-hint>
+							</mat-form-field>
+
+							<mat-form-field *ngSwitchCase="'textmask'" class="mat-form-field-fluid">
+								<input matInput id="{{input.key}}" placeholder="{{input.title | translate}}" formControlName="{{input.key}}" [textMask]="{mask: input.mask, guide:false}" maxlength="{{input.maxlength}}">
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+								<mat-hint align="end">{{form.value[input.key]?.length}} / {{input.maxlength}}</mat-hint>
+							</mat-form-field>
+
+							<mat-form-field *ngSwitchCase="'number'" class="mat-form-field-fluid">
+								<input matInput id="{{input.key}}" placeholder="{{input.title | translate}}" formControlName="{{input.key}}" type="number" maxlength="{{input.maxlength}}">
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+								<mat-hint align="end">{{form.value[input.key]?.length}} / {{input.maxlength}}</mat-hint>
+							</mat-form-field>
+
+							<mat-form-field *ngSwitchCase="'select'" class="mat-form-field-fluid">
+								<mat-select id="{{input.key}}" placeholder="{{input.title | translate}}" formControlName="{{input.key}}">
+									<mat-option [value]="option.code" *ngFor="let option of input.options;">{{option.code}} -{{option.description}} </mat-option>
+								</mat-select>
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+							<mat-checkbox *ngSwitchCase="'checkbox'" id="{{input.key}}" formControlName="{{input.key}}">{{input.title | translate}}</mat-checkbox>
+
+							<ng-select *ngSwitchCase="'multiselect'" id="{{input.key}}" [items]="input.options" [multiple]="true" [closeOnSelect]="false" [searchable]="true" bindLabel="{{input.bindLabel}}" placeholder="{{input.title | translate}}" formControlName="{{input.key}}">
+							</ng-select>
+
+							<mat-form-field class="mat-form-field-fluid" *ngSwitchCase="'date'">
+								<input matInput id="{{input.key}}" [matDatepicker]="picker" formControlName="{{input.key}}" placeholder="{{input.title | translate}}">
+								<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+								<mat-datepicker #picker></mat-datepicker>
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+
+							<mat-form-field *ngSwitchCase="'textarea'" class="mat-form-field-fluid">
+								<textarea matInput id="{{input.key}}" placeholder="{{input.title | translate}}" rows="{{input.row?input.row:1}}" formControlName="{{input.key}}"></textarea>
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+								<mat-hint align="end">{{form.value[input.key]?.length}} / {{input.maxlength}}</mat-hint>
+							</mat-form-field>
+
+							<mat-form-field *ngSwitchCase="'multilangtext'" class="mat-form-field-fluid">
+								<m-multi-lang-input matInput id="{{input.key}}" placeholder="{{input.title | translate}}" formControlName="{{input.key}}" [hidePopup]="getDisabled(input)"></m-multi-lang-input>
+								<mat-error>
+									{{input.title | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+								<mat-hint align="end">{{form.value[input.key]?.length}} / {{input.maxlength}}</mat-hint>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

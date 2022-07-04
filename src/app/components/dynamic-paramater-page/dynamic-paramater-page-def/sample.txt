@@ -1,0 +1,96 @@
+her input icin 
+colmd:8 ayari yapabilirsiniz.
+
+//text sample
+{
+	title: "Issuing.Customer.Code",
+	key: "code",
+	required: true,
+	type: "text",
+	maxlength: 2, 
+}, 
+
+//number sample
+{
+	title: "Issuing.Customer.Code",
+	key: "code",
+	required: true,
+	type: "number",
+	maxlength: 2, 
+}, 
+
+//textarea sample
+{
+	title: "Issuing.Customer.Code",
+	key: "code",
+	required: true,
+	type: "textarea",
+	maxlength: 2, 
+	row:3
+}, 
+
+//textmask sample
+{
+	title: "Issuing.Customer.Description",
+	key: "description",
+	required: true,
+	type: "textmask",
+	maxlength: 4000, 
+	mask:[/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ',
+	/[0-9]/, /[0-9]/, /[a-z\dA-Z]/, /[a-z\dA-Z]/, ' ',
+	/[a-z\dA-Z]/, /[a-z\dA-Z]/, /[a-z\dA-Z]/, /[a-z\dA-Z]/, ' ',
+		/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/],
+	clearMask:/\s/g,
+}
+
+//checkbox sample
+{
+	title: "Issuing.Customer.IsOpen",
+	key: "isOpen",
+	type: "checkbox", 
+} 
+
+//select sample
+{
+	title: "Issuing.Customer.ResponseCode",
+	key: "responseCode",
+	required: true,
+	type: "select",
+	options: [], 
+	lookup: {
+		api: "IssuingApi",
+		query: "TxnResponseCodeDef"
+	}, 
+}
+
+
+//multiselect sample
+{
+	title: "Issuing.Customer.ResponseCode",
+	key: "responseCode",
+	required: true,
+	type: "multiselect",
+	bindLabel:"description",
+	options: [], 
+	lookup: {
+		api: "IssuingApi",
+		query: "TxnResponseCodeDef"
+	}, 
+}
+
+//multilangtext sample
+{
+	title: "Issuing.Customer.Code",
+	key: "description",
+	required: true,
+	type: "multilangtext",
+	maxlength: 1000, 
+}, 
+
+//date sample
+{
+	title: "Issuing.Customer.Code",
+	key: "code",
+	required: true,
+	type: "date", 
+}, 

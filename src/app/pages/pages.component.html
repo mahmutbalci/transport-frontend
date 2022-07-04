@@ -1,0 +1,21 @@
+<ng-container *ngIf="selfLayout !== 'blank' ; else selfLayoutBlank">
+	<kt-header></kt-header>
+	<div class="kt-grid__item kt-grid__itekt--fluid kt-grid kt-grid--ver-desktop kt-grid--desktop kt-body" [ngClass]="pageBodyClass$ | async">
+		<ng-container *ngIf="asideLeftDisplay">
+			<kt-aside-left></kt-aside-left>
+		</ng-container>
+		<div #mContentWrapper class="kt-grid__item kt-grid__itekt--fluid kt-wrapper">
+			<div class="kt-content kt--margin-top-10" #mContent>
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+		<ng-container *ngIf="asideRightDisplay">
+			<kt-aside-left></kt-aside-left>
+		</ng-container>
+	</div>
+	<kt-footer></kt-footer>
+	<kt-scroll-top></kt-scroll-top>
+</ng-container>
+<ng-template #selfLayoutBlank>
+	<router-outlet></router-outlet>
+</ng-template>

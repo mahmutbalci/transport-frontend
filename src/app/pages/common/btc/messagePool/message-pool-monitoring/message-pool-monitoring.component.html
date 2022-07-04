@@ -1,0 +1,190 @@
+<kt-alert *ngIf="dataSource.hasError()" type="warn" (close)="dataSource.clearError()">{{dataSource.getErrorMessage()}}</kt-alert>
+<kt-portlet [options]="{headLarge: true, enableSticky: true}">
+
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Member.MessagePoolMonitoring' | translate}}
+				</h3>
+			</div>
+		</ng-container>
+		<ng-container ktPortletTools>
+			<a id="btnGet" class="kt-margin-l-5 btn btn-brand " (click)="loadDataSource()">
+				<span> <i class="la la-search"></i> <span>{{'General.Get' | translate}}</span> </span>
+			</a>
+			<a id="btnClear" class="kt-margin-l-5 btn btn-secondary" (click)="clear()">
+				<span> <i class="la la-recycle"></i> <span>{{'General.Clear' | translate}}</span> </span>
+			</a>
+
+		</ng-container>
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<div class="kt-form__section kt-form__section--first kt-form">
+			<div class="kt-form__group" [formGroup]="messageMonitoringForm">
+				<div class="row">
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<m-mcustomer-search id="customerSearch" [invisible]="false" #customerSearch (customerSelect)="movedCustomer($event)"></m-mcustomer-search>
+					</div>
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<input matInput [matDatepicker]="startDate" id="startDate" formControlName="startDate" placeholder=" {{'General.ChooseAStartDate' | translate}}">
+							<mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+							<mat-datepicker #startDate></mat-datepicker>
+						</mat-form-field>
+					</div>
+
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid" required>
+							<input matInput [matDatepicker]="endDate" id="endDate" formControlName="endDate" placeholder=" {{'General.ChooseAEndDate' | translate}}">
+							<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+							<mat-datepicker #endDate></mat-datepicker>
+						</mat-form-field>
+					</div>
+				</div>
+				<div class="row">
+
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'Issuing.Customer.TemplateType' | translate}}" formControlName="templateType" (selectionChange)="selectTemplateType($event.value)">
+								<mat-option id="templateType" [value]="item.code" *ngFor="let item of templateTypes;">{{item.code}} -{{item.description}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'Issuing.Customer.TemplateCode' | translate}}" formControlName="templateCode">
+								<mat-option id="templateCode" [value]="item.code" *ngFor="let item of templateCodes;">{{item.code}} -{{item.description}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+
+				</div>
+
+				<div class="row">
+
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'Issuing.Customer.MessageType' | translate}}" formControlName="messageType">
+								<mat-option id="messageType" [value]="item.code" *ngFor="let item of messageTypes;">{{item.code}} -{{item.description}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-form-field class="mat-form-field-fluid">
+							<mat-select placeholder="{{'Issuing.Customer.ProcessedStatus' | translate}}" formControlName="isProcessed">
+								<mat-option id="isProcessed" [value]="item.code" *ngFor="let item of cfgYesNoNumeric;">{{item.description}}</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="col-md-12 kt-margin-b-10-mobile kt-margin-b-10">
+				<div ngbDropdown class="d-inline-block float-right kt-margin-b-10">
+					<button class="kt-margin-l-5 btn btn-success" id="dropdownBasic1" ngbDropdownToggle> <i class="la la-ellipsis-h"></i> {{'General.Export' | translate}}</button>
+					<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+						<button id="excelExport0" class="dropdown-item" (click)="exportAsXLSX(true)"><i class="kt-nav__link-icon la la-file-excel-o"></i>{{'General.ExcelExportAll' | translate}}</button>
+						<button id="excelExport1" (click)="exportAsXLSX(false)" class="dropdown-item"> <i class="m-nav__link-icon la la-file-excel-o"></i>{{'General.ExcelExportCurrent' | translate}}</button>
+					</div>
+				</div>
+		    </div>
+
+			<div class="mat-table__wrapper">
+				<mat-table id="mtDataSource" class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="templateCode" matSortDirection="asc" matSortDisableClear>
+
+					<ng-container matColumnDef="templateCode">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.TemplateCode' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.templateCode | lookup:templateCodes }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="key">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Acquiring.Pos.Key' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.key }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="messageType">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.MessageType' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.messageType | lookup:messageTypes}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="messageTo">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.MessageTo' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.messageTo}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="dueDateTime">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.DueDateTime' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.dueDateTime | date:'dd.MM.yyyy'}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="channelCode">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.ChannelCode' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.channelCode }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="processedStatus">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.ProcessedStatus' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.isProcessed }}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="processDate">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.ProcessDate' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.processDate | date:'dd.MM.yyyy'}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="processTime">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.ProcessTime' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.processTime?.substr(0,8)}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="errorCode">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.ErrorCode' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.errorCode}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="guid">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.ErrorCode' | translate}}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.guid}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="actions">
+						<mat-header-cell *matHeaderCellDef>
+							{{'General.Actions' | translate }}
+						</mat-header-cell>
+						<mat-cell *matCellDef="let row">
+							<button mat-icon-button [matMenuTriggerFor]="menu" matTooltip="{{'General.MoreActions' | translate}}">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<mat-menu #menu="matMenu">
+
+								<a mat-menu-item id="view" (click)="showDetail(row)" class="btn">
+									<mat-icon>search</mat-icon><span> {{'Issuing.Card.Detail' | translate }}</span>
+								</a>
+								<a mat-menu-item id="history" (click)="openHistory(row.guid)" class="btn">
+									<mat-icon>history</mat-icon><span> {{'General.History' | translate }} </span>
+								</a>
+							</mat-menu>
+						</mat-cell>
+					</ng-container>
+
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+				</mat-table>
+
+				<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+			</div>
+			<div class="mat-table__bottom">
+				<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+				<mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 50]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+			</div>
+
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

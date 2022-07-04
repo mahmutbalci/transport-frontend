@@ -1,0 +1,57 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{ 'Menu.Common.Auth.MenuTree' | translate }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" id="menuTree">
+			<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+				<li class="mat-tree-node">
+					{{ node.description | translate }}
+
+					<div *ngIf="'add'|checkauth">
+						<button mat-icon-button (click)="editMenuItem(node)"> &nbsp; &nbsp; &nbsp; ...<mat-icon>create</mat-icon></button>
+					</div>
+				</li>
+			</mat-tree-node>
+
+			<mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" matTreeNodePadding>
+				<mat-form-field>
+					<input matInput #itemValue placeholder="save">
+				</mat-form-field>
+
+				<div *ngIf="'add'|checkauth">
+					<button mat-button (click)="saveNode(node, itemValue.value)">Save</button>
+				</div>
+			</mat-tree-node>
+
+			<mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+				<li class="mat-tree-node">
+					<button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+						<mat-icon class="mat-icon-rtl-mirror">
+							{{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+						</mat-icon>
+					</button>
+
+					{{ node.description | translate }}
+
+					<div *ngIf="'add'|checkauth">
+						<button mat-icon-button (click)="addNewMenuItem(node)">
+							<mat-icon>add</mat-icon>
+						</button>
+					</div>
+				</li>
+			</mat-tree-node>
+		</mat-tree>
+	</kt-portlet-body>
+</kt-portlet>

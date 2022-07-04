@@ -1,0 +1,110 @@
+<!--begin::Body-->
+<div class="kt-login__body">
+	<!--begin::Signin-->
+	<div class="kt-login__form">
+		<div class="kt-login__title">
+			<h3>{{ 'Auth.Register.Title' | translate }}</h3>
+		</div>
+
+		<kt-auth-notice></kt-auth-notice>
+
+		<form class="kt-login__form kt-form" [formGroup]="registerForm" autocomplete="off">
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>Fullname</mat-label>
+					<input matInput type="text" placeholder="Fullname" formControlName="fullname"/>
+					<mat-error *ngIf="isControlHasError('fullname','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('fullname','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('fullname','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 100</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>{{ 'Auth.Input.Email' | translate }}</mat-label>
+					<input matInput type="email" placeholder="{{ 'Auth.Input.Email' | translate }}" formControlName="email" autocomplete="off"/>
+					<mat-error *ngIf="isControlHasError('email','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('email','email')">
+						<strong>{{ 'Auth.Validation.InvalidField' | translate }}</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('email','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('email','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 320</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>Username</mat-label>
+					<input matInput type="text" placeholder="Username" formControlName="username"/>
+					<mat-error *ngIf="isControlHasError('username','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('username','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('username','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 100</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>{{ 'Auth.Input.Password' | translate }}</mat-label>
+					<input matInput type="password" placeholder="{{ 'Auth.Input.Password' | translate }}" formControlName="password" autocomplete="off"/>
+					<mat-error *ngIf="isControlHasError('password','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('password','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('password','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 100</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-form-field>
+					<mat-label>{{ 'Auth.Input.ConfirmPassword' | translate }}</mat-label>
+					<input matInput type="password" placeholder="{{ 'Auth.Input.ConfirmPassword' | translate }}" formControlName="confirmPassword" autocomplete="off"/>
+					<mat-error *ngIf="isControlHasError('confirmPassword','required')">
+						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('confirmPassword','minLength')">
+						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
+					</mat-error>
+					<mat-error *ngIf="isControlHasError('confirmPassword','maxLength')">
+						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 100</strong>
+					</mat-error>
+					<mat-error *ngIf="registerForm.get('confirmPassword').errors && registerForm.get('confirmPassword').errors.ConfirmPassword">
+						<strong>{{ 'Auth.Register.PassswordAndConfirmPasswordDidnotMatch' | translate }}</strong>
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="form-group">
+				<mat-checkbox name="agree" formControlName="agree">
+					I agree the <a href="javascript:;">terms & conditions</a>
+				</mat-checkbox>
+			</div>
+
+			<!--begin::Action-->
+			<div class="kt-login__actions">
+				<a href="javascript:;" routerLink="/auth/forgot-password" class="kt-link kt-login__link-forgot">
+					{{ 'Auth.General.ForgotButton' | translate }}
+				</a>
+				<button routerLink="/auth/login" [disabled]="loading" id="kt_login_signup_cancel" class="kt-margin-l-5 btn btn-secondary btn-elevate kt-login__btn-secondary">{{ 'Auth.General.BackButton' | translate }}</button>
+				<button (click)="submit()" id="kt_login_signin_submit" class="kt-margin-l-5 btn btn-primary btn-elevate kt-login__btn-primary" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}">{{ 'Auth.General.SubmitButton' | translate }}</button>
+			</div>
+			<!--end::Action-->
+		</form>
+	</div>
+</div>

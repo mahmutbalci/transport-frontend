@@ -1,0 +1,8 @@
+{
+    "editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.formatOnType": true,
+	"html.format.wrapLineLength": 0,
+	"terminal.integrated.scrollback": 200,
+	"typescript.tsdk": "./node_modules/typescript/lib"
+}

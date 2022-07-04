@@ -1,0 +1,168 @@
+<kt-alert *ngIf="dataSource.hasError()" type="warn" (close)="dataSource.clearError()">{{dataSource.getErrorMessage()}}</kt-alert>
+<kt-portlet [options]="{headLarge: true}">
+	<!-- start::Header (attributtes: ktPortletTitle|ktPortletTools) -->
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Jobchain.JobChainExecutionHistory' | translate}}
+				</h3>
+			</div>
+		</ng-container>
+		<ng-container ktPortletTools>
+			<a id="btnGet" class="kt-margin-l-5 btn btn-brand" (click)="get()"><span><span>{{'General.Get' | translate}}</span> </span></a>
+			<a id="btnCancel" *ngIf="isDialog" class="btn-icon" (click)="cancel()"> <i class="la la-remove mt-icon-resizeable" matTooltip="{{'General.Cancel' | translate}}"></i> </a>
+		</ng-container>
+		<!-- end::Header -->
+
+	</kt-portlet-header>
+	<kt-portlet-body>
+		<form [formGroup]="btcExecutionHistoryFilterForm" class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="Job Chain" formControlName="chainGuid" (selectionChange)="chainChange($event.value)" [disabled]="isDialog" required>
+									<ngx-mat-select-search [formControl]="frmControlSearch" #chainFilter placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}"></ngx-mat-select-search>
+									<mat-option [value]="item.code" *ngFor="let item of jobChainDefs | filterByProperty: ['code','description',chainFilter.value];"> {{item.code}} - {{item.description}}
+									</mat-option>
+								</mat-select>
+								<mat-error>
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="Trigger" formControlName="triggerGuid" [disabled]="isDialog">
+									<ngx-mat-select-search #triggerfilter [formControl]="frmControlSearch" placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}"></ngx-mat-select-search>
+									<mat-option id="all" value="">{{'General.All' | translate}}</mat-option>
+									<mat-option [value]="item.code" *ngFor="let item of filteredJobTriggerDefs | filterByProperty: ['code','description',triggerfilter.value];"> {{item.code}} - {{item.description}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="row">
+						<mat-form-field class="col-md-4 kt-margin-b-10-mobile">
+							<input matInput [matDatepicker]="startDate" formControlName="startDate" placeholder="Start Date">
+							<mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+							<mat-datepicker #startDate></mat-datepicker>
+						</mat-form-field>
+						<mat-form-field class="col-md-4 kt-margin-b-10-mobile">
+							<input matInput [matDatepicker]="endDate" formControlName="endDate" placeholder="End Date">
+							<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+							<mat-datepicker #endDate></mat-datepicker>
+						</mat-form-field>
+					</div>
+				</div>
+			</div>
+
+			<!-- end::FILTERS & GROUP ACTIONS -->
+			<!-- MATERIAL TABLE | Binded to datasources -->
+			<!-- See off.documentations 'https://material.angular.io/components/table/overview' -->
+			<div class="mat-table__wrapper">
+				<!-- Checkbox Column -->
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				<mat-table class="lmat-elevation-z8" [dataSource]="dataSource">
+					<ng-container matColumnDef="eodDate">
+						<mat-header-cell *matHeaderCellDef>Eod Date</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{ (row.firedTriggerDetail != null) ? (row.firedTriggerDetail.eodDate | date:'dd.MM.yyyy'):""}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="chainGuid">
+						<mat-header-cell *matHeaderCellDef>Chain</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.chainGuid | lookup : jobChainDefs:true}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="triggerGuid">
+						<mat-header-cell *matHeaderCellDef>Trigger</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.triggerGuid  | lookup : jobTriggerDefs:true}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="stat">
+						<mat-header-cell *matHeaderCellDef>Stat</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.stat | lookup:jobStatDefs}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="startDateTime">
+						<mat-header-cell *matHeaderCellDef>Start Date Time</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.startDateTime | date:'dd-MM-yyyy HH:mm:ss'}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="endDateTime">
+						<mat-header-cell *matHeaderCellDef>End Date Time</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.endDateTime | date:'dd-MM-yyyy HH:mm:ss'}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="duration">
+						<mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{millisecondFormat(row.duration * 1000)}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="firstTriggerGuid">
+						<mat-header-cell *matHeaderCellDef>First Trigger Guid</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.firstTriggerGuid}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="firstTriggerTime">
+						<mat-header-cell *matHeaderCellDef>First Trigger Time</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.firstTriggerTime | date:'dd-MM-yyyy HH:mm:ss'}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="triggeredBy">
+						<mat-header-cell *matHeaderCellDef>Triggered By</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.triggeredBy}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="producedItemCount">
+						<mat-header-cell *matHeaderCellDef>Produced Item Count</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{(row.firedTriggerDetail != null) ? row.firedTriggerDetail.producedItemCount:""}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="processedCount">
+						<mat-header-cell *matHeaderCellDef>Processed Count</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{(row.firedTriggerDetail != null) ? row.firedTriggerDetail.processedCount:""}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="errorCount">
+						<mat-header-cell *matHeaderCellDef>Error Count</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{(row.firedTriggerDetail != null) ? row.firedTriggerDetail.errorCount:""}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="exception">
+						<mat-header-cell *matHeaderCellDef>Exception</mat-header-cell>
+						<mat-cell *matCellDef="let row" [matTooltip]="row.exception">{{row.exception | slice:0:50}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="errorCode">
+						<mat-header-cell *matHeaderCellDef>Error Code</mat-header-cell>
+						<mat-cell *matCellDef="let row" [matTooltip]="row.errorCode">{{row.errorCode | slice:0:50}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="errorDscr">
+						<mat-header-cell *matHeaderCellDef>Error Description</mat-header-cell>
+						<mat-cell *matCellDef="let row" [matTooltip]="row.errorDscr">{{row.errorDscr | slice:0:50}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="parameters">
+						<mat-header-cell *matHeaderCellDef>Parameters</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{row.parameters}}</mat-cell>
+					</ng-container>
+					<ng-container matColumnDef="actions">
+						<mat-header-cell *matHeaderCellDef>{{'General.Actions' | translate }}</mat-header-cell>
+						<mat-cell *matCellDef="let row">
+							<button mat-icon-button [matMenuTriggerFor]="menu" id="moreAction">
+								<mat-icon>more_vert</mat-icon>
+							</button>
+							<mat-menu #menu="matMenu">
+								<a mat-menu-item id="runTrigger" *ngIf="'edit'|checkauth" class="btn" (click)="runTrigger(row)">
+									<i class="la la-play-circle mt-icon-resizeable"></i><span>Çalıştır</span>
+								</a>
+							</mat-menu>
+						</mat-cell>
+					</ng-container>
+
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+				</mat-table>
+
+				<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+			</div>
+
+			<!-- start: BOTTOM -->
+			<div class="mat-table__bottom">
+				<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+				<mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 50]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+			</div>
+			<!-- end: BOTTOM -->
+		</form>
+	</kt-portlet-body>
+</kt-portlet>
