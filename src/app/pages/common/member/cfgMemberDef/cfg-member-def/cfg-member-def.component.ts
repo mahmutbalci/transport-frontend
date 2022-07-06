@@ -13,13 +13,11 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import * as _ from 'lodash';
 import { EntMenuDetailDefComponent } from '@common/authority/entMenuTreeDef/ent-menu-detail-def/ent-menu-detail-def.component';
 import { SelectionModel } from '@angular/cdk/collections';
-import { CfgMemberDefaultsModel } from '@common/member/cfgMemberDefaults.model';
 import { EntMenuTreeModel } from '@common/authority/entMenuTree.model';
 import { EntUserRoleMenuModel } from '@common/authority/entUserRoleMenu.model';
 import { EntUserRoleApiModel } from '@common/authority/entUserRoleApi.model';
 import { CfgCityDefService } from '@common/member/cfgCityDef.service';
 import { MemberDefService } from '@common/authority/memberDef.service';
-import { BinOnusDefModel } from '@common/cfgbin/binOnusDef.model';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { ODataParamsModel } from '@core/_base/crud/models/odata-params.model';
@@ -77,13 +75,10 @@ export class CfgMemberDefComponent implements OnInit {
 	acquiringSelectionForm: FormGroup = new FormGroup({});
 	rolDefinitionForm: FormGroup = new FormGroup({});
 	moduleSelectionForm: FormGroup = new FormGroup({});
-	binDefinitionForm: FormGroup = new FormGroup({});
 
 	entityModel: MemberDefinitionRequestDto = new MemberDefinitionRequestDto();
 	referanceEntityMode: MemberDefinitionResponseDto = new MemberDefinitionResponseDto();
-	memberDefaultModel: CfgMemberDefaultsModel[] = [];
 
-	binOnusDefModel: BinOnusDefModel = new BinOnusDefModel();
 	menuTreeModel: EntMenuTreeModel[] = [];
 	userCodeList: { code: '', description: string }[] = [];
 	entApiDefs: any = [];
@@ -224,13 +219,9 @@ export class CfgMemberDefComponent implements OnInit {
 			this.acquiringSelectionForm.addControl(name, new FormControl(this.entityModel[name]));
 		});
 
-		Object.keys(this.binOnusDefModel).forEach(name => {
-			this.binDefinitionForm.addControl(name, new FormControl(this.binOnusDefModel[name]));
-		});
-
 		const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 			const guid = params.guid;
-			this.isView = (params.type == "show");
+			this.isView = (params.type === "show");
 			if (guid && guid !== null) {
 				this.getReferanceMemberData(guid);
 			} else {
@@ -333,63 +324,7 @@ export class CfgMemberDefComponent implements OnInit {
 			}
 		});
 
-		Object.keys(this.binOnusDefModel).forEach(name => {
-			if (this.binDefinitionForm.controls[name]) {
-				this.binDefinitionForm.controls[name].setValue(this.binOnusDefModel[name]);
-			}
-		});
-
 		this.nextButtonTitle = this.translate.instant('General.Next');
-	}
-
-	binDefClearItem() {
-		const ResponseDto = new BinOnusDefModel();
-		ResponseDto.clear();
-		this.binOnusDefModel = ResponseDto;
-		this.binOnusDefModel._isNew = true;
-		this.binOnusDefModel.clear();
-		this.binDefinitionForm.reset();
-	}
-
-	binDefAddItem() {
-		this.hasFormErrors = false;
-		this.controlForm(this.binDefinitionForm);
-		if (this.hasFormErrors) {
-			return;
-		}
-
-		const binOnusDefFrmValue = <BinOnusDefModel>this.binDefinitionForm.value;
-
-		const findIndex = this.entityModel.binOnusDef.findIndex(x => x.bin == binOnusDefFrmValue.bin);
-		if (findIndex >= 0) {
-			this.validationMessage = this.translate.instant('Issuing.Card.RecordExistsWithSameParametresBin');
-			this.hasFormErrors = true;
-			this.layoutUtilsService.showError(this.validationMessage);
-			return;
-		}
-
-		this.entityModel.binOnusDef.push(binOnusDefFrmValue);
-		this.dataSourceBinDef = new MMatTableDataSource(this.entityModel.binOnusDef);
-		this.binDefClearItem();
-	}
-
-	binDefRemoveItem(input) {
-		const findIndex = this.entityModel.binOnusDef.findIndex(x => x.bin == input);
-		if (findIndex >= 0) {
-			this.entityModel.binOnusDef.splice(findIndex, 1);
-			this.dataSourceBinDef = new MMatTableDataSource(this.entityModel.binOnusDef);
-		}
-	}
-
-	getItemStatusString(status: boolean = null): string {
-		switch (status) {
-			case false: {
-				return this.translate.instant('General.Passive');
-			}
-			case true: {
-				return this.translate.instant('General.Active');
-			}
-		}
 	}
 
 	getReferanceMemberData(mbrId: number) {
@@ -397,17 +332,8 @@ export class CfgMemberDefComponent implements OnInit {
 		this.userCodeList = [];
 		this.entityModel.menuDefinition = [];
 		this.memberDefService.getMemberDef(mbrId).subscribe((response: any) => {
-			this.memberDefaultModel = response.result.memberDefault;
 			this.entApiDefs = response.result.entApiDef;
 			this.entityModel.referanceMbrId = response.result.memberDefinition.mbrId;
-			this.memberDefaultModel.forEach(element => {
-				if (element.dataType == 'L' && element.lookup) {
-					const findLookupList = this.lookUpValueList.findIndex(f => f.code == element.lookup);
-					if (findLookupList < 0) {
-						this.lookUpValueList.push({ code: element.lookup, data: [] });
-					}
-				}
-			});
 
 			if (this.lookUpValueList.length > 0) {
 				this.frameworkApi.getLookups(this.lookUpValueList.map(({ code }) => code)).then(res => {
@@ -426,8 +352,6 @@ export class CfgMemberDefComponent implements OnInit {
 				this.dataSourceBinDef = response.result.binOnusDef;
 				this.entityModel = response.result.memberDefinition;
 				this.entityModel.menuDefinition = response.result.entMenuTree;
-				this.entityModel.memberDefault = this.memberDefaultModel;
-				this.entityModel.binOnusDef = response.result.binOnusDef;
 				this.entityModel.userRoleMenu = [];
 				this.entityModel.userRoleApi = [];
 
@@ -578,13 +502,6 @@ export class CfgMemberDefComponent implements OnInit {
 				case MenuToogleList.rolDefinifitonToogle:
 					this.controlForm(this.rolDefinitionForm);
 					break;
-				case MenuToogleList.binDefinitionToogle:
-					if (this.entityModel.binOnusDef.length == 0) {
-						this.validationMessage = this.translate.instant('Issuing.Card.AtLeastOneDefaultMustBeChoosen');
-						this.hasFormErrors = true;
-						this.layoutUtilsService.showError(this.validationMessage);
-					}
-					break;
 				default:
 					break;
 			}
@@ -606,78 +523,6 @@ export class CfgMemberDefComponent implements OnInit {
 		this.memberDefaultInstClearing = [];
 		this.memberDefaultInstFraud = [];
 		this.memberDefaultInstCommon = [];
-		this.entityModel.memberDefault = [];
-		this.memberDefaultModel.forEach(element => {
-			if (this.entityModel._isNew) {
-				let operation = this.getSelectedOperation(element.key);
-				if (operation[0]) {
-					this.memberDefaultForm.addControl(element.guid.toString(), new FormControl(element.value));
-					if (this.memberDefaultForm.controls[element.guid.toString()]) {
-						this.memberDefaultForm.controls[element.guid.toString()].setValue(element.value);
-					}
-					if (!this.entityModel.memberDefault.find(x => x.key == element.key)) {
-						this.entityModel.memberDefault.push(element);
-					}
-				}
-				else if (operation[1]) {
-					const findIndex = this.entityModel.memberDefault.findIndex(x => x.key == element.key);
-					if (findIndex >= 0) {
-						this.entityModel.memberDefault.splice(findIndex, 1);
-					}
-				}
-			}
-			else {
-				this.memberDefaultForm.addControl(element.guid.toString(), new FormControl(element.value));
-				if (this.memberDefaultForm.controls[element.guid.toString()]) {
-					this.memberDefaultForm.controls[element.guid.toString()].setValue(element.value);
-				}
-
-				this.entityModel.memberDefault.push(element)
-			}
-		});
-
-		this.entityModel.memberDefault.forEach(element => {
-			if (element.key.startsWith('Acquirer') || element.key.startsWith('Acquiring')) {
-				if (element.type) {
-					this.memberDefaultCoreAcquiring.push(element);
-				}
-				else {
-					this.memberDefaultInstAcquiring.push(element);
-				}
-			}
-			else if (element.key.startsWith('Clearing') && (!this.entityModel._isNew || this.entityModel.loopSelection)) {
-				if (element.type) {
-					this.memberDefaultCoreClearing.push(element);
-				}
-				else {
-					this.memberDefaultInstClearing.push(element);
-				}
-			}
-			else if (element.key.startsWith('Issuing')) {
-				if (element.type) {
-					this.memberDefaultCoreIssuing.push(element);
-				}
-				else {
-					this.memberDefaultInstIssuing.push(element);
-				}
-			}
-			else if (element.key.startsWith('Cleveract')) {
-				if (element.type) {
-					this.memberDefaultCoreFraud.push(element);
-				}
-				else {
-					this.memberDefaultInstFraud.push(element);
-				}
-			}
-			else {
-				if (element.type) {
-					this.memberDefaultCoreCommon.push(element);
-				}
-				else {
-					this.memberDefaultInstCommon.push(element);
-				}
-			}
-		});
 
 		if (this.entityModel.fraudApi && (this.memberDefaultCoreFraud.length > 0 || this.memberDefaultInstFraud.length > 0)) {
 			this.fraudApiTab = true;
@@ -792,7 +637,6 @@ export class CfgMemberDefComponent implements OnInit {
 		this.memberDefaultInstClearing = this.gruopByMemberDefault(_.orderBy(this.memberDefaultInstClearing, ['key'], ['asc']));
 		this.memberDefaultInstFraud = this.gruopByMemberDefault(_.orderBy(this.memberDefaultInstFraud, ['key'], ['asc']));
 		this.memberDefaultInstCommon = this.gruopByMemberDefault(_.orderBy(this.memberDefaultInstCommon, ['key'], ['asc']));
-		this.entityModel.memberDefault = _.orderBy(this.entityModel.memberDefault, ['key'], ['asc']);
 	}
 
 	gruopByMemberDefault(item: any[]) {
@@ -1115,17 +959,6 @@ export class CfgMemberDefComponent implements OnInit {
 		else if (selectedAc == MenuToogleList.acquiringSelectionToogle) {
 			this.entityModel.acquiringSelectionValue = this.acquiringSelectionForm.get('acquiringSelectionValue').value;
 		}
-		else if (selectedAc == MenuToogleList.memberDefaultToogle) {
-			this.entityModel.memberDefault.forEach(element => {
-				if (this.memberDefaultForm.controls[element.guid.toString()]) {
-					element.value = this.memberDefaultForm.controls[element.guid.toString()].value;
-				}
-			});
-
-			if (!this.loadMenuTree) {
-				this.getMenuTree();
-			}
-		}
 		else if (selectedAc == MenuToogleList.rolDefinifitonToogle) {
 			this.rolDefinitionFormControls.forEach(element => {
 				this.entityModel[element] = this.rolDefinitionForm.get(element).value;
@@ -1174,8 +1007,6 @@ export class CfgMemberDefComponent implements OnInit {
 					}
 				});
 			}
-		}
-		else if (this.selectedAccordion == MenuToogleList.binDefinitionToogle) {
 		}
 	}
 
@@ -1518,5 +1349,4 @@ enum MenuToogleList {
 	acquiringSelectionToogle = 4,
 	memberDefaultToogle = 5,
 	rolDefinifitonToogle = 6,
-	binDefinitionToogle = 7
 }

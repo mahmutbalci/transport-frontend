@@ -94,12 +94,12 @@ export class LoginComponent implements OnInit, OnDestroy {
 		console.log('Screen Reloaded: ' + screenReloaded.toString());
 		if (!screenReloaded || screenReloaded !== true) {
 			sessionStorage.setItem('screenReloaded', 'true');
-			window.location.reload(true);
+			window.location.reload();
 			return;
 		}
 
 		this.initLoginForm();
-		this.auth.getMembers().pipe(
+		this.auth.fillInstutions().pipe(
 			tap(resp => {
 				this.memberDefList = resp.result;
 			}, responseErr => {

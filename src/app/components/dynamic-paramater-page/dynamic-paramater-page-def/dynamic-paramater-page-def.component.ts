@@ -8,11 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { CacheService } from '@core/_base/layout/services/cache.service';
 import { BaseService } from '@core/_base/layout/services/base.service';
 import { FrameworkApi } from '@services/framework.api';
-import { AcquiringApi } from '@services/acquiring.api';
-import { ClearingApi } from '@services/clearing.api';
-import { CleveractApi } from '@services/cleveract.api';
 import { CommonApi } from '@services/common.api';
-import { IssuingApi } from '@services/issuing.api';
+import { TransportApi } from '@services/transport.api';
 import { BaseModel } from '@core/_base/crud/models/_base.model';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
@@ -48,12 +45,9 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 		private layoutUtilsService: LayoutUtilsService,
 		private translate: TranslateService,
 		private cache: CacheService,
-		private acquiringApi: AcquiringApi,
-		private clearingApi: ClearingApi,
-		private cleveractApi: CleveractApi,
 		private commonApi: CommonApi,
 		private frameworkApi: FrameworkApi,
-		private issuingApi: IssuingApi
+		private transportApi: TransportApi
 	) {
 		const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 			this.key = params.key;
@@ -243,13 +237,9 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 	getLookupApi(lookupApi) {
 		let api;
 		switch (lookupApi) {
-			case 'AcquiringApi': { api = this.acquiringApi; break; };
-			case 'ClearingApi': { api = this.clearingApi; break; };
-			case 'CleveractApi': { api = this.cleveractApi; break; };
 			case 'CommonApi': { api = this.commonApi; break; };
 			case 'FrameworkApi': { api = this.frameworkApi; break; };
-			case 'IssuingApi': { api = this.issuingApi; break; };
-			case 'AcquiringApi': { api = this.acquiringApi; break; };
+			case 'TransportApi': { api = this.transportApi; break; };
 			default: break;
 		}
 		return api;

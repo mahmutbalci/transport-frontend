@@ -101,36 +101,6 @@
 									"with": "src/environments/environment.tst.ts"
 								}
 							]
-						},
-						"uat": {
-							"outputHashing": "all",
-							"sourceMap": false,
-							"extractCss": true,
-							"namedChunks": false,
-							"aot": true,
-							"vendorChunk": true,
-							"buildOptimizer": false,
-							"fileReplacements": [
-								{
-									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.uat.ts"
-								}
-							]
-						},
-						"preprod": {
-							"outputHashing": "all",
-							"sourceMap": false,
-							"extractCss": true,
-							"namedChunks": false,
-							"aot": true,
-							"vendorChunk": true,
-							"buildOptimizer": false,
-							"fileReplacements": [
-								{
-									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.preprod.ts"
-								}
-							]
 						}
 					}
 				},
@@ -147,12 +117,6 @@
 							"browserTarget": "default:build:production"
 						},
 						"tst": {
-							"browserTarget": "default:build:production"
-						},
-						"uat": {
-							"browserTarget": "default:build:production"
-						},
-						"preprod": {
 							"browserTarget": "default:build:production"
 						}
 					}

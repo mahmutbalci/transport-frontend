@@ -19,9 +19,9 @@ export class HttpUtilsService {
 	}
 
 	getHTTPHeader() {
-		const token: string = <string>sessionStorage.getItem('x-token');
+		const token: string = <string>sessionStorage.getItem('h-token');
 		return {
-			headers: new HttpHeaders({ 'Content-Type': 'application/json-patch+json', 'accept': 'application/json', 'x-token': token })
+			headers: new HttpHeaders({ 'Content-Type': 'application/json-patch+json', 'accept': 'application/json', 'h-token': token })
 		};
 	}
 	setOdataParameters(queryParams: ODataParamsModel) {

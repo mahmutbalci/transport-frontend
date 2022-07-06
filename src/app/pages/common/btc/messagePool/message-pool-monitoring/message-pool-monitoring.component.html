@@ -25,9 +25,6 @@
 			<div class="kt-form__group" [formGroup]="messageMonitoringForm">
 				<div class="row">
 					<div class="col-md-4 kt-margin-b-10-mobile">
-						<m-mcustomer-search id="customerSearch" [invisible]="false" #customerSearch (customerSelect)="movedCustomer($event)"></m-mcustomer-search>
-					</div>
-					<div class="col-md-4 kt-margin-b-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
 							<input matInput [matDatepicker]="startDate" id="startDate" formControlName="startDate" placeholder=" {{'General.ChooseAStartDate' | translate}}">
 							<mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
@@ -43,8 +40,8 @@
 						</mat-form-field>
 					</div>
 				</div>
-				<div class="row">
 
+				<div class="row">
 					<div class="col-md-4 kt-margin-b-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
 							<mat-select placeholder="{{'Issuing.Customer.TemplateType' | translate}}" formControlName="templateType" (selectionChange)="selectTemplateType($event.value)">
@@ -60,11 +57,9 @@
 							</mat-select>
 						</mat-form-field>
 					</div>
-
 				</div>
 
 				<div class="row">
-
 					<div class="col-md-4 kt-margin-b-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
 							<mat-select placeholder="{{'Issuing.Customer.MessageType' | translate}}" formControlName="messageType">
@@ -80,9 +75,7 @@
 							</mat-select>
 						</mat-form-field>
 					</div>
-
 				</div>
-
 			</div>
 
 			<div class="col-md-12 kt-margin-b-10-mobile kt-margin-b-10">
@@ -93,11 +86,10 @@
 						<button id="excelExport1" (click)="exportAsXLSX(false)" class="dropdown-item"> <i class="m-nav__link-icon la la-file-excel-o"></i>{{'General.ExcelExportCurrent' | translate}}</button>
 					</div>
 				</div>
-		    </div>
+			</div>
 
 			<div class="mat-table__wrapper">
 				<mat-table id="mtDataSource" class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="templateCode" matSortDirection="asc" matSortDisableClear>
-
 					<ng-container matColumnDef="templateCode">
 						<mat-header-cell *matHeaderCellDef mat-sort-header>{{'Issuing.Customer.TemplateCode' | translate}}</mat-header-cell>
 						<mat-cell *matCellDef="let row">{{row.templateCode | lookup:templateCodes }}</mat-cell>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatSort, MatPaginator, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
-import { IssuingApi } from '@services/issuing.api';
+import { TransportApi } from '@services/transport.api';
 import { MsnMessagePoolDetailModel } from '@common/btc/msn-message-pool-model';
 import { FilteredDataSource } from '@core/_base/crud/models/filtered.datasource';
 import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
@@ -50,13 +50,13 @@ export class MessagePoolDetailComponent implements OnInit {
 
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: { guid: number, showBatchCloseButton: boolean },
-		private issuingApi: IssuingApi,
+		private transportApi: TransportApi,
 		private msnMessagePoolService: MsnMessagePoolService,
 		private dialogRef: MatDialogRef<MessagePoolDetailComponent>,) { }
 
 	ngOnInit() {
 
-		this.issuingApi.getLookups(["MsnMessageTemplateDef", "MsnMessageTypeDef"]).then(res => {
+		this.transportApi.getLookups(["MsnMessageTemplateDef", "MsnMessageTypeDef"]).then(res => {
 			this.templateCodes = res.find(x => x.name === "MsnMessageTemplateDef").data;
 			this.messageTypes = res.find(x => x.name === "MsnMessageTypeDef").data;
 		});

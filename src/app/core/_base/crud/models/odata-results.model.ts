@@ -6,7 +6,7 @@ export class ODataResultsModel {
 	
 	constructor(httpResponse:any,  _error?: any) {
 		this.items = httpResponse.body.result;
-		this.totalCount = httpResponse.headers.get('x-item-count');
+		this.totalCount = httpResponse.headers.get('h-item-count');
 		this.error = _error;
 	}
 }

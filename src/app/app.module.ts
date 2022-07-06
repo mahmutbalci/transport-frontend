@@ -56,51 +56,24 @@ import * as json from 'highlight.js/lib/languages/json';
 //
 import { SharedModule } from './shared.module';
 import { MatPaginatorIntl, MatTableModule, MatSortModule } from '@angular/material';
-import { MerchantServiceModule } from '@acquiring/merchant/merchant-service.module';
-import { PosServiceModule } from '@acquiring/pos/pos-service.module';
-import { BkmServiceModule } from '@clearing/bkm/bkm-service.module';
-import { ClearingServiceModule } from '@clearing/clearing/clearing-service.module';
-import { MastercardServiceModule } from '@clearing/mastercard/mastercard-service.module';
-import { TransactionServiceModule } from '@clearing/transaction/transaction-service.module';
-import { VisaServiceModule } from '@clearing/visa/visa-service.module';
-import { DictionaryServiceModule } from '@cleveract/dictionary/dictionary-service.module';
-import { ScenarioServiceModule } from '@cleveract/scenario/scenario-service.module';
 import { MemberServiceModule } from '@common/member/member-service.module';
 import { TxnServiceModule } from '@common/txn/txn-service.module';
-import { AccountingServiceModule } from '@issuing/accounting/accounting-service.module';
-import { CardServiceModule } from '@issuing/card/card-service.module';
-import { CustomerServiceModule } from '@issuing/customer/customer-service.module';
-import { EmbossServiceModule } from '@issuing/emboss/emboss-service.module';
-import { StatementServiceModule } from '@issuing/statement/statement-service.module';
-import { IssuinTxnServiceModule } from '@issuing/txn/txn-service.module';
-import { CfgbinServiceModule } from '@common/cfgbin/cfgbin-service.module';
-import { OnlineTransactionServiceModule } from '@common/oltp/online-transaction-service';
-import { AcquiringTxnServiceModule } from '@acquiring/txn/acquiring-txn-service.module'
 import { CacheService } from '@core/_base/layout/services/cache.service';
 import localetr from '@angular/common/locales/tr';
 import localetrExtra from '@angular/common/locales/extra/tr';
 import { registerLocaleData } from '@angular/common';
 import { FrameworkServiceModule } from '@common/framework/framework-service.module';
-import { MemoServiceModule } from '@issuing/memo/memo-service.module';
 
 import { CookieService } from 'ngx-cookie-service';
 import { CommonApi } from '@services/common.api';
 import { FrameworkApi } from '@services/framework.api';
-import { IssuingApi } from '@services/issuing.api';
-import { ClearingApi } from '@services/clearing.api';
-import { CleveractApi } from '@services/cleveract.api';
-import { AcquiringApi } from '@services/acquiring.api';
 import { AuthorityServiceModule } from '@common/authority/authority-service.module';
 import { TraceServiceModule } from '@common/trace/trace-service.module';
-import { CourierServiceModule } from '@issuing/courier/courier-service.module';
 import { Api } from '@core/_base/layout/services/api';
 import { UtilsService } from '@core/_base/crud/utils/utils.service';
 // tslint:disable-next-line:class-name
 import { WorkflowServiceModule } from '@common/workflow/workflow-service.module';
 import { LogServiceModule } from '@common/log/log-service.module';
-import { IssuingCampaignServiceModule } from '@issuing/campaign/campaign-service.module';
-import { MonitoringServiceModule } from '@cleveract/monitoring/monitoring-service.module';
-import { CommonClearingServiceModule } from '@common/clearing/clearing-service.module';
 import { CoreComponentsModule } from '@core/core.components.module';
 import { TokenInterceptor } from '@core/interceptors/token.interceptor';
 import { DateUtilService } from '@core/_base/crud/utils/date-util.service';
@@ -108,8 +81,8 @@ import { ExcelExportService } from '@core/_base/layout/services/excel-export.ser
 import { FormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CustomMatPaginatorIntl } from '@core/models/custom-mat-paginator-intl';
-import { ReportsServiceModule } from '@cleveract/reports/reports-service.module';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
+import { TransportApi } from '@services/transport.api';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	wheelSpeed: 0.5,
@@ -157,40 +130,16 @@ registerLocaleData(localetr, localetrExtra);
 		TranslateModule.forRoot(),
 		MatProgressSpinnerModule,
 		InlineSVGModule.forRoot(),
-		MerchantServiceModule,
-		PosServiceModule,
-		BkmServiceModule,
-		ClearingServiceModule,
-		MastercardServiceModule,
-		TransactionServiceModule,
-		VisaServiceModule,
-		DictionaryServiceModule,
-		ScenarioServiceModule,
-		MonitoringServiceModule,
-		ReportsServiceModule,
 		TraceServiceModule,
 		AuthorityServiceModule,
 		WorkflowServiceModule,
 		LogServiceModule,
 		MemberServiceModule,
 		TxnServiceModule,
-		AccountingServiceModule,
-		CardServiceModule,
-		CustomerServiceModule,
-		EmbossServiceModule,
-		StatementServiceModule,
-		IssuinTxnServiceModule,
-		IssuingCampaignServiceModule,
-		CfgbinServiceModule,
-		OnlineTransactionServiceModule,
-		CourierServiceModule,
 		FrameworkServiceModule,
-		AcquiringTxnServiceModule,
-		MemoServiceModule,
 		SharedModule,
 		MatTableModule,
 		MatSortModule,
-		CommonClearingServiceModule,
 		FormsModule,
 		AngularEditorModule,
 		NgxJsonViewerModule
@@ -246,10 +195,7 @@ registerLocaleData(localetr, localetrExtra);
 		CookieService,
 		CommonApi,
 		FrameworkApi,
-		IssuingApi,
-		ClearingApi,
-		CleveractApi,
-		AcquiringApi,
+		TransportApi,
 		LayoutConfigService,
 		LayoutRefService,
 		MenuConfigService,
