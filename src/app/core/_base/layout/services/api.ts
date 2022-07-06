@@ -20,23 +20,23 @@ export class Api {
 	setHeaders(extraHeaders?: any): HttpHeaders {
 		let currentMenuGuid = this.authentication.getCurrentMenuGuid();
 		let xLanguage = this.authentication.getXLanguage();
-		const token: string = <string>sessionStorage.getItem('x-token');
+		const token: string = <string>sessionStorage.getItem('h-token');
 		let headers = new HttpHeaders(
 			{
 				'Cache-Control': 'no-cache', 'Pragma': 'no-cache', 'Content-Type': 'application/json;odata.metadata=minimal;odata.streaming=true',
-				'accept': 'application/json;odata.metadata=minimal;odata.streaming=true', 'x-token': token, 'x-language': xLanguage
+				'accept': 'application/json;odata.metadata=minimal;odata.streaming=true', 'h-token': token, 'h-language': xLanguage
 			});
 
 		if (extraHeaders && extraHeaders !== null && extraHeaders.length > 0) {
 			extraHeaders.forEach(item => { headers = headers.append(item.key, item.value); });
 		} else {
-			headers = headers.append("x-menu-uniq-id", currentMenuGuid.toString());
+			headers = headers.append('h-menu-id', currentMenuGuid.toString());
 		}
-		if (sessionStorage.getItem("userEvent")) {
-			headers = headers.append("x-event-name", this.caseTurkish(sessionStorage.getItem("userEvent").replace(/\s/g, "")));
+		if (sessionStorage.getItem('userEvent')) {
+			headers = headers.append('h-event-name', this.caseTurkish(sessionStorage.getItem('userEvent').replace(/\s/g, '')));
 		}
-		if (sessionStorage.getItem("userConfig")) {
-			headers = headers.append("x-device-id", sessionStorage.getItem("userConfig").replace(/\s/g, ""));
+		if (sessionStorage.getItem('userConfig')) {
+			headers = headers.append('h-device-id', sessionStorage.getItem('userConfig').replace(/\s/g, ''));
 		}
 		return headers;
 	}
@@ -145,7 +145,7 @@ export class Api {
 	public getXLanguage() {
 		let xLanguage = 'en-US';
 
-		switch (sessionStorage.getItem('language') ? sessionStorage.getItem('language') : "en") {
+		switch (sessionStorage.getItem('language') ? sessionStorage.getItem('language') : 'en') {
 			case 'en': {
 				xLanguage = 'en-US';
 				break;

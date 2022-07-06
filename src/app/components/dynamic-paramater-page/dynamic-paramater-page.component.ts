@@ -5,14 +5,14 @@ import { BehaviorSubject, merge, fromEvent } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { TranslateService } from '@ngx-translate/core';
-import { CacheService } from '@core/_base/layout/services/cache.service.ts';
+import { CacheService } from '@core/_base/layout/services/cache.service';
 import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { BaseService } from '@core/_base/layout/services/base.service';
 import { ExcelExportService } from '@core/_base/layout/services/excel-export.service';
 import { ODataParamsModel } from '@core/_base/crud/models/odata-params.model';
 import { ODataDataSource } from '@core/_base/crud/models/odata-datasource';
 import f from '@assets/lib/odata/ODataFilterBuilder.js';
-import { IssuingApi } from '@services/issuing.api.js';
+import { TransportApi } from '@services/transport.api';
 
 @Component({
 	selector: 'm-dynamic-paramater-page',
@@ -21,7 +21,7 @@ import { IssuingApi } from '@services/issuing.api.js';
 })
 export class DynamicParamaterPageComponent implements OnInit {
 
-	@Input() page:any = {};
+	@Input() page: any = {};
 	@Input() service: BaseService;
 
 	dataSource: ODataDataSource;
@@ -46,7 +46,7 @@ export class DynamicParamaterPageComponent implements OnInit {
 		private layoutUtilsService: LayoutUtilsService,
 		private translate: TranslateService,
 		private excelService: ExcelExportService,
-		private issuingApi: IssuingApi,
+		private transportApi: TransportApi,
 		private cache: CacheService) { }
 
 	ngOnInit() {
@@ -56,7 +56,7 @@ export class DynamicParamaterPageComponent implements OnInit {
 		});
 		this.displayedColumns.push('actions');
 
-		this.issuingApi.getLookups(["TxnResponseCodeDef"]).then(res => {
+		this.transportApi.getLookups(["TxnResponseCodeDef"]).then(res => {
 			this.txnResponseCodeDef = res.find(x => x.name === "TxnResponseCodeDef").data;
 		});
 
@@ -113,19 +113,19 @@ export class DynamicParamaterPageComponent implements OnInit {
 
 		if (searchText != null && searchText != "") {
 
-		    compare.and(x => x.contains(x => x.toUpper('code'), searchText.toUpperCase()));
+			compare.and(x => x.contains(x => x.toUpper('code'), searchText.toUpperCase()));
 			compare.or(x => x.contains(x => x.toUpper('description'), searchText.toUpperCase()));
 
 			this.txnResponseCodeDef.forEach(element => {
 				if (element.description.toUpperCase().includes(searchText.toUpperCase())) {
 					compare.or('responseCode', element.code);
 				}
-				});
+			});
 			return compare.toString();
 		}
 	}
 
-	delete(_item: any) {
+	delete(item: any) {
 		const _title: string = this.translate.instant(this.page.deleteTitle);
 		const _description: string = this.translate.instant('General.AreYouSureToPermanentlyDeleteThisRecord');
 		const _waitDesciption: string = this.translate.instant('General.RecordIsBeingDeleted');
@@ -137,7 +137,7 @@ export class DynamicParamaterPageComponent implements OnInit {
 				return;
 			}
 
-			this.service.delete(_item.code).subscribe(() => {
+			this.service.delete(item.code).subscribe(() => {
 				this.cache.delete(this.service.endpoint);
 				this.layoutUtilsService.showNotification(_deleteMessage, MessageType.Delete);
 				this.loadData();

@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { QueryBuilderConfig } from 'angular2-query-builder';
 import { FrameworkApi } from '@services/framework.api';
 import { TranslateService } from '@ngx-translate/core';
-import { IssuingApi } from '@services/issuing.api';
+import { TransportApi } from '@services/transport.api';
 import * as _ from 'lodash';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
@@ -51,7 +51,7 @@ export class DynamicQueryBuilderComponent implements OnInit {
 	constructor(
 		private frameworkApi: FrameworkApi,
 		private translate: TranslateService,
-		private issuingApi: IssuingApi) { }
+		private transportApi: TransportApi) { }
 
 	ngOnInit() {
 		this.generateConfig();
@@ -83,7 +83,7 @@ export class DynamicQueryBuilderComponent implements OnInit {
 
 			if (lookups.length > 0 || filteredLookups.length > 0) {
 				let lookupList: any[] = [];
-				this.issuingApi.getLookups(lookups).then(lookUp => {
+				this.transportApi.getLookups(lookups).then(lookUp => {
 					lookupList = lookUp;
 
 					Object.keys(res.result).forEach(resultItem => {
@@ -104,7 +104,7 @@ export class DynamicQueryBuilderComponent implements OnInit {
 						Object.keys(res.result).forEach(resultItem => {
 							if (res.result[resultItem].lookupEntity != null) {
 								if (_.startsWith(_.toLower(res.result[resultItem].lookupEntity), 'lookup/filter')) {
-									this.issuingApi.get<any>(res.result[resultItem].lookupEntity).subscribe(filteredLookupRes => {
+									this.transportApi.get<any>(res.result[resultItem].lookupEntity).subscribe(filteredLookupRes => {
 										if (filteredLookupRes.result) {
 											let codeDescLookup = _.cloneDeep(filteredLookupRes.result);
 											let filteredNameValueLookup: any[] = [];

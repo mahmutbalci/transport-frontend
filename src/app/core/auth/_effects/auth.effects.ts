@@ -19,8 +19,8 @@ export class AuthEffects {
 	login$ = this.actions$.pipe(
 		ofType<Login>(AuthActionTypes.Login),
 		tap(action => {
-			// this.cookieService.set('x-token', action.payload.authToken, null, "/");
-			sessionStorage.setItem("x-token", action.payload.authToken);
+			// this.cookieService.set('h-token', action.payload.authToken, null, "/");
+			sessionStorage.setItem('h-token', action.payload.authToken);
 			this.store.dispatch(new UserRequested());
 		}),
 	);
@@ -40,15 +40,15 @@ export class AuthEffects {
 	register$ = this.actions$.pipe(
 		ofType<Register>(AuthActionTypes.Register),
 		tap(action => {
-			sessionStorage.setItem("x-token", action.payload.authToken);
-			// this.cookieService.set('x-token', action.payload.authToken, null, "/");
+			sessionStorage.setItem('h-token', action.payload.authToken);
+			// this.cookieService.set('h-token', action.payload.authToken, null, "/");
 		})
 	);
 
 	@Effect()
 	init$: Observable<Action> = defer(() => {
-		// const userToken = this.cookieService.get('x-token');
-		const userToken = sessionStorage.getItem('x-token');
+		// const userToken = this.cookieService.get('h-token');
+		const userToken = sessionStorage.getItem('h-token');
 		let observableResult = of({ type: 'NO_ACTION' });
 		if (userToken) {
 			observableResult = of(new Login({ authToken: userToken }));

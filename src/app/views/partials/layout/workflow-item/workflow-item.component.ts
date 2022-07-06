@@ -2,7 +2,6 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
 import * as _ from 'lodash';
-import { WorkflowApproveComponent } from '@components/workflow-approve/workflow-approve.component';
 import { FrameworkApi } from '@services/framework.api';
 import { TranslateService } from '@ngx-translate/core';
 import { LookupPipe } from 'app/pipes/lookup.pipe';
@@ -90,15 +89,5 @@ export class WorkflowItemComponent implements OnInit {
 	}
 
 	valueSelected(selectedProcess: any) {
-		let dialogRef = this.dialog.open(WorkflowApproveComponent, {
-			data: {
-				processItem: selectedProcess,
-				isAuthorizedUser: true,
-			}
-		});
-
-		dialogRef.afterClosed().subscribe(() => {
-			this.getWaitingWorkflow();
-		});
 	}
 }

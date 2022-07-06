@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
-const TOKEN_KEY = "x-token";
+const TOKEN_KEY = 'h-token';
 
 @Injectable()
 export class TokenStorage {
@@ -38,7 +38,7 @@ export class TokenStorage {
 	 */
 	public setAccessToken(token: string): TokenStorage {
 		sessionStorage.setItem(TOKEN_KEY, token);
-		// this.cookieService.set(TOKEN_KEY, token, null, "/");
+		// this.cookieService.set(TOKEN_KEY, token, null, '/');
 		return this;
 	}
 
@@ -60,16 +60,16 @@ export class TokenStorage {
 		// 	let roles = [];
 		// 	claims.forEach(roleGuid => { 
 		// 		switch (roleGuid) {
-		// 			case 1: { roles.push("ADMIN"); break; }
-		// 			case 2: { roles.push("USER"); break; }
+		// 			case 1: { roles.push('ADMIN'); break; }
+		// 			case 2: { roles.push('USER'); break; }
 		// 			default: break;
 		// 		}
 		// 	});
 		// 	sessionStorage.setItem('userRoles', JSON.stringify(roles));
 		// }
 		let roles = [];
-		roles.push("ADMIN");
-		roles.push("USER");
+		roles.push('ADMIN');
+		roles.push('USER');
 		sessionStorage.setItem('userRoles', JSON.stringify(roles));
 		return this;
 	}

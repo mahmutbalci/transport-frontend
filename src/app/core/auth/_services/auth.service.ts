@@ -22,7 +22,7 @@ const API_ENDPOINT_LOGIN = '/auth/login';
 const API_ENDPOINT_REFRESH = '/refreshToken';
 const API_ENDPOINT_REGISTER = '/register';
 const API_GET_TOKEN = '/authentication/token';
-const API_GET_MEMBER = '/authentication/GetMembers';
+const API_GET_MEMBER = '/authentication/FillInstutions';
 
 @Injectable()
 export class AuthService {
@@ -39,12 +39,12 @@ export class AuthService {
 	login(userCode: string, password: string, mbrId: number, channel: string): Observable<User> {
 
 		let xLanguage = this.getXLanguage();
-		const requestHeader = new HttpHeaders().append('x-language', xLanguage);
+		const requestHeader = new HttpHeaders().append('h-language', xLanguage);
 
 		return this.http.post<User>(API_URL + API_GET_TOKEN, { userCode, password, mbrId, channel }, { headers: requestHeader });
 	}
 
-	getMembers(): Observable<any> {
+	fillInstutions(): Observable<any> {
 		const httpHeaders = new HttpHeaders();
 		httpHeaders.set('Content-Type', 'application/json');
 
@@ -65,12 +65,12 @@ export class AuthService {
 			);
 	}
 
-    /*
-     * Submit forgot password request
-     *
-     * @param {string} email
-     * @returns {Observable<any>}
-     */
+	/*
+	 * Submit forgot password request
+	 *
+	 * @param {string} email
+	 * @returns {Observable<any>}
+	 */
 	public requestPassword(email: string): Observable<any> {
 		return this.http.get(API_USERS_URL + '/forgot?=' + email)
 			.pipe(catchError(this.handleError('forgot-password', []))
@@ -115,14 +115,14 @@ export class AuthService {
 	}
 
 	public getAccessToken(): Observable<string> {
-		const token: string = <string>sessionStorage.getItem('x-token');
+		const token: string = <string>sessionStorage.getItem('h-token');
 		return of(token);
 	}
 
 	public logout(): Observable<any> {
 		return this.getAccessToken().pipe(
 			switchMap((token: string) => {
-				const headers = new HttpHeaders().append('Content-Type', 'application/json-patch+json').append('accept', 'application/json').append('x-token', token);
+				const headers = new HttpHeaders().append('Content-Type', 'application/json-patch+json').append('accept', 'application/json').append('h-token', token);
 				return this.http.post(API_URL + '/authentication/closeSession', {}, { headers: headers });
 			}),
 			catchError(err => of(err)),
@@ -131,7 +131,7 @@ export class AuthService {
 	}
 
 	public isTokenExpired(): boolean {
-		const token: string = <string>sessionStorage.getItem('x-token');
+		const token: string = <string>sessionStorage.getItem('h-token');
 		let isExpired = false;
 		let payload = this.parseJwt(token);
 		let expireDate = new Date(payload.exp * 1000);
@@ -169,7 +169,7 @@ export class AuthService {
 	public refreshToken(): Observable<any> {
 		return this.getAccessToken().pipe(
 			switchMap(token => {
-				const headers = new HttpHeaders().append('Content-Type', 'application/json-patch+json').append('accept', 'application/json').append('x-token', token);
+				const headers = new HttpHeaders().append('Content-Type', 'application/json-patch+json').append('accept', 'application/json').append('h-token', token);
 				return this.http.post(API_URL + '/authentication/refreshToken', {}, { headers: headers });
 			}),
 			catchError(err => of(err))
@@ -262,7 +262,7 @@ export class AuthService {
 			}
 			default: break;
 		}
-		
+
 		return xLanguage;
 	}
 }

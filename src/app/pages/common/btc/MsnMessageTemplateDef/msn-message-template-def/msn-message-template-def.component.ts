@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MMatTableDataSource } from '@core/models/mmat-table.datasource';
 import { MsnMessageTemplateTextModel } from '@common/btc/msn-message-template-text-model';
 import { MsnMessageTemplateDefModel } from '@common/btc/msn-message-template-def-model';
-import { IssuingApi } from '@services/issuing.api';
+import { TransportApi } from '@services/transport.api';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud';
 import { MsnMessageTemplateDefService } from '@common/framework/msn-message-template-def.service';
@@ -72,7 +72,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 		private router: Router,
 		public service: MsnMessageTemplateDefService,
 		private layoutUtilsService: LayoutUtilsService,
-		private issuingApi: IssuingApi,
+		private transportApi: TransportApi,
 		public dialog: MatDialog,
 		private translate: TranslateService,
 	) { }
@@ -84,7 +84,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 				new FormControl(this.msnMessageTemplateDefModel[name]));
 		});
 
-		this.issuingApi.getLookups(['CfgLanguageDef', 'MsnMessageTemplateTypeDef', 'CfgYesNoNumeric']).then(res => {
+		this.transportApi.getLookups(['CfgLanguageDef', 'MsnMessageTemplateTypeDef', 'CfgYesNoNumeric']).then(res => {
 			this.cfgLanguageDefs = res.find(x => x.name === 'CfgLanguageDef').data;
 			this.templateTypeDefs = res.find(x => x.name === 'MsnMessageTemplateTypeDef').data;
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
