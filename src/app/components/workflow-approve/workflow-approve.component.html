@@ -1,0 +1,194 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg kt-portlet-header-sticky-position'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{ 'Menu.Common.Workflow.WorkflowProcess' | translate }} | {{ titleComponent }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<div class="kt-margin-b-10 kt-margin-b-10-mobile edited_row_color">
+				<label>&nbsp; {{ 'General.UpdatedValue' | translate }} &nbsp;</label>
+			</div>
+
+			<div class="kt-margin-b-10 kt-margin-b-10-mobile new_row_color">
+				<label>&nbsp; {{ 'General.AddedValue' | translate }} &nbsp;</label>
+			</div>
+
+			<div class="kt-margin-b-10 kt-margin-b-10-mobile deleted_row_color">
+				<label>&nbsp; {{ 'General.DeletedValue' | translate }} &nbsp;</label>
+			</div>
+
+			<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<div *ngIf="('/common/workflow/workflowProcessList' | checkauthUrl) && isDisabled && isAuthorizedUser">
+				<a id="btnApprove" class="btn-icon" (click)="approve()">
+					<i class="la la-check-circle mt-icon-resizeable approve_color" [class.disabled]="isProcessing" matTooltip="{{ 'General.Approve' | translate }}"></i>
+				</a>
+
+				<a id="btnReject" class="btn-icon" (click)="reject()">
+					<i class="flaticon-cancel mt-icon-resizeable reject_color" [class.disabled]="isProcessing" matTooltip="{{ 'General.Reject' | translate }}"></i>
+				</a>
+			</div>
+
+			<a id="btnCancel" class="btn-icon" (click)="cancel()">
+				<i class="la la-remove mt-icon-resizeable" matTooltip="{{ 'General.Cancel' | translate }}"></i>
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="workflowApproveForm" class="kt-form">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-6 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput id="description" #description placeholder="{{ 'General.Description' | translate }}" formControlName="explanation" required>
+							</mat-form-field>
+						</div>
+					</div>
+
+					<mat-tab-group id="tabGroup">
+						<mat-tab id="updatedVersion" label="{{ 'General.UpdatedVersion'| translate }}">
+							<ng-template #typeTemplateRef let-node>
+								<ng-container [ngSwitch]="node.dataType">
+									<div *ngSwitchCase="'date'" matTooltip="{{ 'General.OldValue' | translate }}: {{ ' ' + (formatDate(node.oldValue)) }}">
+										{{ formatDate(node.value) }}
+									</div>
+
+									<div *ngSwitchCase="'boolean'" matTooltip="{{ 'General.OldValue' | translate }}: {{ ' ' + (node.oldValue | lookup: cfgYesNoNumeric) }}">
+										{{ node.value | lookup: cfgYesNoNumeric }}
+									</div>
+
+									<div *ngSwitchDefault matTooltip="{{ 'General.OldValue' | translate }}: {{ ' ' + (node.oldValue ? node.oldValue : '') }}">
+										{{ node.value }}
+									</div>
+								</ng-container>
+							</ng-template>
+
+							<div *ngFor="let row of updatedData" class="main-holder">
+								<ng-container [ngSwitch]="row.type">
+									<div *ngSwitchCase="'h-table'" class="h-table" [ngStyle]="{'margin-left': (row.level - 1) * 50 + 'px'}">
+										<table>
+											<tbody>
+												<tr>
+													<td class="h-table-bold">{{ row.label }}</td>
+													<td class="{{ getValueClass(row) }}">
+														<ng-template [ngTemplateOutlet]="typeTemplateRef" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<div *ngSwitchCase="'label'" class="table-container" [ngStyle]="{'margin-left': (row.level - 1) * 50 + 'px'}">
+										<span>{{ row.label }}</span>
+										<table>
+											<tbody>
+												<tr>
+													<td *ngFor="let r of getRowLabels(row.value)">{{ r }}</td>
+												</tr>
+
+												<tr>
+													<td *ngFor="let v of getRowValues(row.value)" class="{{ getValueClass(v) }}">
+														<ng-template [ngTemplateOutlet]="typeTemplateRef" [ngTemplateOutletContext]="{ $implicit: v }"></ng-template>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<div *ngSwitchCase="'last-child-row'" class="table-container" [ngStyle]="{'margin-left': (row.level - 1) * 50 + 'px'}">
+										<span>{{ row.label }}</span>
+										<table>
+											<tbody>
+												<tr>
+													<td class="header-label" *ngFor="let header of row.value.labels">{{ header }}</td>
+												</tr>
+
+												<tr *ngFor="let row of row.value.rows">
+													<td *ngFor="let value of row" class="{{ getRowClass(row, value) }}">
+														<ng-template [ngTemplateOutlet]="typeTemplateRef" [ngTemplateOutletContext]="{ $implicit: value }"></ng-template>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</ng-container>
+							</div>
+						</mat-tab>
+
+						<mat-tab id="currentVersion" label="{{ 'General.CurrentVersion'| translate }}" *ngIf="hasCurrentState">
+							<ng-template #typeTemplateRefCurrent let-node>
+								<ng-container [ngSwitch]="node.dataType">
+									<div *ngSwitchCase="'date'">{{ formatDate(node.value) }}</div>
+
+									<div *ngSwitchCase="'boolean'">
+										{{ node.value | lookup: cfgYesNoNumeric }}
+									</div>
+
+									<div *ngSwitchDefault>{{ node.value }}</div>
+								</ng-container>
+							</ng-template>
+
+							<div *ngFor="let row of currentData" class="main-holder">
+								<ng-container [ngSwitch]="row.type">
+									<div *ngSwitchCase="'h-table'" class="h-table" [ngStyle]="{'margin-left': (row.level - 1) * 50 + 'px'}">
+										<table>
+											<tbody>
+												<tr>
+													<td class="h-table-bold">{{ row.label }}</td>
+													<td>
+														<ng-template [ngTemplateOutlet]="typeTemplateRefCurrent" [ngTemplateOutletContext]="{ $implicit: row }"></ng-template>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<div *ngSwitchCase="'label'" class="table-container" [ngStyle]="{'margin-left': (row.level - 1) * 50 + 'px'}">
+										<span>{{ row.label }}</span>
+										<table>
+											<tbody>
+												<tr>
+													<td *ngFor="let r of getRowLabels(row.value)">{{ r }}</td>
+												</tr>
+												<tr>
+													<td *ngFor="let v of getRowValues(row.value)">
+														<ng-template [ngTemplateOutlet]="typeTemplateRefCurrent" [ngTemplateOutletContext]="{ $implicit: v }"></ng-template>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<div *ngSwitchCase="'last-child-row'" class="table-container" [ngStyle]="{'margin-left': (row.level - 1) * 50 + 'px'}">
+										<span>{{ row.label }}</span>
+										<table>
+											<tbody>
+												<tr>
+													<td class="header-label" *ngFor="let header of row.value.labels">{{ header }}</td>
+												</tr>
+												<tr *ngFor="let row of row.value.rows">
+													<td *ngFor="let value of row">
+														<ng-template [ngTemplateOutlet]="typeTemplateRefCurrent" [ngTemplateOutletContext]="{ $implicit: value }"></ng-template>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</ng-container>
+							</div>
+						</mat-tab>
+					</mat-tab-group>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

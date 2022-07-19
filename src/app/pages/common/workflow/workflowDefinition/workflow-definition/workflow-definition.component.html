@@ -1,0 +1,159 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{ 'Menu.Common.Workflow.WorkflowDefinition' | translate }} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<span><i class="la la-mail-reply"></i><span>{{'General.Back' | translate}}</span></span>
+			</a>
+
+			<a id="btnClear" *ngIf="entityModel._isNew" class="kt-margin-l-5 btn btn-secondary" (click)="reset()">
+				<span><i class="la la-recycle"></i><span>{{'General.Clear' | translate}}</span></span>
+			</a>
+
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span>
+				</a>
+
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span> <i class="la la-edit"></i> <span>{{'General.Update' | translate}}</span> </span>
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="_form" [checkauth]="isDisabled" class="kt-form " autocomplete="off">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row" [class.disabled]="isDisabled">
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput id="guid" placeholder="Guid" formControlName="guid" [textMask]="{mask : guidMask}" [readonly]="entityModel._isEditMode">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{'System.Authority.Api' | translate}}" formControlName="apiRoute" required>
+									<ngx-mat-select-search #filterApi [formControl]="frmControlSearch" placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+									</ngx-mat-select-search>
+									<mat-option id="apiRoute" [value]="item.apiRoute" *ngFor="let item of entApiDefs | filterByProperty: ['apiRoute', 'description', filterApi.value];">
+										{{item.description}} - {{item.apiRoute}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{'System.Workflow.ApiMethod' | translate}}" formControlName="apiMethod" required>
+									<mat-option [value]=""></mat-option>
+									<mat-option [value]="item.code" *ngFor="let item of entApiMethod">{{item.description | langparser}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.Description' | translate}}" formControlName="explanation" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'System.Workflow.ExpireDayCount' | translate}}" formControlName="expireDayCount" maxlength="2" [textMask]="{mask: maskNumber}" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{'System.Workflow.ConfigFile' | translate}}" formControlName="expressionConfigGuid" required (selectionChange)="cfgConfigChange($event)" readonly="isDisabled">
+									<ngx-mat-select-search [formControl]="frmControlSearch" #filterConf placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
+									</ngx-mat-select-search>
+									<mat-option id="cfgConfigDef" [value]="item.code" *ngFor="let item of cfgConfigDefs | filterByProperty: ['description',filterConf.value];"> {{item.description}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile align-self-center" *ngIf="isExpressionConfig" [class.disabled]="isDisabled">
+							<hr>
+							<m-dynamic-query-builder [(query)]="query" configName="{{selectedConfigName}}"></m-dynamic-query-builder>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<div class="kt-form__section kt-form__section--first">
+			<mat-tab-group>
+				<mat-tab id="tab" label="{{'System.Workflow.StateDefinition' |translate}}">
+					<div class="kt-form">
+						<div class="kt-form__filtration">
+							<div class="row align-items-center">
+								<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile text-right" [class.disabled]="isDisabled">
+									<a id="btnStateAdd" *ngIf="'add'|checkauth" (click)="addStateExpressionButtonOnClick()" class="kt-margin-l-5 btn btn-brand btn">
+										<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i></span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="mat-table__wrapper">
+						<mat-table id="tblTxnFeeDet" class="lmat-elevation-z8" cdkDropList (cdkDropListDropped)="dropped($event)" [cdkDropListData]="dataSource" [dataSource]="dataSource" matSort matSortActive="priority" matSortDirection="asc" matSortDisableClear>
+							<ng-container matColumnDef="role">
+								<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'System.Authority.UserRole' | translate}}</mat-header-cell>
+								<mat-cell *matCellDef="let row">{{getRolDescription(row.workflowStateOwnership)}}</mat-cell>
+							</ng-container>
+
+							<ng-container matColumnDef="state">
+								<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column-vinCode no-drag">{{'System.Workflow.State' | translate}}</mat-header-cell>
+								<mat-cell *matCellDef="let row">{{row.state}}</mat-cell>
+							</ng-container>
+
+							<ng-container matColumnDef="isFinalizeProcess">
+								<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Workflow.IsFinalizeProcess' | translate}}</mat-header-cell>
+								<mat-cell *matCellDef="let row">
+									<span mbadgeBool="{{row.isFinalizeProcess}}">{{ row.isFinalizeProcess | lookup : cfgYesNoNumeric }}</span>
+								</mat-cell>
+							</ng-container>
+
+							<ng-container matColumnDef="actions">
+								<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
+									{{'General.Actions' | translate}}
+								</mat-header-cell>
+
+								<mat-cell *matCellDef="let entityModelState" class="mat-column mat-column-actions">
+									<button id="btnEdit" *ngIf="'edit'|checkauth" [disabled]="isDisabled" type="button" mat-icon-button color="primary" (click)="editStateExpressionButtonOnClick(entityModelState)" matTooltip="{{'General.Edit' | translate}}">
+										<mat-icon>create</mat-icon>
+									</button>
+
+									<button id="btnDelete" *ngIf="'delete'|checkauth" [disabled]="isDisabled" mat-icon-button color="warn" type="button" (click)="deleteStateExpressionButtonOnClick(entityModelState)" matTooltip="{{'General.Delete' | translate}}">
+										<mat-icon>delete</mat-icon>
+									</button>
+								</mat-cell>
+							</ng-container>
+
+							<mat-row *matRowDef="let row; columns: displayedColumns" [ngClass]="{'mat-row-editing' : row._isEditMode}" cdkDrag [cdkDragData]="row"></mat-row>
+							<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+						</mat-table>
+
+						<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+					</div>
+				</mat-tab>
+			</mat-tab-group>
+		</div>
+		<div class="row" style="height: 50px;"></div>
+	</kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,111 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Common.Member.HolidayList' | translate}} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnGoBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()"><span> <i class="la la-mail-reply"></i> <span>{{'General.Back' | translate}}</span> </span></a>
+			<a id="btnClear" *ngIf="isAdd" class="kt-margin-l-5 btn btn-secondary" (click)="clear()"><span> <i class="la la-recycle"></i> <span>{{'General.Clear' | translate}}</span> </span></a>
+
+			<div *ngIf="'add'|checkauth" class="m-buttons--wrapper">
+				<a id="btnSave" *ngIf="isAdd" class="kt-margin-l-5 btn btn-brand" (click)="save()"><span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span></a>
+				<a id="btnUpdate" *ngIf="!this.isAdd && this.isDisabled" class="kt-margin-l-5 btn btn-brand" (click)="save()"><span><i class="la la-edit"></i><span>{{'General.Update' | translate}}</span></span></a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<div class="kt-form__section kt-form__section--first">
+			<div class="kt-form__group">
+				<div class="row">
+					<div class="col-md-4 kt-margin-b-10-mobile">
+						<mat-radio-group name="holiday" id="holiday" (change)="onItemChange()" [(ngModel)]="selectedHoliday">
+							<mat-radio-button value="1" [disabled]="!isAdd" checked>{{'General.VariableHoliday' | translate }}</mat-radio-button>
+							<mat-radio-button value="2" [disabled]="!isAdd">{{'General.ConstantHoliday' | translate }}</mat-radio-button>
+						</mat-radio-group>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="kt-form__section kt-form__section--first" *ngIf="visible_1">
+			<div class="kt-form__group">
+				<br>
+				<form [formGroup]="holidayVariablesForm" [checkauth]="isView" class="kt-form ">
+					<div class="row">
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.HolidayName' | translate }}" formControlName="holidayName" required>
+								<mat-error>
+									{{'General.HolidayName' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="HolidayDate" placeholder="{{'General.HolidayDate' | translate }}" formControlName="holidayDate" required>
+								<mat-datepicker-toggle matSuffix [for]="HolidayDate"></mat-datepicker-toggle>
+								<mat-datepicker #HolidayDate></mat-datepicker>
+								<mat-error>
+									{{'General.HolidayDate' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<div class="kt-form__section kt-form__section--first" *ngIf="visible_2">
+			<div class="kt-form__group">
+				<br>
+				<form [formGroup]="holidayNationalForm" [checkauth]="isView" class="kt-form ">
+					<div class="row">
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.HolidayName' | translate }}" formControlName="holidayName" required>
+								<mat-error>
+									{{'General.HolidayName' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="holidayMonth" placeholder="{{'General.HolidayMonth' | translate}}" required (selectionChange)="getDays($event.value)">
+									<mat-option id="holidayMonths" *ngFor="let item of createRange(12)" [value]="item">{{item}} </mat-option>
+								</mat-select>
+								<mat-error>
+									{{'General.HolidayMonth' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="holidayDay" placeholder="{{'General.HolidayDay' | translate}}" required>
+									<mat-option id="holidayDay" *ngFor="let item of createRange(days)" [value]="item">{{item}} </mat-option>
+								</mat-select>
+								<mat-error>
+									{{'General.HolidayDay' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

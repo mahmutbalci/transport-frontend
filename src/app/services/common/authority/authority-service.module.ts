@@ -3,7 +3,6 @@ import { EntUserRoleDefService } from './entUserRoleDef.service';
 import { EntMenuTreeService } from './entMenuTree.service';
 import { EntApiDefService } from './entApiDef.service';
 import { EntUserService } from './entUser.service';
-import { MemberDefService } from './memberDef.service';
 
 @NgModule({
 	providers: [
@@ -11,7 +10,6 @@ import { MemberDefService } from './memberDef.service';
 		EntMenuTreeService,
 		EntApiDefService,
 		EntUserService,
-		MemberDefService
 	],
 })
 

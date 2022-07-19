@@ -1,0 +1,76 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'"></span>
+					{{'Menu.Acquiring.Merchant.TxnMccGroupDef' | translate}} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<span> <i class="la la-mail-reply"></i> <span>{{'General.Back' | translate}}</span> </span>
+			</a>
+			<a id="btnClear" *ngIf="entityModel._isNew" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()">
+				<span> <i class="la la-recycle"></i> <span>{{'General.Clear' | translate}}</span> </span>
+			</a>
+
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span>
+				</a>
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span> <i class="la la-edit"></i> <span>{{'General.Update' | translate}}</span> </span>
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="txnMccGroupDefForm" [checkauth]="isDisabled" class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'Acquiring.Merchant.MccGroupCode' | translate}}" readonly="{{entityModel._isEditMode}}" formControlName="code" [textMask]="{mask: codeMask, guide:false}" required>
+								<mat-error>
+									{{'Acquiring.Merchant.MccGroupCode' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-6 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<m-multi-lang-input matInput id="description" placeholder="{{'General.Description' | translate}}" formControlName="description" [hidePopup]="isDisabled" maxlength="4000" required></m-multi-lang-input>
+								<mat-error>
+									{{'General.Description' | translate}}
+									<strong>{{'General.Required' | translate}}</strong>
+								</mat-error>
+							</mat-form-field>
+						</div>
+					</div>
+
+					<br>
+					<div class="row">
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{'Acquiring.Merchant.Qualifier' | translate}}" formControlName="qualifierCode">
+									<mat-option [value]="item.code" *ngFor="let item of txnQualifierDefs;">{{item.description}} </mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<br>
+							<mat-checkbox formControlName="isContactless">{{'Acquiring.Merchant.IsContactless' | translate}}</mat-checkbox>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

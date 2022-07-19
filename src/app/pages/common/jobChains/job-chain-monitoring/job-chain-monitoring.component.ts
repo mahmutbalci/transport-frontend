@@ -23,14 +23,13 @@ import { DOCUMENT } from '@angular/common';
 
 declare var require: any;
 
-// tslint:disable-next-line: no-var-requires
 const mx = require('mxgraph')({
 	mxImageBasePath: './../../../../../assets/mxgraph/images',
 	mxBasePath: '../../../../../../assets/mxgraph'
 });
 
 @Component({
-	selector: 'kt-job-chain-monitoring',
+	selector: 'm-job-chain-monitoring',
 	templateUrl: './job-chain-monitoring.component.html'
 })
 export class JobChainMonitoringComponent implements OnInit {
@@ -110,7 +109,8 @@ export class JobChainMonitoringComponent implements OnInit {
 				if (this.definitionGuid && this.definitionGuid != null) {
 					this.isOpenOnDefinition = true;
 					this.getTriggerStatsOnInit(this.definitionGuid);
-				} else if (this.chainList.length > 0) {
+				}
+				else if (this.chainList.length > 0) {
 					this.isOpenOnDefinition = false;
 					this.chainInfo.guid = this.chainList[0].code;
 					this.get();
@@ -122,7 +122,6 @@ export class JobChainMonitoringComponent implements OnInit {
 		this.currentRouteUrl = this.document.location.hash.replace('#', '').toLowerCase();
 	}
 
-	// tslint:disable-next-line: use-life-cycle-interface
 	ngOnDestroy() {
 		this.subject.next(false);
 		this.subject.unsubscribe();
@@ -190,7 +189,8 @@ export class JobChainMonitoringComponent implements OnInit {
 			.pipe(switchMap(() => {
 				if (this.currentRouteUrl.startsWith(this.document.location.hash.replace('#', '').toLowerCase())) {
 					this.internalTemp = this.btcJobChainTriggerStatService.getTriggerStat(chainGuid);
-				} else {
+				}
+				else {
 					this.internalTemp = [];
 				}
 
@@ -258,10 +258,11 @@ export class JobChainMonitoringComponent implements OnInit {
 			// Displays an error message if the browser is
 			// not supported.
 			mx.mxUtils.error(this.translate.instant('System.JobChain.BrowserNotSupported'), 200, false);
-		} else {
+		}
+		else {
 			try {
 				this.graphContainer.nativeElement.innerHTML = '';
-				let editor = new mx.mxEditor(null);
+				var editor = new mx.mxEditor(null);
 				editor.setGraphContainer(this.graphContainer.nativeElement);
 				this.graph = editor.graph;
 
@@ -274,11 +275,11 @@ export class JobChainMonitoringComponent implements OnInit {
 				this.graph.getView().updateStyle = true;
 				this.graph.getSelectionModel().setSingleSelection(true);
 				this.graph.setCellsCloneable(false);
-				this.graph.panningHandler.ignoreCell = true;
+				this.graph.panningHandler.ignoreCell = true
 				this.graph.container.style.cursor = 'pointer';
-				// this.graph.cellEditor.textarea.style.position='absolute';
+				//this.graph.cellEditor.textarea.style.position='absolute';
 				// Changes the default vertex style in-place
-				let style = this.graph.getStylesheet().getDefaultVertexStyle();
+				var style = this.graph.getStylesheet().getDefaultVertexStyle();
 				style[mx.mxConstants.STYLE_SHAPE] = mx.mxConstants.SHAPE_SWIMLANE;
 				style[mx.mxConstants.STYLE_PERIMETER] = mx.mxPerimeter.RectanglePerimeter;
 				style[mx.mxConstants.STYLE_STROKECOLOR] = 'lightgray';
@@ -330,7 +331,7 @@ export class JobChainMonitoringComponent implements OnInit {
 				style = this.graph.getStylesheet().getDefaultEdgeStyle();
 				style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.ElbowConnector;
 				style[mx.mxConstants.STYLE_ENDARROW] = mx.mxConstants.ARROW_BLOCK;
-				style[mx.mxConstants.STYLE_CURVED] = '1';
+				style[mx.mxConstants.STYLE_CURVED] = '1'
 				style[mx.mxConstants.STYLE_ROUNDED] = false;
 				style[mx.mxConstants.STYLE_FONTCOLOR] = '#5184F3';
 				style[mx.mxConstants.STYLE_STROKECOLOR] = '#5184F3';
@@ -338,7 +339,7 @@ export class JobChainMonitoringComponent implements OnInit {
 
 				style = mx.mxUtils.clone(style);
 				style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.EntityRelation;
-				style[mx.mxConstants.STYLE_CURVED] = '1';
+				style[mx.mxConstants.STYLE_CURVED] = '1'
 				style[mx.mxConstants.STYLE_FONTCOLOR] = '#dd6b4d';
 				style[mx.mxConstants.STYLE_STROKECOLOR] = '#dd6b4d';
 				style[mx.mxConstants.STYLE_STROKEWIDTH] = '3';
@@ -346,7 +347,7 @@ export class JobChainMonitoringComponent implements OnInit {
 
 				style = mx.mxUtils.clone(style);
 				style[mx.mxConstants.STYLE_EDGE] = mx.mxEdgeStyle.ElbowConnector;
-				style[mx.mxConstants.STYLE_CURVED] = '1';
+				style[mx.mxConstants.STYLE_CURVED] = '1'
 				style[mx.mxConstants.STYLE_FONTCOLOR] = '#bc42f4';
 				style[mx.mxConstants.STYLE_STROKECOLOR] = '#bc42f4';
 				style[mx.mxConstants.STYLE_STROKEWIDTH] = '2';
@@ -367,49 +368,47 @@ export class JobChainMonitoringComponent implements OnInit {
 					this.graph.setSplitEnabled(false);
 
 					// Adds new method for identifying a pool
-					this.graph.isPool = function(cell) {
-						// tslint:disable-next-line: no-shadowed-variable
-						let model = this.getModel();
-						// tslint:disable-next-line: no-shadowed-variable
-						let parent = model.getParent(cell);
+					this.graph.isPool = function (cell) {
+						var model = this.getModel();
+						var parent = model.getParent(cell);
 
 						return parent != null && model.getChildCount(parent) > 0;
 					};
 
 					// Changes swimlane orientation while collapsed
-					this.graph.model.getStyle = function(cell) {
-						// tslint:disable-next-line: no-shadowed-variable
-						let style = mx.mxGraphModel.prototype.getStyle.apply(this, arguments);
+					this.graph.model.getStyle = function (cell) {
+						var style = mx.mxGraphModel.prototype.getStyle.apply(this, arguments);
 
 						if (model.isVertex(cell)) {
 							base.graph.removeCellOverlays(cell);
 							if (cell.value.isPause || cell.value.isSkip) {
-								let pauseSkipIcon = cell.value.isPause ? './../../../../../assets/mxgraph/images/pause.svg' : './../../../../../assets/mxgraph/images/skip.svg';
+								let pauseSkipIcon = cell.value.isPause ? './../../../../../assets/mxgraph/images/pause.svg' : './../../../../../assets/mxgraph/images/skip.svg'
 								let overlayPauseSkipDesc = cell.value.isPause ? 'Pause' : 'Skip';
-								let overlayPauseSkip = new mx.mxCellOverlay(
+								var overlayPauseSkip = new mx.mxCellOverlay(
 									new mx.mxImage(pauseSkipIcon, 20, 20), overlayPauseSkipDesc);
 								overlayPauseSkip.defaultOverlap = 0;
-								if (cell.value.type === 'J') {
+								if (cell.value.type == 'J') {
 									overlayPauseSkip.align = mx.mxConstants.ALIGN_RIGHT;
 									overlayPauseSkip.verticalAlign = mx.mxConstants.ALIGN_TOP;
 									overlayPauseSkip.offset = new mx.mxPoint(-25, 5);
-								} else {
+								}
+								else {
 									overlayPauseSkip.align = mx.mxConstants.ALIGN_LEFT;
 									overlayPauseSkip.verticalAlign = mx.mxConstants.ALIGN_TOP;
 									overlayPauseSkip.offset = new mx.mxPoint(35, 5);
 								}
 								base.graph.addCellOverlay(cell, overlayPauseSkip);
 							}
-							let stat = base.trigerStats.find(x => x.triggerGuid === cell.value.guid);
+							let stat = base.trigerStats.find(x => x.triggerGuid == cell.value.guid);
 							if (!isNullOrUndefined(stat)) {
-								if (stat.stat === 'E') {
-									let overlay = new mx.mxCellOverlay(
+								if (stat.stat == 'E') {
+									var overlay = new mx.mxCellOverlay(
 										new mx.mxImage('./../../../../../assets/mxgraph/images/messagebox_warning.png', 40, 40),
 										base.translate.instant('System.JobChain.ShowExceptionDetail'));
 
 									overlay.defaultOverlap = 1;
 									// Installs a handler for clicks on the overlay
-									overlay.addListener(mx.mxEvent.CLICK, function(sender, evt2) {
+									overlay.addListener(mx.mxEvent.CLICK, function (sender, evt2) {
 										base.layoutUtilsService.showError('' + stat.exception);
 									});
 
@@ -418,16 +417,16 @@ export class JobChainMonitoringComponent implements OnInit {
 									return 'processError';
 								}
 
-								if (stat.stat === 'F') {
+								if (stat.stat == 'F') {
 									return 'processFinish';
 								}
-								if (stat.stat === 'S') {
+								if (stat.stat == 'S') {
 									return 'processSkip';
 								}
-								if (stat.stat === 'H') {
+								if (stat.stat == 'H') {
 									return 'processHandled';
 								}
-								if (stat.stat === 'W') {
+								if (stat.stat == 'W') {
 									return 'processWorking';
 								}
 							}
@@ -436,7 +435,8 @@ export class JobChainMonitoringComponent implements OnInit {
 						if (base.graph.isCellCollapsed(cell)) {
 							if (style != null) {
 								style += ';';
-							} else {
+							}
+							else {
 								style = '';
 							}
 
@@ -446,13 +446,13 @@ export class JobChainMonitoringComponent implements OnInit {
 						return style;
 					};
 
-					this.graph.addListener(mx.mxEvent.DOUBLE_CLICK, function(sender, evt) {
-						let cell = evt.getProperty('cell');
+					this.graph.addListener(mx.mxEvent.DOUBLE_CLICK, function (sender, evt) {
+						var cell = evt.getProperty('cell');
 						if (cell != null) {
 							if (model.isVertex(cell)) {
-								// is cell, open cell edit panel
-								let stat = base.trigerStats.find(x => x.triggerGuid === cell.value.guid);
-								if (!isNullOrUndefined(stat) && stat.stat === 'E') {
+								//is cell, open cell edit panel
+								let stat = base.trigerStats.find(x => x.triggerGuid == cell.value.guid);
+								if (!isNullOrUndefined(stat) && stat.stat == 'E') {
 									base.layoutUtilsService.showError('' + stat.exception);
 								}
 							}
@@ -460,11 +460,11 @@ export class JobChainMonitoringComponent implements OnInit {
 					});
 
 					// Keeps widths on collapse/expand
-					let foldingHandler = function(sender, evt) {
-						let cells = evt.getProperty('cells');
+					var foldingHandler = function (sender, evt) {
+						var cells = evt.getProperty('cells');
 
-						for (let i = 0; i < cells.length; i++) {
-							let geo = base.graph.model.getGeometry(cells[i]);
+						for (var i = 0; i < cells.length; i++) {
+							var geo = base.graph.model.getGeometry(cells[i]);
 
 							if (geo.alternateBounds != null) {
 								geo.width = geo.alternateBounds.width;
@@ -475,25 +475,27 @@ export class JobChainMonitoringComponent implements OnInit {
 					this.graph.addListener(mx.mxEvent.FOLD_CELLS, foldingHandler);
 
 					// Installs a custom tooltip for cells
-					this.graph.getTooltipForCell = function(cell) {
+					this.graph.getTooltipForCell = function (cell) {
 						if (cell.edge) {
 							let tooltip = base.translate.instant('System.JobChain.SourceTrigger') + ' : ' + cell.source.value.guid.toString() +
 								' ' + base.translate.instant('System.JobChain.TargetTrigger') + ' : ' + cell.target.value.guid.toString();
 							return tooltip;
-						} else if (cell.vertex) {
+						}
+						else if (cell.vertex) {
 							let text: string;
 							let prevGuids: string = '';
-							_.orderBy(base.chainInfo.flows.filter(x => x.triggerGuid === cell.value.guid), ['guid']).forEach(item => {
+							_.orderBy(base.chainInfo.flows.filter(x => x.triggerGuid == cell.value.guid), ['guid']).forEach(item => {
 								prevGuids += item.prevTriggerGuid + ',';
 							});
-							let stat = base.trigerStats.find(x => x.triggerGuid === cell.value.guid);
+							let stat = base.trigerStats.find(x => x.triggerGuid == cell.value.guid);
 							if (isNullOrUndefined(stat)) {
 								text = 'Trigger Guid   : ' + cell.value.guid + '\n'
 									+ 'Description  : ' + cell.value.description + '\n'
 									+ 'Parent Trigger  : ' + cell.value.parentTriggerGuid + '\n'
 									+ 'Prev Trigger(s) : ' + prevGuids.slice(0, -1) + '\n'
 									+ 'Class Name      : ' + cell.value.className + '\n';
-							} else {
+							}
+							else {
 								text = 'Trigger Guid   : ' + cell.value.guid + '\n'
 									+ 'Description  : ' + cell.value.description + '\n'
 									+ 'Parent Trigger  : ' + cell.value.parentTriggerGuid + '\n'
@@ -512,45 +514,22 @@ export class JobChainMonitoringComponent implements OnInit {
 							return text;
 						}
 						return cell.id.toString();
-					};
+					}
 
 					// Installs a popupmenu handler using local function (see below).
-					this.graph.popupMenuHandler.factoryMethod = function(menu, cell, evt) {
+					this.graph.popupMenuHandler.factoryMethod = function (menu, cell, evt) {
 						if (cell && cell.id != null) {
 							if (!model.isEdge(cell)) {
-								menu.addItem(base.translate.instant('System.JobChain.SingleRun'), './../../../../../assets/mxgraph/images/process.svg', function() {
-									if (cell.value.className === 'Framework.Batch.Eod.StartEndOfDayBatch,Framework.Batch') {
-										base.layoutUtilsService.showError(base.translate.instant('System.JobChain.SingleRunError'));
-									} else {
-										let runAsSingularMessage = base.translate.instant('System.JobChain.RunAsSingular');
-										runAsSingularMessage = runAsSingularMessage.replace('{0}', cell.value.guid + ' - ' + cell.value.description);
-
-										const runDialogRef = base.layoutUtilsService.yesNoElement(base.translate.instant('System.JobChain.TriggerRunRequest'),
-											runAsSingularMessage,
-											base.translate.instant('System.JobChain.JobIsRunning'));
-										runDialogRef.afterClosed().subscribe(res => {
-											if (res) {
-												base.btcJobChainService.scheduleTrigger(cell.value.guid).subscribe(() => {
-													base.layoutUtilsService.showActionNotification(base.translate.instant('System.JobChain.JobRunSuccessfully'));
-												},
-													(error) => {
-														base.layoutUtilsService.showError(error);
-													});
-											}
-										});
-									}
-								});
-
-								menu.addItem(base.translate.instant('System.JobChain.RunWithOrder'), './../../../../../assets/mxgraph/images/processWithOrder.svg', function() {
-									let runAsSequentialMessage = base.translate.instant('System.JobChain.RunAsSequential');
-									runAsSequentialMessage = runAsSequentialMessage.replace('{0}', cell.value.guid + ' - ' + cell.value.description);
+								menu.addItem(base.translate.instant('System.JobChain.SingleRun'), './../../../../../assets/mxgraph/images/process.svg', function () {
+									let runAsSingularMessage = base.translate.instant('System.JobChain.RunAsSingular');
+									runAsSingularMessage = runAsSingularMessage.replace('{0}', cell.value.guid + ' - ' + cell.value.description);
 
 									const runDialogRef = base.layoutUtilsService.yesNoElement(base.translate.instant('System.JobChain.TriggerRunRequest'),
-										runAsSequentialMessage,
+										runAsSingularMessage,
 										base.translate.instant('System.JobChain.JobIsRunning'));
 									runDialogRef.afterClosed().subscribe(res => {
 										if (res) {
-											base.btcJobChainService.scheduleTriggerWithOrder(cell.value.chainGuid, cell.value.guid).subscribe(() => {
+											base.btcJobChainService.scheduleTrigger(cell.value.guid).subscribe(res => {
 												base.layoutUtilsService.showActionNotification(base.translate.instant('System.JobChain.JobRunSuccessfully'));
 											},
 												(error) => {
@@ -560,36 +539,57 @@ export class JobChainMonitoringComponent implements OnInit {
 									});
 								});
 
-								menu.addItem(base.translate.instant('System.JobChain.ViewExecutionHistory'), './../../../../../assets/mxgraph/images/history.svg', function() {
+								menu.addItem(base.translate.instant('System.JobChain.RunWithOrder'), './../../../../../assets/mxgraph/images/processWithOrder.svg', function () {
+									let runAsSequentialMessage = base.translate.instant('System.JobChain.RunAsSequential');
+									runAsSequentialMessage = runAsSequentialMessage.replace('{0}', cell.value.guid + ' - ' + cell.value.description);
+
+									const runDialogRef = base.layoutUtilsService.yesNoElement(base.translate.instant('System.JobChain.TriggerRunRequest'),
+										runAsSequentialMessage,
+										base.translate.instant('System.JobChain.JobIsRunning'));
+									runDialogRef.afterClosed().subscribe(res => {
+										if (res) {
+											base.btcJobChainService.scheduleTriggerWithOrder(cell.value.chainGuid, cell.value.guid).subscribe(res => {
+												base.layoutUtilsService.showActionNotification(base.translate.instant('System.JobChain.JobRunSuccessfully'));
+											},
+												(error) => {
+													base.layoutUtilsService.showError(error);
+												});
+										}
+									});
+								});
+
+								menu.addItem(base.translate.instant('System.JobChain.ViewExecutionHistory'), './../../../../../assets/mxgraph/images/history.svg', function () {
 									base.viewExecutionHistory(cell.value.chainGuid, cell.value.guid);
 								});
 
-								menu.addItem(base.translate.instant('System.JobChain.ViewProcessErrorPool'), './../../../../../assets/mxgraph/images/error-pool.svg', function() {
+								menu.addItem(base.translate.instant('System.JobChain.ViewProcessErrorPool'), './../../../../../assets/mxgraph/images/error-pool.svg', function () {
 									base.viewProcessErrorPool(cell.value.chainGuid, cell.value.guid);
 								});
 
-								let triggerStat = base.trigerStats.find(x => x.triggerGuid === cell.value.guid);
-								if (!isNullOrUndefined(triggerStat) && (triggerStat.stat === 'E' || triggerStat.stat === 'H')) {
-									menu.addItem('Skip One Time', './../../../../../assets/mxgraph/images/forward.svg', function() {
+								let triggerStat = base.trigerStats.find(x => x.triggerGuid == cell.value.guid);
+								if (!isNullOrUndefined(triggerStat) && (triggerStat.stat == 'E' || triggerStat.stat == 'H')) {
+									menu.addItem('Skip One Time', './../../../../../assets/mxgraph/images/forward.svg', function () {
 										base.skipOneTime(cell.value.guid);
 									});
 								}
 
 								if (cell.value.isSkip) {
-									menu.addItem('Take On', './../../../../../assets/mxgraph/images/take-on.svg', function() {
+									menu.addItem('Take On', './../../../../../assets/mxgraph/images/take-on.svg', function () {
 										base.takeOn(cell.value);
 									});
-								} else {
-									menu.addItem('Take Skip Intruction', './../../../../../assets/mxgraph/images/skip.svg', function() {
+								}
+								else {
+									menu.addItem('Take Skip Intruction', './../../../../../assets/mxgraph/images/skip.svg', function () {
 										base.skip(cell.value);
 									});
 								}
 								if (cell.value.isPause) {
-									menu.addItem('Resume', './../../../../../assets/mxgraph/images/resume.png', function() {
+									menu.addItem('Resume', './../../../../../assets/mxgraph/images/resume.png', function () {
 										base.resume(cell.value);
 									});
-								} else {
-									menu.addItem('Pause', './../../../../../assets/mxgraph/images/pause.svg', function() {
+								}
+								else {
+									menu.addItem('Pause', './../../../../../assets/mxgraph/images/pause.svg', function () {
 										base.pause(cell.value);
 									});
 								}
@@ -597,64 +597,65 @@ export class JobChainMonitoringComponent implements OnInit {
 						}
 					};
 
-					this.graph.convertValueToString = function(cell) {
-						if (!model.isEdge(cell) && cell.value != null && cell.value.guid !== undefined) {
+					this.graph.convertValueToString = function (cell) {
+						if (!model.isEdge(cell) && cell.value != null && cell.value.guid != undefined) {
 							return cell.value.guid.toString() + '-' + cell.value.description;
 						}
 						return cell.id;
-					};
+					}
 
 					// Returns a HTML representation of the cell where the
 					// upper half is the first value, lower half is second
 					// value
-					this.graph.getLabel = function(cell) {
-						if ((model.isVertex(cell) && cell.value != null && cell.value.guid !== undefined) &&
-							(cell.value.type !== 'G' || (cell.value.type === 'G' && model.getChildCount(cell) === 0))) {
-							let stat = base.trigerStats.find(x => x.triggerGuid === cell.value.guid);
+					this.graph.getLabel = function (cell) {
+						if ((model.isVertex(cell) && cell.value != null && cell.value.guid != undefined) &&
+							(cell.value.type != 'G' || (cell.value.type == 'G' && model.getChildCount(cell) == 0))) {
+							let stat = base.trigerStats.find(x => x.triggerGuid == cell.value.guid);
 
-							let table = document.createElement('table');
+							var table = document.createElement('table');
 							table.style.height = '100%';
 							table.style.width = '100%';
 							table.style.marginTop = '10px';
-							let body = document.createElement('tbody');
-							let tr1 = document.createElement('tr');
-							let tr2 = document.createElement('tr');
-							let tr3 = document.createElement('tr');
+							var body = document.createElement('tbody');
+							var tr1 = document.createElement('tr');
+							var tr2 = document.createElement('tr');
+							var tr3 = document.createElement('tr');
 
-							let tdIcon = document.createElement('td');
+							var tdIcon = document.createElement('td');
 							tdIcon.style.textAlign = 'center';
 							tdIcon.style.fontSize = '12px';
 
-							if (!isNullOrUndefined(stat) && (stat.stat === 'E' || stat.stat === 'W')) {
+							if (!isNullOrUndefined(stat) && (stat.stat == 'E' || stat.stat == 'W')) {
 								tdIcon.rowSpan = 2;
 
-								let tdPercentage = document.createElement('td');
+								var tdPercentage = document.createElement('td');
 								tdPercentage.style.textAlign = 'center';
 								tdPercentage.style.fontSize = '10px';
 								tdPercentage.style.color = '#000000';
 								let percent = (stat.firedTriggerDetail.processedCount + stat.firedTriggerDetail.errorCount) / stat.firedTriggerDetail.producedItemCount * 100;
 								mx.mxUtils.write(tdPercentage, '%' + percent.toFixed(2));
 								tr3.appendChild(tdPercentage);
-							} else {
+							}
+							else {
 								tdIcon.rowSpan = 3;
 							}
 
 
-							tdIcon.style.width = '30%';
-							let i = document.createElement('img');
-							i.src = base.getStatusIcon(cell.value.guid, cell.value.type === 'G');
+							tdIcon.style.width = '30%'
+							var i = document.createElement('img');
+							i.src = base.getStatusIcon(cell.value.guid, cell.value.type == 'G');
 							i.style.width = '30px';
 							i.style.height = '30px';
 							tdIcon.appendChild(i);
 
-							let tdJobGuid = document.createElement('td');
+							var tdJobGuid = document.createElement('td');
 							tdJobGuid.style.textAlign = 'left';
 							tdJobGuid.style.fontSize = '12px';
 							tdJobGuid.style.color = '#000000';
 							mx.mxUtils.write(tdJobGuid, cell.value.guid);
 
 
-							let td2 = document.createElement('td');
+							var td2 = document.createElement('td');
 							td2.style.textAlign = 'left';
 							td2.style.fontSize = '10px';
 							td2.style.color = 'gray';
@@ -662,11 +663,12 @@ export class JobChainMonitoringComponent implements OnInit {
 
 							if (cell.value.description.length > 40) {
 								mx.mxUtils.write(td2, cell.value.description.substring(0, 40) + '...');
-							} else {
+							}
+							else {
 								mx.mxUtils.write(td2, cell.value.description);
 							}
 
-							let td3 = document.createElement('td');
+							var td3 = document.createElement('td');
 							td3.style.borderTop = '1px solid';
 							td3.style.paddingTop = '5px';
 							td3.style.textAlign = 'left';
@@ -694,7 +696,8 @@ export class JobChainMonitoringComponent implements OnInit {
 				let direction;
 				if (this.isHorizontal) {
 					direction = mx.mxConstants.DIRECTION_WEST;
-				} else {
+				}
+				else {
 					direction = mx.mxConstants.DIRECTION_NORTH;
 				}
 
@@ -705,9 +708,9 @@ export class JobChainMonitoringComponent implements OnInit {
 				hierarchicalLayout.moveParent = true;
 				hierarchicalLayout.parentBorder = 30;
 				// Keeps the lanes and pools stacked
-				let layoutMgr = new mx.mxLayoutManager(this.graph);
+				var layoutMgr = new mx.mxLayoutManager(this.graph);
 
-				layoutMgr.getLayout = function(cell) {
+				layoutMgr.getLayout = function (cell) {
 					return hierarchicalLayout;
 				};
 
@@ -720,12 +723,14 @@ export class JobChainMonitoringComponent implements OnInit {
 				});
 
 				this.chainInfo.flows.filter(x => x.prevTriggerGuid != null).forEach(flow => {
-					if (base.tree[flow.prevTriggerGuid].value.type === 'G' && base.tree[flow.triggerGuid].value.type === 'G') {
+					if (base.tree[flow.prevTriggerGuid].value.type == 'G' && base.tree[flow.triggerGuid].value.type == 'G') {
 						this.graph.insertEdge(parent, flow.guid, flow, base.tree[flow.prevTriggerGuid], base.tree[flow.triggerGuid], 'swimlaneEdge');
-					} else if (base.tree[flow.prevTriggerGuid].value.type === 'G' && base.tree[flow.triggerGuid].value.type !== 'G'
-						|| base.tree[flow.prevTriggerGuid].value.type !== 'G' && base.tree[flow.triggerGuid].value.type === 'G') {
+					}
+					else if (base.tree[flow.prevTriggerGuid].value.type == 'G' && base.tree[flow.triggerGuid].value.type != 'G'
+						|| base.tree[flow.prevTriggerGuid].value.type != 'G' && base.tree[flow.triggerGuid].value.type == 'G') {
 						this.graph.insertEdge(parent, flow.guid, flow, base.tree[flow.prevTriggerGuid], base.tree[flow.triggerGuid], 'groupToJobEdge');
-					} else {
+					}
+					else {
 						this.graph.insertEdge(parent, flow.guid, flow, base.tree[flow.prevTriggerGuid], base.tree[flow.triggerGuid]);
 					}
 				});
@@ -770,12 +775,12 @@ export class JobChainMonitoringComponent implements OnInit {
 	}
 
 	millisecondFormat(ms: any) {
-		let date = moment.utc(ms);
+		var date = moment.utc(ms);
 		return date.format('HH:mm:ss:SSS');
 	}
 
 	getStatusIcon(triggerGuid, isGroup): string {
-		if (triggerGuid === 'Start') {
+		if (triggerGuid == 'Start') {
 			return './../../../../../assets/mxgraph/images/start.svg';
 		}
 
@@ -787,7 +792,7 @@ export class JobChainMonitoringComponent implements OnInit {
 		let errorIcon = './../../../../../assets/mxgraph/images/error.svg';
 		let defaultIcon = './../../../../../assets/icon-pack/Cloud TPU.svg';
 		let defaultGroupIcon = './../../../../../assets/icon-pack/Dialogflow Enterprise Edition.svg';
-		let stat = this.trigerStats.find(x => x.triggerGuid === triggerGuid);
+		let stat = this.trigerStats.find(x => x.triggerGuid == triggerGuid);
 
 		if (!isNullOrUndefined(stat)) {
 			if (stat.stat === 'S') {
@@ -885,7 +890,7 @@ export class JobChainMonitoringComponent implements OnInit {
 	}
 
 	onSelectedChainChanged(event) {
-		// chainInfo.chainGuid changed by ngModel
+		//chainInfo.chainGuid changed by ngModel
 		this.get();
 	}
 }

@@ -1,0 +1,271 @@
+<kt-alert *ngIf="dataSource.hasError()" type="warn" (close)="dataSource.clearError()">{{ dataSource.getErrorMessage() }}</kt-alert>
+<kt-alert *ngIf="dataSource2.hasError()" type="warn" (close)="dataSource2.clearError()">{{ dataSource2.getErrorMessage() }}</kt-alert>
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title" id="title">
+					{{ 'Menu.Common.Workflow.WorkflowProcess' | translate }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnGet" class="kt-margin-l-5 btn btn-brand" (click)="getData()" [class.disabled]="(dataSource.loading$ | async) || (dataSource2.loading$ | async)">
+				<i class="la la-search"></i>{{ 'General.Get' | translate }}
+			</a>
+
+			<a id="btnClear" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()" [class.disabled]="(dataSource.loading$ | async) || (dataSource2.loading$ | async)">
+				<i class="la la-recycle"></i>{{ 'General.Clear' | translate }}
+			</a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="filterForm" class="kt-form " autocomplete="off">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.ReferenceNo' | translate }}" maxlength="16" formControlName="refNumber" [textMask]="{mask: maskNumber}">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="stat" placeholder="{{ 'General.ProcessStatus' | translate }}">
+									<mat-option id="choose">{{ 'General.None' | translate }}</mat-option>
+									<mat-option id="statDef.code" [value]="statDef.code" *ngFor="let statDef of processStats;">{{ statDef.description }} </mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.ProcessKey' | translate }}" formControlName="processKey">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select formControlName="menuGuid" placeholder="{{ 'System.Authority.MenuName' | translate }}">
+									<ngx-mat-select-search [formControl]="frmControlSearch" #filtermenu placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{ 'General.NoRecordsFound' | translate }}">
+									</ngx-mat-select-search>
+									<mat-option id="chooseMenu">{{ 'General.None' | translate }}</mat-option>
+									<mat-option id="menu.code" [value]="menu.code" *ngFor="let menu of entMenuTree | filterByProperty: ['description',filtermenu.value];">{{ menu.description }} </mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.InsertUser' | translate }}" [class.disabled]="selectedTab==1" formControlName="insertUser">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="insertDateTime" id="insertDateTime" formControlName="insertDateTime" placeholder="{{ 'General.InsertDate' | translate }}" readonly>
+								<mat-datepicker-toggle matSuffix [for]="insertDateTime"></mat-datepicker-toggle>
+								<mat-datepicker #insertDateTime></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.ApproveRejectUser' | translate }}" formControlName="actionBy">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="actionDateTime" id="actionDateTime" formControlName="actionDateTime" placeholder="{{ 'General.ApproveRejectDate' | translate }}" readonly>
+								<mat-datepicker-toggle matSuffix [for]="actionDateTime"></mat-datepicker-toggle>
+								<mat-datepicker #actionDateTime></mat-datepicker>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+
+		<mat-tab-group id="tabGroup" [(selectedIndex)]="selectedTab" (selectedTabChange)="selectedTabChanged()">
+			<mat-tab id="recordsPendingApproval" label="{{ 'General.RecordsPendingApproval'| translate }}">
+				<div class="mat-table__wrapper">
+					<mat-table id="table1" class="lmat-elevation-z8" [dataSource]="dataSource" #matSort1="matSort" matSort (matSortChange)="changeSort()" matSortActive="insertDateTime" matSortDirection="desc" matSortDisableClear>
+						<ng-container matColumnDef="choose">
+							<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
+								{{ 'General.Choose' | translate }}
+							</mat-header-cell>
+							<mat-cell *matCellDef="let row" class="mat-column mat-column-actions">
+								<button type="button" mat-icon-button color="primary" (click)="valueSelected(row, true)" matTooltip="{{ 'General.Select' | translate }}">
+									<mat-icon mat-list-icon>playlist_add</mat-icon>
+								</button>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="refNumber">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ReferenceNo' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.refNumber }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="menuGuid">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Authority.MenuName' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.menuGuid | lookup: entMenuTree }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="apiMethod">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Workflow.ApiMethod' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.apiMethod | lookup: entApiMethod }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="processKey">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ProcessKey' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.processKey }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="stat">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ProcessStatus' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.stat | lookup: processStats }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="expireDate">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ExpireDate' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.expireDate | date:'dd.MM.yyyy' }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="insertUser">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.InsertUser' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.insertUser }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="insertDateTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.InsertDate' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.insertDateTime | date:'dd.MM.yyyy' }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="insertTime">
+							<mat-header-cell *matHeaderCellDef>{{ 'General.InsertTime' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.insertDateTime | slice:11:19 }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="actionBy">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ApproveRejectUser' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.actionBy }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="actionDateTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ApproveRejectDate' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.actionDateTime | date:'dd.MM.yyyy' }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="actionTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ApproveRejectTime' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.actionDateTime | slice:11:19 }}</mat-cell>
+						</ng-container>
+
+						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					</mat-table>
+
+					<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{ 'General.NoRecordsFound' | translate }}</div>
+				</div>
+
+				<div class="mat-table__bottom">
+					<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+					<mat-paginator #paginator1 (page)="changePaginator()" [pageSize]="10" [pageSizeOptions]="[10, 20, 50]" [length]="dataSource.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+				</div>
+			</mat-tab>
+
+			<mat-tab id="recordsSentToApproval" label="{{ 'General.RecordsSentToApproval'| translate }}">
+				<div class="mat-table__wrapper">
+					<mat-table id="table2" class="lmat-elevation-z8" [dataSource]="dataSource2" #matSort2="matSort" matSort (matSortChange)="changeSort()" matSortActive="insertDateTime" matSortDirection="desc" matSortDisableClear>
+						<ng-container matColumnDef="choose">
+							<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
+								{{ 'General.Choose' | translate }}
+							</mat-header-cell>
+							<mat-cell *matCellDef="let row" class="mat-column mat-column-actions">
+								<button type="button" mat-icon-button color="primary" (click)="valueSelected(row, false)" matTooltip="{{ 'General.Select' | translate }}">
+									<mat-icon mat-list-icon>playlist_add</mat-icon>
+								</button>
+							</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="refNumber">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ReferenceNo' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.refNumber }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="menuGuid">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Authority.MenuName' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.menuGuid | lookup: entMenuTree }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="apiMethod">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Workflow.ApiMethod' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.apiMethod | lookup: entApiMethod }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="processKey">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ProcessKey' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.processKey }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="stat">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ProcessStatus' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.stat | lookup: processStats }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="expireDate">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ExpireDate' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.expireDate | date:'dd.MM.yyyy' }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="insertUser">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.InsertUser' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.insertUser }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="insertDateTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.InsertDate' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.insertDateTime | date:'dd.MM.yyyy' }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="insertTime">
+							<mat-header-cell *matHeaderCellDef>{{ 'General.InsertTime' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.insertDateTime | slice:11:19 }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="actionBy">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ApproveRejectUser' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.actionBy }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="actionDateTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ApproveRejectDate' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.actionDateTime | date:'dd.MM.yyyy' }}</mat-cell>
+						</ng-container>
+
+						<ng-container matColumnDef="actionTime">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.ApproveRejectTime' | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row">{{ row.actionDateTime | slice:11:19 }}</mat-cell>
+						</ng-container>
+
+						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					</mat-table>
+
+					<div class="mat-table__message kt-font-danger" *ngIf="!dataSource2.hasItems && dataSource2.wasQuery">{{ 'General.NoRecordsFound' | translate }}</div>
+				</div>
+
+				<div class="mat-table__bottom">
+					<mat-spinner [diameter]="20" *ngIf="dataSource2.loading$ | async"></mat-spinner>
+					<mat-paginator #paginator2 (page)="changePaginator()" [pageSize]="10" [pageSizeOptions]="[10, 20, 50]" [length]="dataSource2.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
+				</div>
+			</mat-tab>
+		</mat-tab-group>
+	</kt-portlet-body>
+</kt-portlet>

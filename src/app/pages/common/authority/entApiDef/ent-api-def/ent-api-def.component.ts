@@ -52,15 +52,15 @@ export class EntApiDefComponent implements OnInit {
 		filter.eq('apiRoute', null);
 		let queryParams = new ODataParamsModel();
 		queryParams.filter = filter.toString();
-		this.service.api.getLookupOData("EntApiDef", queryParams).then(resLookup => {
-			this.parentApiDefs = resLookup;
+		this.service.api.getLookupOData("EntApiDef", queryParams).then(res => {
+			this.parentApiDefs = res;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const code = params.code;
 				this.isDisable = (params.type === 'show');
 				if (code && code !== null) {
-					this.service.get(code).subscribe(resEntity => {
-						this.model = resEntity.result;
+					this.service.get(code).subscribe(res => {
+						this.model = res.result;
 						this.model._isEditMode = !this.isDisable;
 						this.model._isNew = false;
 
