@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatSort, MatPaginator, MatDialogRef } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
-import { TransportApi } from '@services/transport.api';
 import { MsnMessagePoolDetailModel } from '@common/btc/msn-message-pool-model';
 import { FilteredDataSource } from '@core/_base/crud/models/filtered.datasource';
 import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
 import { MsnMessagePoolService } from '@common/framework/msn-message-pool.service';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { TransportApi } from '@services/transport.api';
 
 @Component({
 	selector: 'm-message-pool-detail',

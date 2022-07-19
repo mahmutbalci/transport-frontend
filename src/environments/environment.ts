@@ -11,6 +11,6 @@ export const environment = {
 	commonApiUrl: 'https://localhost:44341/api',
 	frameworkApiUrl: 'https://localhost:44341/api',
 	transportApiUrl: 'https://localhost:44341/api',
-	clearingApiUrl: 'https://localhost:44341/api',
-	quartzUrl: 'http://localhost:8088/quartz/',
+	quartzMinUrl: 'http://localhost:8088/',
+	crystalQuartzUrl: 'http://localhost:8088/quartz/',
 };

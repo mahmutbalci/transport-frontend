@@ -8,17 +8,17 @@ import { PartialsModule } from 'app/views/partials/partials.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared.module';
 import { CoreModule } from '@core/core.module';
+import { CfgHolidayListComponent } from './cfgHoliday/cfg-holiday-list/cfg-holiday-list.component';
+import { CfgHolidayDefComponent } from './cfgHoliday/cfg-holiday-def/cfg-holiday-def.component';
 import { InlineSVGModule } from 'ng-inline-svg';
-import { CfgMemberDefListComponent } from './cfgMemberDef/cfg-member-def-list/cfg-member-def-list.component';
-import { CfgMemberDefComponent } from './cfgMemberDef/cfg-member-def/cfg-member-def.component';
 import { CfgDashboardComponent } from './cfgDashboard/cfg-dashboard/cfg-dashboard.component';
 import { CfgDashboardListComponent } from './cfgDashboard/cfg-dashboard-list/cfg-dashboard-list.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 
 const routes: Routes = [
-	{ path: 'cfgMemberDef', component: CfgMemberDefListComponent },
-	{ path: 'cfgMemberDef/add', component: CfgMemberDefComponent },
-	{ path: 'cfgMemberDef/edit', component: CfgMemberDefComponent },
+	{ path: 'cfgHolidayDef', component: CfgHolidayListComponent },
+	{ path: 'cfgHolidayDef/add', component: CfgHolidayDefComponent },
+	{ path: 'cfgHolidayDef/edit', component: CfgHolidayDefComponent },
 	{ path: 'cfgDashboard', component: CfgDashboardListComponent },
 	{ path: 'cfgDashboard/add', component: CfgDashboardComponent },
 	{ path: 'cfgDashboard/edit', component: CfgDashboardComponent },
@@ -40,8 +40,8 @@ const routes: Routes = [
 		AngularEditorModule,
 	],
 	declarations: [
-		CfgMemberDefListComponent,
-		CfgMemberDefComponent,
+		CfgHolidayListComponent,
+		CfgHolidayDefComponent,
 		CfgDashboardComponent,
 		CfgDashboardListComponent,
 	],

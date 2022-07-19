@@ -27,6 +27,7 @@ import { DynamicParamaterPageComponent } from './components/dynamic-paramater-pa
 import { DynamicParamaterPageDefComponent } from './components/dynamic-paramater-page/dynamic-paramater-page-def/dynamic-paramater-page-def.component';
 import { RouterModule } from '@angular/router';
 import { PartialsModule } from './views/partials/partials.module';
+import { WorkflowApproveComponent } from '@components/workflow-approve/workflow-approve.component';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { ThemeModule } from './views/themes/default/theme.module';
 import { LastUpdatedPipe } from './pipes/lastupdated-pipe';
@@ -48,6 +49,7 @@ const _components = [
 	MLockScreenComponent,
 	DynamicParamaterPageComponent,
 	DynamicParamaterPageDefComponent,
+	WorkflowApproveComponent,
 	DynamicHistoryPageComponent,
 	DynamicGroupPageComponent,
 	JsonViewerComponent,

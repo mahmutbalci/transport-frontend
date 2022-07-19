@@ -1,0 +1,81 @@
+.approve_color {
+	color: green;
+	font-size: 2.3rem !important;
+}
+
+.reject_color {
+	color: red;
+}
+
+.edited_row_color {
+	background-color:yellow;
+}
+
+.deleted_row_color {
+	background-color:red;
+}
+
+.new_row_color {
+	background-color: greenyellow;
+}
+
+.inline {
+	display: inline-flex;
+	position: relative;
+
+	.node {
+		display: flex;
+		flex-direction: column;
+		margin-right: 5px;
+	}
+}
+
+.vertical {
+	flex-direction: column;
+}
+
+.inline .vertical {
+	position: absolute;
+	top: 50px;
+}
+
+.h-table-bold {
+	font-weight: 500;
+}
+
+.h-table {
+	display: flex;
+	
+	& > span:last-child {
+		background-color: ghostwhite;
+	}
+}
+
+.main-holder {
+	&:nth-child(even) .h-table {
+		background-color: ghostwhite;
+	}
+}
+
+.header-label {
+	font-weight: 500;
+	padding-right: 5px; 
+}
+
+.table-container {
+	margin-top: 10px;
+	margin-bottom: 5px;
+	
+	& > span {
+		color: black;
+		font-weight: bold;
+		text-decoration: underline;
+	}
+	
+	table {
+		//border: 1px solid gray;
+		tr:nth-child(even) {
+			background-color: ghostwhite;
+		}
+	}
+}

@@ -17,6 +17,7 @@ import { EntUserRoleDefComponent } from '@common/authority/entUserRoleDef/ent-us
 import { EntMenuTreeDefComponent } from '@common/authority/entMenuTreeDef/ent-menu-tree-def/ent-menu-tree-def.component';
 import { EntApiDefComponent } from '@common/authority/entApiDef/ent-api-def/ent-api-def.component';
 import { EntApiDefListComponent } from '@common/authority/entApiDef/ent-api-def-list/ent-api-def-list.component';
+import { EntUserRoleOwnershipRptComponent } from '@common/authority/entUserRoleOwnershipDef/ent-user-role-ownership-rpt/ent-user-role-ownership-rpt.component';
 import { EntUserDefComponent } from './entUserDef/ent-user-def/ent-user-def.component';
 import { EntUserDefListComponent } from './entUserDef/ent-user-def-list/ent-user-def-list.component';
 import { EntUserRolesPopupComponent } from './entUserDef/ent-user-roles-popup/ent-user-roles-popup.component';
@@ -29,6 +30,7 @@ const routes: Routes = [
 	{ path: 'entApiDef', component: EntApiDefListComponent },
 	{ path: 'entApiDef/add', component: EntApiDefComponent },
 	{ path: 'entApiDef/edit', component: EntApiDefComponent },
+	{ path: 'entUserRoleOwnershipRpt', component: EntUserRoleOwnershipRptComponent },
 	{ path: 'entUserDef', component: EntUserDefListComponent },
 	{ path: 'entUserDef/add', component: EntUserDefComponent },
 	{ path: 'entUserDef/edit', component: EntUserDefComponent },
@@ -58,6 +60,7 @@ const routes: Routes = [
 		EntMenuDetailDefComponent,
 		EntApiDefComponent,
 		EntApiDefListComponent,
+		EntUserRoleOwnershipRptComponent,
 		EntUserDefComponent,
 		EntUserDefListComponent,
 		EntUserRolesPopupComponent,

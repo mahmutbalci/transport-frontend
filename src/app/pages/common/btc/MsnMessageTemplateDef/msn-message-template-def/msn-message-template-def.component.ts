@@ -9,10 +9,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { MMatTableDataSource } from '@core/models/mmat-table.datasource';
 import { MsnMessageTemplateTextModel } from '@common/btc/msn-message-template-text-model';
 import { MsnMessageTemplateDefModel } from '@common/btc/msn-message-template-def-model';
-import { TransportApi } from '@services/transport.api';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud';
 import { MsnMessageTemplateDefService } from '@common/framework/msn-message-template-def.service';
+import { TransportApi } from '@services/transport.api';
 
 @Component({
 	selector: 'm-msn-message-template-def',
