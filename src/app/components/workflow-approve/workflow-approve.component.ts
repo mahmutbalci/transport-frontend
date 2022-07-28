@@ -629,7 +629,7 @@ export class WorkflowApproveComponent implements OnInit {
 	}
 
 	private isIgnoredFieldNames(keyName: string): boolean {
-		return keyName === 'LastUpdated' || keyName === 'Guid' || keyName === 'Status' || keyName === 'MbrId';
+		return keyName === 'LastUpdated' || keyName === 'Guid' || keyName === 'Status' || keyName === 'institutionId';
 	}
 
 	approve() {

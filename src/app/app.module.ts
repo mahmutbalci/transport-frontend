@@ -129,7 +129,7 @@ registerLocaleData(localetr, localetrExtra);
 		NgbModule,
 		TranslateModule.forRoot(),
 		MatProgressSpinnerModule,
-		InlineSVGModule.forRoot({ baseUrl: 'https://mysite.com/myapp/' }),
+		InlineSVGModule.forRoot({ baseUrl: 'http://localhost:4200' }),
 		TraceServiceModule,
 		AuthorityServiceModule,
 		WorkflowServiceModule,

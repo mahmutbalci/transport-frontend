@@ -40,7 +40,7 @@ export class EntUserDefComponent implements OnInit {
 	emailMask = emailMask;
 	phoneMask = [/[1-9]/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
 
-	cTicketType: string = "";
+	cTicketType: string = '';
 	cfgYesNoNumeric: any = [];
 	entUserTicketTypeDefs: any = [];
 	entUserStatDefs: any = [];
@@ -64,30 +64,30 @@ export class EntUserDefComponent implements OnInit {
 		Object.keys(this.entityModel.key).forEach(name => {
 			this.entityForm.addControl(name, new FormControl(this.entityModel.key[name]));
 		});
-		this.entityForm.addControl("userRoleGuids", new FormControl([]));
+		this.entityForm.addControl('userRoleGuids', new FormControl([]));
 
 		this.frameworkApi.getLookups(['CfgYesNoNumeric', 'EntUserTicketTypeDef', 'EntUserStatDef', 'EntUserAuthTypeDef', 'EntUserRestrictionDef', 'EntUserRoleDef',]).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
 			this.entUserTicketTypeDefs = res.find(x => x.name === 'EntUserTicketTypeDef').data;
-			this.entUserStatDefs = res.find(x => x.name === "EntUserStatDef").data;
-			this.entUserAuthTypeDefs = res.find(x => x.name === "EntUserAuthTypeDef").data;
-			this.entUserAuthTypeDefs = this.entUserAuthTypeDefs.filter(x => x.code == "L");
-			this.entUserRestrictionDefs = res.find(x => x.name === "EntUserRestrictionDef").data;
-			this.entUserRoleDefs = res.find(x => x.name === "EntUserRoleDef").data;
+			this.entUserStatDefs = res.find(x => x.name === 'EntUserStatDef').data;
+			this.entUserAuthTypeDefs = res.find(x => x.name === 'EntUserAuthTypeDef').data;
+			this.entUserAuthTypeDefs = this.entUserAuthTypeDefs.filter(x => x.code == 'L');
+			this.entUserRestrictionDefs = res.find(x => x.name === 'EntUserRestrictionDef').data;
+			this.entUserRoleDefs = res.find(x => x.name === 'EntUserRoleDef').data;
 
 			if (this.dontShowApiRoles) {
-				this.entUserTicketTypeDefs = this.entUserTicketTypeDefs.filter(x => x.code == "M");;
-				this.frameworkApi.getFilteredLookup("EntUserRoleDef", 'ticketType', 'M').then(res => {
+				this.entUserTicketTypeDefs = this.entUserTicketTypeDefs.filter(x => x.code == 'M');;
+				this.frameworkApi.getFilteredLookup('EntUserRoleDef', 'ticketType', 'M').then(res => {
 					this.entUserRoleDefs = res;
 				});
 			}
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const id = params.id;
-				const mbrId = params.mbrId;
-				this.isDisabled = (params.type == "show");
-				if (id && id !== null && mbrId && mbrId !== null) {
-					this.entityService.getUser(id, mbrId).subscribe(res => {
+				const institutionId = params.institutionId;
+				this.isDisabled = (params.type === 'show');
+				if (id && id !== null && institutionId && institutionId !== null) {
+					this.entityService.getUser(id, institutionId).subscribe(res => {
 						this.entityModel = res.result;
 						this.entityModel._isNew = false;
 						this.entityModel._isEditMode = !this.isDisabled;
@@ -103,8 +103,8 @@ export class EntUserDefComponent implements OnInit {
 				}
 				else {
 					this.entityModel = new EntUserModel();
-					this.entityModel.authType = "L";
-					this.entityModel.ticketType = "M";
+					this.entityModel.authType = 'L';
+					this.entityModel.ticketType = 'M';
 					this.entityModel._isNew = true;
 					this.entityModel._isEditMode = false;
 
@@ -142,7 +142,7 @@ export class EntUserDefComponent implements OnInit {
 			selectedItems.push(element.roleGuid);
 		});
 
-		controls["userRoleGuids"].setValue(selectedItems);
+		controls['userRoleGuids'].setValue(selectedItems);
 	}
 
 	goBack() {
@@ -156,12 +156,12 @@ export class EntUserDefComponent implements OnInit {
 			return this.translate.instant('General.Add');
 		else if (!this.isDisabled)
 			return this.translate.instant('General.Edit');
-		return "";
+		return '';
 	}
 
 	onAlertClose() {
 		this.hasFormErrors = false;
-		this.validationMessage = "";
+		this.validationMessage = '';
 	}
 
 	save() {
@@ -169,12 +169,12 @@ export class EntUserDefComponent implements OnInit {
 		this.hasFormErrors = false;
 
 		const controls = this.entityForm.controls;
-		controls["name"].setValue(controls["name"].value ? controls["name"].value.trim() : "");
-		controls["midname"].setValue(controls["midname"].value ? controls["midname"].value.trim() : "");
-		controls["surname"].setValue(controls["surname"].value ? controls["surname"].value.trim() : "");
-		controls["id"].setValue(controls["id"].value ? controls["id"].value.trim() : "");
-		controls["employeeId"].setValue(controls["employeeId"].value ? controls["employeeId"].value.trim() : "");
-		controls["email"].setValue(controls["email"].value ? controls["email"].value.trim() : "");
+		controls['name'].setValue(controls['name'].value ? controls['name'].value.trim() : '');
+		controls['midname'].setValue(controls['midname'].value ? controls['midname'].value.trim() : '');
+		controls['surname'].setValue(controls['surname'].value ? controls['surname'].value.trim() : '');
+		controls['id'].setValue(controls['id'].value ? controls['id'].value.trim() : '');
+		controls['employeeId'].setValue(controls['employeeId'].value ? controls['employeeId'].value.trim() : '');
+		controls['email'].setValue(controls['email'].value ? controls['email'].value.trim() : '');
 
 		if (this.entityForm.invalid) {
 			this.isSaving = false;
@@ -190,10 +190,10 @@ export class EntUserDefComponent implements OnInit {
 		}
 
 		this.entityModel = <EntUserModel>this.entityForm.value;
-		this.entityModel.key.id = this.entityForm.get("id").value;
-		this.entityModel.key.mbrId = parseInt(sessionStorage.getItem("mbrId"));
+		this.entityModel.key.id = this.entityForm.get('id').value;
+		this.entityModel.key.institutionId = parseInt(sessionStorage.getItem('institutionId'));
 
-		let userRoleGuids: any[] = this.entityForm.controls["userRoleGuids"].value;
+		let userRoleGuids: any[] = this.entityForm.controls['userRoleGuids'].value;
 		if (!userRoleGuids || userRoleGuids.length < 1) {
 			this.isSaving = false;
 			this.hasFormErrors = true;
@@ -294,9 +294,9 @@ export class EntUserDefComponent implements OnInit {
 			return;
 		}
 
-		this.entityForm.controls["userRoleGuids"].setValue(null);
+		this.entityForm.controls['userRoleGuids'].setValue(null);
 
-		this.frameworkApi.getFilteredLookup("EntUserRoleDef", 'ticketType', this.cTicketType).then(res => {
+		this.frameworkApi.getFilteredLookup('EntUserRoleDef', 'ticketType', this.cTicketType).then(res => {
 			this.entUserRoleDefs = res;
 		});
 	}

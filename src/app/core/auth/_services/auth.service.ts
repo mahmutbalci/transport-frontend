@@ -36,12 +36,12 @@ export class AuthService {
 	user: User = new User();
 	subject: Subject<boolean> = new Subject<boolean>();
 	// Authentication/Authorization
-	login(userCode: string, password: string, mbrId: number, channel: string): Observable<User> {
+	login(userCode: string, password: string, institutionId: number, channel: string): Observable<User> {
 
 		let xLanguage = this.getXLanguage();
 		const requestHeader = new HttpHeaders().append('h-language', xLanguage);
 
-		return this.http.post<User>(API_URL + API_GET_TOKEN, { userCode, password, mbrId, channel }, { headers: requestHeader });
+		return this.http.post<User>(API_URL + API_GET_TOKEN, { userCode, password, institutionId, channel }, { headers: requestHeader });
 	}
 
 	fillInstutions(): Observable<any> {
@@ -181,7 +181,7 @@ export class AuthService {
 			this.tokenStorage
 				.setAccessToken(accessData.result.token)
 				.setUserRoles(accessData.result.payload.claims);
-			sessionStorage.setItem('mbrId', accessData.result.payload.mbrId.toString());
+			sessionStorage.setItem('institutionId', accessData.result.payload.institutionId.toString());
 		}
 	}
 

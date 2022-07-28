@@ -16,7 +16,6 @@ import { FrameworkApi } from '@services/framework.api';
 import { MenuConfigService } from '@core/_base/layout';
 import { TranslationService } from '@core/_base/metronic';
 import { isNullOrUndefined } from 'util';
-import { environment } from 'environments/environment';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud';
 
 /**
@@ -25,7 +24,7 @@ import { LayoutUtilsService, MessageType } from '@core/_base/crud';
 const DEMO_PARAMS = {
 	USERCODE: '',
 	PASSWORD: '',
-	MBRID: 1,
+	institutionId: 1,
 	CHANNEL: 'ATLAS'
 };
 
@@ -101,7 +100,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.initLoginForm();
 		this.auth.fillInstutions().pipe(
 			tap(resp => {
-				this.memberDefList = resp.result;
+				this.memberDefList = resp.data;
 			}, responseErr => {
 				if (!isNullOrUndefined(responseErr.exception)) {
 					this.authNoticeService.setNotice(responseErr.exception.message, 'danger');
@@ -119,7 +118,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 		).subscribe();
 		this.translationService.getSelectedLanguage().subscribe(lang => {
 			this.translationService.setLanguage(lang);
-			this.setNotice();
 		});
 	}
 
@@ -139,14 +137,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	initLoginForm() {
 		// demo message to show
-		if (!this.authNoticeService.onNoticeChanged$.getValue()) {
-			const initialNotice = `Use account
-			<strong>${DEMO_PARAMS.USERCODE}</strong> , password
-			<strong>${DEMO_PARAMS.PASSWORD}</strong> mbrId
-			<strong>${DEMO_PARAMS.MBRID}</strong> to continue.`;
-			this.authNoticeService.setNotice(initialNotice, 'info');
-		}
-
 		this.loginForm = this.fb.group({
 			userCode: [DEMO_PARAMS.USERCODE, Validators.compose([
 				Validators.required,
@@ -166,7 +156,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 				Validators.maxLength(100)
 			])
 			],
-			mbrId: [DEMO_PARAMS.MBRID, Validators.compose([
+			institutionId: [DEMO_PARAMS.institutionId, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
 				Validators.maxLength(20)
@@ -194,15 +184,15 @@ export class LoginComponent implements OnInit, OnDestroy {
 		const authData = {
 			userCode: controls['userCode'].value,
 			password: controls['password'].value,
-			mbrId: controls['mbrId'].value,
+			institutionId: controls['institutionId'].value,
 			channel: controls['channel'].value
 		};
 
-		let memberName = this.memberDefList.find(member => member.mbrId == authData.mbrId).description;
+		let memberName = this.memberDefList.find(member => member.institutionId == authData.institutionId).description;
 		sessionStorage.setItem('memberName', memberName);
 
 		this.determineLocalIp();
-		this.auth.login(authData.userCode, authData.password, authData.mbrId, authData.channel)
+		this.auth.login(authData.userCode, authData.password, authData.institutionId, authData.channel)
 			.pipe(
 				tap(user => {
 					if (user && user.statusCode === 200) {
@@ -247,7 +237,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 						this.store.dispatch(new Login({ authToken: user.result.token }));
 						this.router.navigateByUrl('/'); // Main page
-						this.frameworkApi.get<any>('auth/EntUser/GetUserInfo?id=' + authData.userCode + '&MbrId=' + authData.mbrId).subscribe(res1 => {
+						this.frameworkApi.get<any>('auth/EntUser/GetUserInfo?id=' + authData.userCode + '&institutionId=' + authData.institutionId).subscribe(res1 => {
 							sessionStorage.setItem('userConfig', this.userConfig);
 							sessionStorage.setItem('userEvent', 'login');
 							sessionStorage.setItem('user', JSON.stringify(res1.result));
@@ -320,16 +310,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	onLanguageChange(lang: any): void {
-		this.setNotice();
-	}
-
-	setNotice() {
-		let initialNotice = this.translate.instant('Auth.Login.NoticeText');
-		if (environment.envName === 'PROD') {
-			initialNotice = '';
-		}
-
-		this.authNoticeService.setNotice(initialNotice, 'success');
 	}
 
 	/**

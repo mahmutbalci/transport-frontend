@@ -4,7 +4,7 @@ import { WorkflowStateModel } from './workflowState.model';
 export class WorkflowDefinitionModel extends BaseModel {
 	guid: number = 0;
 	lastUpdated: number = 1;
-	mbrId: number = 0;
+	institutionId: number = 0;
 	apiRoute: string = '';
 	apiMethod: string = '';
 	expression: string = null;

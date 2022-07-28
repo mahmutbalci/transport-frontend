@@ -219,7 +219,7 @@ export class MenuConfigService {
 		//leaf = false diye bir alan olsa iyi olur suan sadece iconPath den anlayabiliyoruz boşsa leaftir diye...
 		if (menu.iconPath != null && menu.iconPath.length > 0) {
 			item.root = true;
-			item.mbrId = menu.mbrId;
+			item.institutionId = menu.institutionId;
 			item.icon = menu.iconPath;
 			item.desc = menu.description;
 

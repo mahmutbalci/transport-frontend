@@ -7,7 +7,7 @@ import { AnnouncementDetailPopupComponent } from './announcement-detail-popup/an
 export interface Widget5Data {
 	guid: number;
 	lastUpdated: number;
-	mbrId: number;
+	institutionId: number;
 	contentHeader?: string;
 	timelineContent?: string;
 	picture?: string;

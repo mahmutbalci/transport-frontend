@@ -18,7 +18,7 @@ export class EntUserService extends BaseService {
 		return this.api.get(this.endpoint + '/all');
 	}
 
-	getUser(id: string, mbrId: number) {
-		return this.api.get(this.endpoint + '?Id=' + id + '&MbrId=' + mbrId);
+	getUser(id: string, institutionId: number) {
+		return this.api.get(this.endpoint + '?Id=' + id + '&institutionId=' + institutionId);
 	}
 }
