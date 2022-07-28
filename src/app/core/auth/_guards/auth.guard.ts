@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
 					if (!loggedIn) {
 						this.router.navigateByUrl('/auth/login');
 					} else {
-						if (!sessionStorage.getItem('mbrId')) {
+						if (!sessionStorage.getItem('institutionId')) {
 							this.authService.clearSession();
 							this.router.navigate(['/auth/login'], { queryParams: { 'url': state.url } });
 						}

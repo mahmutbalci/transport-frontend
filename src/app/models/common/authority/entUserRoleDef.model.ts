@@ -5,7 +5,7 @@ import { EntUserRoleApiModel } from './entUserRoleApi.model';
 export class EntUserRoleDefModel extends BaseModel {
 	guid: number = 0;
 	lastUpdated: number = 1;
-	mbrId: number = 0;
+	institutionId: number = 0;
 	ticketType: string = 'M';
 	description: string = '';
 	userRoleMenus: EntUserRoleMenuModel[] = [];

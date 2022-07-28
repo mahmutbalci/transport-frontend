@@ -89,13 +89,13 @@ export class EntUserDefListComponent implements OnInit {
 		this.frameworkApi.getLookups(['CfgYesNoNumeric', 'EntUserTicketTypeDef', 'EntUserStatDef', 'EntUserAuthTypeDef', 'EntUserRestrictionDef', 'EntUserRoleDef']).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
 			this.entUserTicketTypeDefs = res.find(x => x.name === 'EntUserTicketTypeDef').data;
-			this.entUserStatDefs = res.find(x => x.name === "EntUserStatDef").data;
-			this.entUserAuthTypeDefs = res.find(x => x.name === "EntUserAuthTypeDef").data;
-			this.entUserRestrictionDefs = res.find(x => x.name === "EntUserRestrictionDef").data;
-			this.entUserRoleDefs = res.find(x => x.name === "EntUserRoleDef").data;
+			this.entUserStatDefs = res.find(x => x.name === 'EntUserStatDef').data;
+			this.entUserAuthTypeDefs = res.find(x => x.name === 'EntUserAuthTypeDef').data;
+			this.entUserRestrictionDefs = res.find(x => x.name === 'EntUserRestrictionDef').data;
+			this.entUserRoleDefs = res.find(x => x.name === 'EntUserRoleDef').data;
 
 			if (this.dontShowApiRoles) {
-				this.frameworkApi.getFilteredLookup("EntUserRoleDef", 'ticketType', 'M').then(res => {
+				this.frameworkApi.getFilteredLookup('EntUserRoleDef', 'ticketType', 'M').then(res => {
 					this.entUserRoleDefs = res;
 				});
 			}
@@ -155,8 +155,8 @@ export class EntUserDefListComponent implements OnInit {
 		}
 
 		let requestObj: EntUserDtoModel = <EntUserDtoModel>this.filterForm.value;
-		requestObj.mbrId = parseInt(sessionStorage.getItem("mbrId"));
-		requestObj.authType = "L";
+		requestObj.institutionId = parseInt(sessionStorage.getItem('institutionId'));
+		requestObj.authType = 'L';
 		requestObj.ticketType = this.dontShowApiRoles ? 'M' : requestObj.ticketType;
 
 		if (this.filterForm.get('isBuiltInUser').value != null) {
@@ -179,7 +179,7 @@ export class EntUserDefListComponent implements OnInit {
 
 			let key: UserKey = new UserKey();
 			key.id = item.id;
-			key.mbrId = item.mbrId;
+			key.institutionId = item.institutionId;
 
 			this.entityService.delete(key).subscribe((response: any) => {
 				this.layoutUtilsService.showNotification(response.message, MessageType.Delete);
@@ -208,9 +208,9 @@ export class EntUserDefListComponent implements OnInit {
 	}
 
 	addPipeObject() {
-		this.pipeObjectList.push({ key: "lastLoginDateTime", value: 'date', format: 'dd.MM.yyyy' });
-		this.pipeObjectList.push({ key: "lastPasswordChangeDate", value: 'date', format: 'dd.MM.yyyy' });
-		this.pipeObjectList.push({ key: "lastPasswordResetDate", value: 'date', format: 'dd.MM.yyyy' });
+		this.pipeObjectList.push({ key: 'lastLoginDateTime', value: 'date', format: 'dd.MM.yyyy' });
+		this.pipeObjectList.push({ key: 'lastPasswordChangeDate', value: 'date', format: 'dd.MM.yyyy' });
+		this.pipeObjectList.push({ key: 'lastPasswordResetDate', value: 'date', format: 'dd.MM.yyyy' });
 	}
 
 	showUserRoles(item: EntUserDtoModel) {
@@ -231,7 +231,7 @@ export class EntUserDefListComponent implements OnInit {
 
 		let userKey: UserKey = new UserKey();
 		userKey.id = item.id;
-		userKey.mbrId = item.mbrId;
+		userKey.institutionId = item.institutionId;
 
 		this.dialog.open(DynamicHistoryPageComponent, {
 			data: {
@@ -259,7 +259,7 @@ export class EntUserDefListComponent implements OnInit {
 			(exportAll ? -1 : this.paginator.pageSize)
 		);
 
-		this.excelService.exportAsExcelFileRouting(this.entityService, queryParams, "getUsers", 'UserList', this.gridColumns, this.lookupObjectList, this.pipeObjectList);
+		this.excelService.exportAsExcelFileRouting(this.entityService, queryParams, 'getUsers', 'UserList', this.gridColumns, this.lookupObjectList, this.pipeObjectList);
 
 		this.loadDataSource();
 	}

@@ -94,7 +94,7 @@ export class EntUserRoleOwnershipRptComponent implements OnInit {
 			this.entUserDef.forEach(entUser => {
 				index++;
 				if (entUser.userRoleOwnerShips && entUser.userRoleOwnerShips.length > 0
-					&& entUser.key.mbrId && entUser.key.mbrId.toString() === sessionStorage.getItem('mbrId')) {
+					&& entUser.key.institutionId && entUser.key.institutionId.toString() === sessionStorage.getItem('institutionId')) {
 					let extUserCode = entUser.key.id;
 					let extEmployeeId = entUser.employeeId;
 					let extUserName = entUser.name;

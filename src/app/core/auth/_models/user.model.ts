@@ -27,7 +27,7 @@ export class User extends BaseModel {
         messages: any;
         payload: {
             userId: string;
-            mbrId: number;
+            institutionId: number;
             sessionId: number;
         }
     }
