@@ -93,7 +93,7 @@ export class TokenInterceptor implements HttpInterceptor {
 					this.authService.clearSession();
 
 					setTimeout(() => {
-						location.reload(true);
+						location.reload();
 						return next.handle(request);
 					}, 3000);
 				});
