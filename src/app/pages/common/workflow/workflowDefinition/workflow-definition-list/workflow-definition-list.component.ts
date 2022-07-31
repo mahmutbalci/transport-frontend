@@ -7,7 +7,7 @@ import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
 import * as _ from 'lodash';
 import { TranslateService } from '@ngx-translate/core';
 import { ParameterDataSource } from '@core/_base/crud/models/parameter.datasource';
-import { EntApiDefService } from '@common/authority/entApiDef.service';
+import { AppApisService } from '@common/authority/appApis.service';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { DynamicHistoryPageComponent } from '@components/dynamic-history-page/dynamic-history-page.component';
 import { FrameworkApi } from '@services/framework.api';
@@ -38,7 +38,7 @@ export class WorkflowDefinitionListComponent implements OnInit, AfterViewInit {
 		private route: ActivatedRoute,
 		private layoutUtilsService: LayoutUtilsService,
 		private translate: TranslateService,
-		private entApiDefService: EntApiDefService,
+		private appApisService: AppApisService,
 		private frameworkApi: FrameworkApi) { }
 
 	ngAfterViewInit(): void {
@@ -49,7 +49,7 @@ export class WorkflowDefinitionListComponent implements OnInit, AfterViewInit {
 	}
 
 	ngOnInit() {
-		this.entApiDefService.getAll().subscribe((res: any) => {
+		this.appApisService.getAll().subscribe((res: any) => {
 			this.entApiDefs = res.result;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);

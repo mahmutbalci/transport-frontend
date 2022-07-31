@@ -112,11 +112,13 @@ export class TokenInterceptor implements HttpInterceptor {
 			this.isRefreshing = true;
 			this.refreshTokenSubject.next(null);
 
+			let claimsArr: any[] = JSON.parse(sessionStorage.getItem('userClaims'));
+
 			this.authService.refreshToken().subscribe(
 				(accessData: any) => {
 					this.isRefreshing = false;
-					this.refreshTokenSubject.next(accessData.result.token);
-					this.authService.saveAccessData(accessData);
+					this.refreshTokenSubject.next(accessData.data.token);
+					this.authService.saveAccessData(accessData, claimsArr);
 					return next.handle(request);
 				}, catchError(err => err)
 			);

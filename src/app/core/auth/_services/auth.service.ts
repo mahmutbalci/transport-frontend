@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of, Subject } from 'rxjs';
-import { User } from '../_models/user.model';
+import { AuthTokenModel } from '../_models/authToken.model';
 import { Permission } from '../_models/permission.model';
 import { Role } from '../_models/role.model';
 import { catchError, map, finalize, switchMap } from 'rxjs/operators';
@@ -33,15 +33,14 @@ export class AuthService {
 		@Inject(DOCUMENT) private document: Document) {
 	}
 
-	user: User = new User();
+	user: AuthTokenModel = new AuthTokenModel();
 	subject: Subject<boolean> = new Subject<boolean>();
 	// Authentication/Authorization
-	login(userCode: string, password: string, institutionId: number, channel: string): Observable<User> {
+	login(clientId: string, clientSecret: string, institutionId: number): Observable<AuthTokenModel> {
+		let hLanguage = this.getXLanguage();
+		const requestHeader = new HttpHeaders().append('h-language', hLanguage);
 
-		let xLanguage = this.getXLanguage();
-		const requestHeader = new HttpHeaders().append('h-language', xLanguage);
-
-		return this.http.post<User>(API_URL + API_GET_TOKEN, { userCode, password, institutionId, channel }, { headers: requestHeader });
+		return this.http.post<AuthTokenModel>(API_URL + API_GET_TOKEN, { clientId, clientSecret, institutionId }, { headers: requestHeader });
 	}
 
 	fillInstutions(): Observable<any> {
@@ -51,12 +50,12 @@ export class AuthService {
 		return this.http.get<any>(API_URL + API_GET_MEMBER, { headers: httpHeaders });
 	}
 
-	register(user: User): Observable<any> {
+	register(authTokenModel: AuthTokenModel): Observable<any> {
 		const httpHeaders = new HttpHeaders();
 		httpHeaders.set('Content-Type', 'application/json');
-		return this.http.post<User>(API_USERS_URL, user, { headers: httpHeaders })
+		return this.http.post<AuthTokenModel>(API_USERS_URL, authTokenModel, { headers: httpHeaders })
 			.pipe(
-				map((res: User) => {
+				map((res: AuthTokenModel) => {
 					return res;
 				}),
 				catchError(err => {
@@ -176,12 +175,9 @@ export class AuthService {
 		);
 	}
 
-	public saveAccessData(accessData: any) {
+	public saveAccessData(accessData: any, claims: any[]) {
 		if (typeof accessData !== 'undefined') {
-			this.tokenStorage
-				.setAccessToken(accessData.result.token)
-				.setUserRoles(accessData.result.payload.claims);
-			sessionStorage.setItem('institutionId', accessData.result.payload.institutionId.toString());
+			this.tokenStorage.setAccessToken(accessData.data.token).setUserRoles(claims);
 		}
 	}
 

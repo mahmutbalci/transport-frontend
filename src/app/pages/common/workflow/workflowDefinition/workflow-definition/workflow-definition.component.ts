@@ -11,7 +11,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { WorkflowStateExpressionComponent } from '@common/workflow/workflowDefinition/workflow-state-expression-def/workflow-state-expression-def.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CfgExpressionConfigDefService } from '@common/framework/cfgExpressionConfigDef.service';
-import { EntApiDefService } from '@common/authority/entApiDef.service';
+import { AppApisService } from '@common/authority/appApis.service';
 import { MMatTableDataSource } from '@core/models/mmat-table.datasource';
 import { LangParserPipe } from 'app/pipes/lang-parser.pipe';
 import { LookupPipe } from 'app/pipes/lookup.pipe';
@@ -54,7 +54,7 @@ export class WorkflowDefinitionComponent implements OnInit {
 
 	ind: number = 1;
 	isDisabled: boolean = false;
-	isSaving: boolean = false;
+	isProcessing: boolean = false;
 
 	maskNumber = createNumberMask({
 		prefix: '',
@@ -77,7 +77,7 @@ export class WorkflowDefinitionComponent implements OnInit {
 		private translate: TranslateService,
 		private frameworkApi: FrameworkApi,
 		public cfgExpressionConfigDefService: CfgExpressionConfigDefService,
-		private entApiDefService: EntApiDefService) { }
+		private appApisService: AppApisService) { }
 
 	ngOnInit() {
 		Object.keys(this.entityModel).forEach(name => {
@@ -90,7 +90,7 @@ export class WorkflowDefinitionComponent implements OnInit {
 			this.entApiMethod = res.find(x => x.name === 'EntApiMethod').data;
 			this.entUserRoleDefs = res.find(x => x.name === 'EntUserRoleDef').data;
 
-			this.entApiDefService.getAll().subscribe((apiSer: any) => {
+			this.appApisService.getAll().subscribe((apiSer: any) => {
 				this.entApiDefs = apiSer.result;
 
 				const dynSub = this.activatedRoute.queryParams.subscribe(params => {
@@ -171,7 +171,7 @@ export class WorkflowDefinitionComponent implements OnInit {
 			return;
 		}
 
-		this.isSaving = true;
+		this.isProcessing = true;
 
 		this.entityModel = <WorkflowDefinitionModel>this._form.value;
 		this.entityModel.expression = JSON.stringify(this.query);
@@ -193,10 +193,10 @@ export class WorkflowDefinitionComponent implements OnInit {
 				});
 		}, (error) => {
 			this.loading = false;
-			this.isSaving = false;
+			this.isProcessing = false;
 			this.layoutUtilsService.showError(error);
 		}, () => {
-			this.isSaving = false;
+			this.isProcessing = false;
 			this.loading = false;
 		});
 	}
@@ -210,10 +210,10 @@ export class WorkflowDefinitionComponent implements OnInit {
 					});
 			}, (error) => {
 				this.loading = false;
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.layoutUtilsService.showError(error);
 			}, () => {
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.loading = false;
 			});
 	}

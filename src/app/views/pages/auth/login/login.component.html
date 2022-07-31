@@ -31,17 +31,17 @@
 			<div class="form-group">
 				<mat-form-field>
 					<mat-label>{{ 'Auth.Input.UserCode' | translate }}</mat-label>
-					<input matInput type="text" placeholder="{{ 'Auth.Input.UserCode' | translate }}" formControlName="userCode" autocomplete="off" />
+					<input matInput type="text" placeholder="{{ 'Auth.Input.UserCode' | translate }}" formControlName="clientId" autocomplete="off" />
 
-					<mat-error *ngIf="isControlHasError('userCode','required')">
+					<mat-error *ngIf="isControlHasError('clientId','required')">
 						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
 					</mat-error>
 
-					<mat-error *ngIf="isControlHasError('userCode','minLength')">
+					<mat-error *ngIf="isControlHasError('clientId','minLength')">
 						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 1</strong>
 					</mat-error>
 
-					<mat-error *ngIf="isControlHasError('userCode','maxLength')">
+					<mat-error *ngIf="isControlHasError('clientId','maxLength')">
 						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 320</strong>
 					</mat-error>
 				</mat-form-field>
@@ -49,17 +49,17 @@
 			<div class="form-group">
 				<mat-form-field>
 					<mat-label>{{ 'Auth.Input.Password' | translate }}</mat-label>
-					<input matInput type="password" placeholder="{{ 'Auth.Input.Password' | translate }}" formControlName="password" autocomplete="off" />
+					<input matInput type="password" placeholder="{{ 'Auth.Input.Password' | translate }}" formControlName="clientSecret" autocomplete="off" />
 
-					<mat-error *ngIf="isControlHasError('password','required')">
+					<mat-error *ngIf="isControlHasError('clientSecret','required')">
 						<strong>{{ 'Auth.Validation.RequiredField' | translate }}</strong>
 					</mat-error>
 
-					<mat-error *ngIf="isControlHasError('password','minLength')">
+					<mat-error *ngIf="isControlHasError('clientSecret','minLength')">
 						<strong>{{ 'Auth.Validation.MinLengthField' | translate }} 3</strong>
 					</mat-error>
 
-					<mat-error *ngIf="isControlHasError('password','maxLength')">
+					<mat-error *ngIf="isControlHasError('clientSecret','maxLength')">
 						<strong>{{ 'Auth.Validation.MaxLengthField' | translate }} 100</strong>
 					</mat-error>
 				</mat-form-field>

@@ -11,7 +11,6 @@ import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-u
 import { DynamicHistoryPageComponent } from '@components/dynamic-history-page/dynamic-history-page.component';
 import { CfgDashboardService } from '@common/member/cfgDashboard.Service';
 import { CfgDashboardModel } from '@common/member/cfgDashboard.model';
-import { FrameworkApi } from '@services/framework.api';
 
 @Component({
 	selector: 'kt-cfg-dashboard-list',
@@ -20,12 +19,14 @@ import { FrameworkApi } from '@services/framework.api';
 export class CfgDashboardListComponent implements OnInit, AfterViewInit {
 	dataSource: ParameterDataSource;
 	displayedColumns = ['actions', 'contentHeader', 'startDate', 'endDate', 'highlight', 'insertUser', 'insertDateTime', 'updateUser', 'updateDateTime',];
-	@ViewChild(MatPaginator) paginator: MatPaginator;
-	@ViewChild(MatSort) sort: MatSort;
-	@ViewChild('searchInput') searchInput: ElementRef;
 
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
+
+	menuUrl: string = '/common/member/cfgDashboard';
+	@ViewChild(MatPaginator) paginator: MatPaginator;
+	@ViewChild(MatSort) sort: MatSort;
+	@ViewChild('searchInput') searchInput: ElementRef;
 
 	cfgYesNoNumeric: any[] = [];
 
@@ -35,11 +36,10 @@ export class CfgDashboardListComponent implements OnInit, AfterViewInit {
 		private route: ActivatedRoute,
 		private layoutUtilsService: LayoutUtilsService,
 		private translate: TranslateService,
-		private frameworkApi: FrameworkApi,
 	) { }
 
 	ngAfterViewInit(): void {
-		this.frameworkApi.getLookups(["CfgYesNoNumeric",]).then(res => {
+		this.entityService.api.getLookups(["CfgYesNoNumeric",]).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === "CfgYesNoNumeric").data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
@@ -84,6 +84,7 @@ export class CfgDashboardListComponent implements OnInit, AfterViewInit {
 			this.paginator.pageIndex,
 			this.paginator.pageSize
 		);
+
 		this.dataSource.load(queryParams);
 	}
 
@@ -96,7 +97,7 @@ export class CfgDashboardListComponent implements OnInit, AfterViewInit {
 		return filter;
 	}
 
-	delete(_item: CfgDashboardModel) {
+	delete(item: CfgDashboardModel) {
 		const _title: string = this.translate.instant('General.DeleteConfirmation');
 		const _description: string = this.translate.instant('General.AreYouSureToPermanentlyDeleteThisRecord');
 		const _waitDesciption: string = this.translate.instant('General.RecordIsBeingDeleted');
@@ -107,7 +108,7 @@ export class CfgDashboardListComponent implements OnInit, AfterViewInit {
 				return;
 			}
 
-			this.entityService.delete(_item.guid).subscribe(() => {
+			this.entityService.delete(item.guid).subscribe(() => {
 				this.layoutUtilsService.showNotification(_deleteMessage, MessageType.Delete);
 				this.loadDataSource();
 			}, (error) => {

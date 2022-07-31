@@ -64,8 +64,8 @@ export class BaseDataSource implements DataSource<BaseModel> {
 		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined') {
 			if (typeof this.errorSubject.value.error.error !== 'undefined' && typeof this.errorSubject.value.error.error.exception !== 'undefined') {
 				errorMessage = this.errorSubject.value.error.error.exception.message;
-				if (this.errorSubject.value.error.error.correlationId) {
-					errorMessage += ' CorrelationId : ' + this.errorSubject.value.error.error.correlationId;
+				if (this.errorSubject.value.error.error.referenceId) {
+					errorMessage += ' CorrelationId : ' + this.errorSubject.value.error.error.referenceId;
 				}
 
 				if (this.errorSubject.value.error.error.exception.validationErrors) {
@@ -77,8 +77,8 @@ export class BaseDataSource implements DataSource<BaseModel> {
 			}
 			else {
 				errorMessage = this.errorSubject.value.error.message;
-				if (this.errorSubject.value.error.correlationId) {
-					errorMessage += ' CorrelationId : ' + this.errorSubject.value.error.correlationId;
+				if (this.errorSubject.value.error.referenceId) {
+					errorMessage += ' CorrelationId : ' + this.errorSubject.value.error.referenceId;
 				}
 			}
 		}

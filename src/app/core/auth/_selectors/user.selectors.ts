@@ -5,7 +5,7 @@ import { HttpExtenstionsModel } from '../../_base/crud';
 // State
 import { UsersState } from '../_reducers/user.reducers';
 import { each } from 'lodash';
-import { User } from '../_models/user.model';
+import { AuthTokenModel } from '../_models/authToken.model';
 import { QueryResultsModel } from '@core/_base/crud/models/query-results.model';
 
 
@@ -41,12 +41,12 @@ export const selectUsersPageLastQuery = createSelector(
 export const selectUsersInStore = createSelector(
     selectUsersState,
     usersState => {
-        const items: User[] = [];
+        const items: AuthTokenModel[] = [];
         each(usersState.entities, element => {
             items.push(element);
         });
         const httpExtension = new HttpExtenstionsModel();
-        const result: User[] = httpExtension.sortArray(items, usersState.lastQuery.sortField, usersState.lastQuery.sortOrder);
+        const result: AuthTokenModel[] = httpExtension.sortArray(items, usersState.lastQuery.sortField, usersState.lastQuery.sortOrder);
         return new QueryResultsModel(result, usersState.totalCount);
     }
 );

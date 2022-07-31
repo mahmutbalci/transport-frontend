@@ -29,7 +29,7 @@ export class TxnResponseCodeDefComponent implements OnInit {
 	isAdd: boolean = true;
 	isDisabled: boolean = false;
 	editedRecCode: any;
-	isSaving: boolean = false;
+	isProcessing: boolean = false;
 
 	// mask for code field: (code can be max 2 length)
 	public codeMask = [/[a-z\dA-Z]/, /[a-z\dA-Z]/];
@@ -103,7 +103,7 @@ export class TxnResponseCodeDefComponent implements OnInit {
 			this.hasFormErrors = true;
 			return;
 		}
-		this.isSaving = true;
+		this.isProcessing = true;
 		this.txnResponseCodeDefModel = <TxnResponseCodeDefModel>this.txnResponseCodeDefForm.value;
 
 		if (this.isAdd)
@@ -128,12 +128,12 @@ export class TxnResponseCodeDefComponent implements OnInit {
 					});
 			}, (error) => {
 				this.loading = false;
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.loadingSubject.next(false);
 				this.layoutUtilsService.showError(error);
 			}, () => {
 				this.loading = false;
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.loadingSubject.next(false);
 			});
 	}
@@ -151,11 +151,11 @@ export class TxnResponseCodeDefComponent implements OnInit {
 					});
 			}, (error) => {
 				this.loading = false;
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.layoutUtilsService.showError(error);
 			}, () => {
 				this.loading = false;
-				this.isSaving = false;
+				this.isProcessing = false;
 			});
 	}
 

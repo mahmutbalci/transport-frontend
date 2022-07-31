@@ -22,7 +22,7 @@ export class TxnMccGroupDefComponent implements OnInit {
 	loading$ = this.loadingSubject.asObservable();
 	hasFormErrors: boolean = false;
 	isAdd: boolean = true;
-	isSaving: boolean = false;
+	isProcessing: boolean = false;
 	txnMccGroupDefForm: FormGroup = new FormGroup({});
 	entityModel: TxnMccGroupDefModel = new TxnMccGroupDefModel();
 
@@ -103,7 +103,7 @@ export class TxnMccGroupDefComponent implements OnInit {
 	}
 
 	save() {
-		this.isSaving = true;
+		this.isProcessing = true;
 		this.hasFormErrors = false;
 		const controls = this.txnMccGroupDefForm.controls;
 		controls['code'].setValue(controls['code'].value.trim());
@@ -120,7 +120,7 @@ export class TxnMccGroupDefComponent implements OnInit {
 			}
 
 			this.hasFormErrors = true;
-			this.isSaving = false;
+			this.isProcessing = false;
 			return;
 		}
 
@@ -145,7 +145,7 @@ export class TxnMccGroupDefComponent implements OnInit {
 				this.errorMessage = error;
 				this.loading = false;
 				this.layoutUtilsService.showError(error);
-				this.isSaving = false;
+				this.isProcessing = false;
 
 			},
 			() => {
@@ -166,7 +166,7 @@ export class TxnMccGroupDefComponent implements OnInit {
 					this.errorMessage = error;
 					this.loading = false;
 					this.layoutUtilsService.showError(error);
-					this.isSaving = false;
+					this.isProcessing = false;
 
 				},
 				() => {

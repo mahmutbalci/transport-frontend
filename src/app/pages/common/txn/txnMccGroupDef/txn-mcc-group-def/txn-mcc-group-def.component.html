@@ -18,10 +18,10 @@
 			</a>
 
 			<div *ngIf="'add'|checkauth">
-				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span>
 				</a>
-				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span> <i class="la la-edit"></i> <span>{{'General.Update' | translate}}</span> </span>
 				</a>
 			</div>

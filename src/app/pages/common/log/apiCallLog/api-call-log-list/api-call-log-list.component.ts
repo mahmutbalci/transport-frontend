@@ -160,7 +160,7 @@ export class ApiCallLogListComponent implements OnInit {
 	openHistory(guid) {
 		this.dialog.open(DynamicHistoryPageComponent, {
 			data: {
-				correlationId: guid
+				referenceId: guid
 			}
 		});
 	}

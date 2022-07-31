@@ -50,8 +50,8 @@ export class CfgDashboardComponent implements OnInit {
 	entityModel: CfgDashboardModel = new CfgDashboardModel();
 
 	isReadonly: boolean = false;
-	isSaving: boolean = false;
-	backUrl: string = '/common/member/cfgDashboard';
+	isProcessing: boolean = false;
+	menuUrl: string = '/common/member/cfgDashboard';
 
 	constructor(
 		private activatedRoute: ActivatedRoute,
@@ -107,22 +107,23 @@ export class CfgDashboardComponent implements OnInit {
 	}
 
 	goBack() {
-		this.router.navigateByUrl(this.backUrl);
+		this.router.navigateByUrl(this.menuUrl);
 	}
 
 	getComponentTitle() {
 		if (this.isReadonly) {
 			return this.translate.instant('General.View');
-		} else if (!this.entityModel || !this.entityModel.guid) {
+		} else if (this.entityModel._isNew) {
 			return this.translate.instant('General.Add');
-		} else if (!this.isReadonly) {
+		} else if (this.entityModel._isEditMode) {
 			return this.translate.instant('General.Edit');
 		}
+
 		return '';
 	}
 
 	save() {
-		this.isSaving = true;
+		this.isProcessing = true;
 		const controls = this.entityForm.controls;
 
 		if (this.entityForm.invalid) {
@@ -130,7 +131,7 @@ export class CfgDashboardComponent implements OnInit {
 				controls[name].markAsTouched()
 			);
 
-			this.isSaving = false;
+			this.isProcessing = false;
 			return;
 		}
 
@@ -148,12 +149,12 @@ export class CfgDashboardComponent implements OnInit {
 	update() {
 		this.entityService.update(this.entityModel).subscribe((response: any) => {
 			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false).afterClosed().subscribe(() => {
-				this.router.navigate([this.backUrl]);
+				this.router.navigate([this.menuUrl]);
 			});
 		}, (error) => {
 			this.loading = false;
 			this.layoutUtilsService.showError(error);
-			this.isSaving = false;
+			this.isProcessing = false;
 		}, () => {
 			this.loading = false;
 		});
@@ -163,12 +164,12 @@ export class CfgDashboardComponent implements OnInit {
 		this.entityService.create(this.entityModel)
 			.subscribe((response: any) => {
 				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(() => {
-					this.router.navigate([this.backUrl]);
+					this.router.navigate([this.menuUrl]);
 				});
 			}, (error) => {
 				this.loading = false;
 				this.layoutUtilsService.showError(error);
-				this.isSaving = false;
+				this.isProcessing = false;
 			}, () => {
 				this.loading = false;
 			});

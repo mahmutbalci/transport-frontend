@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import * as _ from 'lodash';
 import { FormGroup, FormControl } from '@angular/forms';
-import { EntUserRoleDefService } from '@common/authority/entUserRoleDef.service';
+import { AppRolesService } from '@common/authority/appRoles.service';
 import f from '@assets/lib/odata/ODataFilterBuilder.js';
 import { ODataParamsModel } from '@core/_base/crud/models/odata-params.model';
 import { LayoutUtilsService } from '@core/_base/crud/utils/layout-utils.service';
@@ -29,7 +29,7 @@ export class WorkflowStateExpressionComponent implements OnInit {
 
 	constructor(@Inject(MAT_DIALOG_DATA) public gridData: any,
 		public dialogRef: MatDialogRef<WorkflowStateExpressionComponent>,
-		private entUserRoleDefService: EntUserRoleDefService,
+		private appRolesService: AppRolesService,
 		private layoutUtilsService: LayoutUtilsService,) { }
 
 	ngOnInit() {
@@ -43,7 +43,7 @@ export class WorkflowStateExpressionComponent implements OnInit {
 		queryParams.filter = filter.toString();
 		queryParams.orderby = 'guid asc';
 
-		this.entUserRoleDefService.findOData(queryParams).subscribe((result: any) => {
+		this.appRolesService.findOData(queryParams).subscribe((result: any) => {
 			this.entUserRoleDefs = result.items;
 
 			this.initForm();

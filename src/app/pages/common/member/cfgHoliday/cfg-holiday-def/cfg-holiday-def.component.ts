@@ -33,7 +33,7 @@ export class CfgHolidayDefComponent implements OnInit {
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 	isView: boolean = false;
-	isSaving: boolean = false;
+	isProcessing: boolean = false;
 
 	constructor(private cfgHolidayVariablesService: CfgHolidayVariableService,
 		private cfgHolidayNationalService: CfgHolidayNationalService,
@@ -140,7 +140,7 @@ export class CfgHolidayDefComponent implements OnInit {
 				this.hasFormErrors = true;
 				return;
 			}
-			this.isSaving = true;
+			this.isProcessing = true;
 			this.cfgHolidayVariablesModel = <CfgHolidayVariablesModel>this.holidayVariablesForm.value;
 			if (this.isAdd)
 				this.createCfgHolidayVariable();
@@ -221,10 +221,10 @@ export class CfgHolidayDefComponent implements OnInit {
 			}, (error) => {
 				this.errorMessage = error;
 				this.loading = false;
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.layoutUtilsService.showError(error);
 			}, () => {
-				this.isSaving = false;
+				this.isProcessing = false;
 				this.loading = false;
 			});
 	}
@@ -239,10 +239,10 @@ export class CfgHolidayDefComponent implements OnInit {
 		}, (error) => {
 			this.errorMessage = error;
 			this.loading = false;
-			this.isSaving = false;
+			this.isProcessing = false;
 			this.layoutUtilsService.showError(error);
 		}, () => {
-			this.isSaving = false;
+			this.isProcessing = false;
 			this.loading = false;
 		});
 	}
