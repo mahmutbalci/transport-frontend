@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '@core/reducers';
 // Auth
-import { AuthNoticeService, AuthService, Register, User } from '@core/auth/';
+import { AuthNoticeService, AuthService, Register, AuthTokenModel } from '@core/auth/';
 import { Subject } from 'rxjs';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
 
@@ -51,7 +51,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
 	/*
 	 * @ Lifecycle sequences => https://angular.io/guide/lifecycle-hooks
-    */
+	*/
 
 	/**
 	 * On init
@@ -61,8 +61,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	}
 
 	/*
-    * On destroy
-    */
+	* On destroy
+	*/
 	ngOnDestroy(): void {
 		this.unsubscribe.next();
 		this.unsubscribe.complete();
@@ -109,8 +109,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			],
 			agree: [false, Validators.compose([Validators.required])]
 		}, {
-				validator: ConfirmPasswordValidator.MatchPassword
-			});
+			validator: ConfirmPasswordValidator.MatchPassword
+		});
 	}
 
 	/**
@@ -136,17 +136,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
 			return;
 		}
 
-		const _user: User = new User();
-		_user.clear();
+		const authTokenModel: AuthTokenModel = new AuthTokenModel();
+		authTokenModel.clear();
 		// _user.email = controls['email'].value;
 		// _user.username = controls['username'].value;
 		// _user.fullname = controls['fullname'].value;
 		// _user.password = controls['password'].value;
 		// _user.roles = [];
-		this.auth.register(_user).pipe(
-			tap(user => {
-				if (user) {
-					this.store.dispatch(new Register({ authToken: user.result.token }));
+		this.auth.register(authTokenModel).pipe(
+			tap(authTokenModel => {
+				if (authTokenModel) {
+					this.store.dispatch(new Register({ authToken: authTokenModel.data.token }));
 					// pass notice message to the login page
 					this.authNoticeService.setNotice(this.translate.instant('Auth.Register.Success'), 'success');
 					this.router.navigateByUrl('/auth/login');

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 // State
 import { AppState } from '@core/reducers';
-import { currentUser, Logout, User } from '@core/auth';
+import { currentUser, Logout, AuthTokenModel } from '@core/auth';
 
 @Component({
 	selector: 'kt-user-profile',
@@ -14,7 +14,7 @@ import { currentUser, Logout, User } from '@core/auth';
 })
 export class UserProfileComponent implements OnInit {
 	// Public properties
-	user$: Observable<User>;
+	user$: Observable<AuthTokenModel>;
 
 	/**
 	 * Component constructor

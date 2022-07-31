@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 // NGRX
 import { select, Store } from '@ngrx/store';
-import { User, AuthService, currentUser, Logout } from '@core/auth';
+import { AuthTokenModel, AuthService, currentUser, Logout } from '@core/auth';
 import { AppState } from '@core/reducers';
 
 @Component({
@@ -13,7 +13,7 @@ import { AppState } from '@core/reducers';
 })
 export class UserProfile2Component implements OnInit {
 	// Public properties
-	_user$: Observable<User>;
+	_user$: Observable<AuthTokenModel>;
 
 	user = { name: '', midname: '', surname: '', email: '' };
 

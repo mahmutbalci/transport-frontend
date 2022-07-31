@@ -6,7 +6,7 @@ export class CfgTraceLogRequestModel extends BaseModel {
 	actionDateEnd: Date = new Date();
 	className: string = '';
 	key: string = '';
-	correlationId: string = '';
+	referenceId: string = '';
 	userCode: string = '';
 	channelCode: string = '';
 	type: string = '';

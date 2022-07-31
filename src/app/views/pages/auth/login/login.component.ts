@@ -22,10 +22,9 @@ import { LayoutUtilsService, MessageType } from '@core/_base/crud';
  * ! Just example => Should be removed in development
  */
 const DEMO_PARAMS = {
-	USERCODE: '',
-	PASSWORD: '',
-	institutionId: 1,
-	CHANNEL: 'ATLAS'
+	CLIENT_ID: '',
+	CLIENT_SECRET: '',
+	INSTITUTION_ID: 1,
 };
 
 @Component({
@@ -138,30 +137,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 	initLoginForm() {
 		// demo message to show
 		this.loginForm = this.fb.group({
-			userCode: [DEMO_PARAMS.USERCODE, Validators.compose([
+			clientId: [DEMO_PARAMS.CLIENT_ID, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
 				Validators.maxLength(320) // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
-			])
-			],
-			password: [DEMO_PARAMS.PASSWORD, Validators.compose([
+			])],
+			clientSecret: [DEMO_PARAMS.CLIENT_SECRET, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
 				Validators.maxLength(100)
-			])
-			],
-			channel: [DEMO_PARAMS.CHANNEL, Validators.compose([
-				Validators.required,
-				Validators.minLength(1),
-				Validators.maxLength(100)
-			])
-			],
-			institutionId: [DEMO_PARAMS.institutionId, Validators.compose([
+			])],
+			institutionId: [DEMO_PARAMS.INSTITUTION_ID, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
 				Validators.maxLength(20)
-			])
-			],
+			])],
 		});
 	}
 
@@ -182,70 +172,69 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.isDisable = true;
 
 		const authData = {
-			userCode: controls['userCode'].value,
-			password: controls['password'].value,
+			clientId: controls['clientId'].value,
+			clientSecret: controls['clientSecret'].value,
 			institutionId: controls['institutionId'].value,
-			channel: controls['channel'].value
 		};
 
-		let memberName = this.memberDefList.find(member => member.institutionId == authData.institutionId).description;
+		let memberName = this.memberDefList.find(member => member.institutionId === authData.institutionId).description;
 		sessionStorage.setItem('memberName', memberName);
 
 		this.determineLocalIp();
-		this.auth.login(authData.userCode, authData.password, authData.institutionId, authData.channel)
+		this.auth.login(authData.clientId, authData.clientSecret, authData.institutionId)
 			.pipe(
-				tap(user => {
-					if (user && user.statusCode === 200) {
-						if (user.result.messages && user.result.messages['exception.BlockIddleUserInDays']) {
-							let blockIddleUserInDays = user.result.messages['exception.BlockIddleUserInDays'].value;
+				tap(authTokenModel => {
+					if (authTokenModel && authTokenModel.success) {
+						if (authTokenModel.data.authenticationMessages && authTokenModel.data.authenticationMessages['exception.BlockIddleUserInDays']) {
+							let blockIddleUserInDays = authTokenModel.data.authenticationMessages['exception.BlockIddleUserInDays'].value;
 							this.authNoticeService.setNotice(blockIddleUserInDays, 'danger');
 							return;
 						}
 
-						if (user.result.messages && user.result.messages['exception.WrongPasswordUserBlocked']) {
-							let wrongPasswordUserBlocked = user.result.messages['exception.WrongPasswordUserBlocked'].value;
+						if (authTokenModel.data.authenticationMessages && authTokenModel.data.authenticationMessages['exception.WrongPasswordUserBlocked']) {
+							let wrongPasswordUserBlocked = authTokenModel.data.authenticationMessages['exception.WrongPasswordUserBlocked'].value;
 							this.authNoticeService.setNotice(wrongPasswordUserBlocked, 'danger');
 							return;
 						}
 
 						// If wrongPasswordWarning exists, it must be before passwordMismatch
-						if (user.result.messages && user.result.messages['exception.WrongPasswordWarning']) {
-							let wrongPasswordWarning = user.result.messages['exception.WrongPasswordWarning'].value;
+						if (authTokenModel.data.authenticationMessages && authTokenModel.data.authenticationMessages['exception.WrongPasswordWarning']) {
+							let wrongPasswordWarning = authTokenModel.data.authenticationMessages['exception.WrongPasswordWarning'].value;
 							this.authNoticeService.setNotice(wrongPasswordWarning, 'danger');
 							return;
 						}
 
-						if (user.result.messages && user.result.messages['exception.PasswordMismatch']) {
-							let passwordMismatch = user.result.messages['exception.PasswordMismatch'].value;
+						if (authTokenModel.data.authenticationMessages && authTokenModel.data.authenticationMessages['exception.PasswordMismatch']) {
+							let passwordMismatch = authTokenModel.data.authenticationMessages['exception.PasswordMismatch'].value;
 							this.authNoticeService.setNotice(passwordMismatch, 'danger');
 							return;
 						}
 
-						if (!user.result.token) {
+						if (!authTokenModel.data.token) {
 							this.authNoticeService.setNotice(this.translate.instant('Auth.Validation.InvalidLogin'), 'danger');
 							return;
 						}
 
 						let message: string = '';
-						for (let key in user.result.messages) {
-							message += '\n' + user.result.messages[key].value;
+						for (let key in authTokenModel.data.authenticationMessages) {
+							message += '\n' + authTokenModel.data.authenticationMessages[key].value;
 						}
 
 						if (message) {
 							this.layoutUtilsService.showNotification(message, MessageType.Read);
 						}
 
-						this.store.dispatch(new Login({ authToken: user.result.token }));
+						this.store.dispatch(new Login({ authToken: authTokenModel.data.token }));
 						this.router.navigateByUrl('/'); // Main page
-						this.frameworkApi.get<any>('auth/EntUser/GetUserInfo?id=' + authData.userCode + '&institutionId=' + authData.institutionId).subscribe(res1 => {
+						this.frameworkApi.get<any>('auth/appUsers/GetUserInfo?clientId=' + authData.clientId + '&institutionId=' + authData.institutionId).subscribe(res1 => {
 							sessionStorage.setItem('userConfig', this.userConfig);
 							sessionStorage.setItem('userEvent', 'login');
-							sessionStorage.setItem('user', JSON.stringify(res1.result));
-							sessionStorage.setItem('userCode', authData.userCode);
+							sessionStorage.setItem('user', JSON.stringify(res1.data));
+							sessionStorage.setItem('userCode', authData.clientId);
 
-							this.auth.saveAccessData(user);
+							this.auth.saveAccessData(authTokenModel);
 
-							this.frameworkApi.get<any>('auth/entMenuTree/authorizedMenu').subscribe(res2 => {
+							this.frameworkApi.get<any>('auth/appMenus/RetrieveMenuTree').subscribe(res2 => {
 								if (res2.result.length === 0) {
 									this.auth.logout().subscribe();
 									this.authNoticeService.setNotice(this.translate.instant('Auth.Validation.NotAuthorized'), 'error');

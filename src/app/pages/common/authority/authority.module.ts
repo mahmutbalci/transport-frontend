@@ -11,29 +11,33 @@ import { CoreModule } from '@core/core.module';
 import { MatTreeModule } from '@angular/material/tree';
 import { ThemeModule } from 'app/views/themes/default/theme.module';
 import { InlineSVGModule } from 'ng-inline-svg';
-import { EntMenuDetailDefComponent } from '@common/authority/entMenuTreeDef/ent-menu-detail-def/ent-menu-detail-def.component';
-import { EntUserRoleDefListComponent } from '@common/authority/entUserRoleDef/ent-user-role-def-list/ent-user-role-def-list.component';
-import { EntUserRoleDefComponent } from '@common/authority/entUserRoleDef/ent-user-role-def/ent-user-role-def.component';
-import { EntMenuTreeDefComponent } from '@common/authority/entMenuTreeDef/ent-menu-tree-def/ent-menu-tree-def.component';
-import { EntApiDefComponent } from '@common/authority/entApiDef/ent-api-def/ent-api-def.component';
-import { EntApiDefListComponent } from '@common/authority/entApiDef/ent-api-def-list/ent-api-def-list.component';
-import { EntUserRoleOwnershipRptComponent } from '@common/authority/entUserRoleOwnershipDef/ent-user-role-ownership-rpt/ent-user-role-ownership-rpt.component';
-import { EntUserDefComponent } from './entUserDef/ent-user-def/ent-user-def.component';
-import { EntUserDefListComponent } from './entUserDef/ent-user-def-list/ent-user-def-list.component';
-import { EntUserRolesPopupComponent } from './entUserDef/ent-user-roles-popup/ent-user-roles-popup.component';
+
+import { AppApisListComponent } from './appApis/app-apis-list/app-apis-list.component';
+import { AppApisComponent } from './appApis/app-apis/app-apis.component';
+
+import { AppRolesListComponent } from './appRoles/app-roles-list/app-roles-list.component';
+import { AppRolesComponent } from './appRoles/app-roles/app-roles.component';
+
+import { AppUsersListComponent } from './appUsers/app-users-list/app-users-list.component';
+import { AppUsersComponent } from './appUsers/app-users/app-users.component';
+import { AppUserRoleRelsPopupComponent } from './appUsers/app-user-role-rels-popup/app-user-role-rels-popup.component';
+import { AppMenusComponent } from './appMenus/app-menus/app-menus.component';
+import { AppMenuDetailComponent } from './appMenus/app-menu-detail/app-menu-detail.component';
 
 const routes: Routes = [
-	{ path: 'entUserRoleDef', component: EntUserRoleDefListComponent },
-	{ path: 'entUserRoleDef/add', component: EntUserRoleDefComponent },
-	{ path: 'entUserRoleDef/edit', component: EntUserRoleDefComponent },
-	{ path: 'entMenuTreeDef', component: EntMenuTreeDefComponent },
-	{ path: 'entApiDef', component: EntApiDefListComponent },
-	{ path: 'entApiDef/add', component: EntApiDefComponent },
-	{ path: 'entApiDef/edit', component: EntApiDefComponent },
-	{ path: 'entUserRoleOwnershipRpt', component: EntUserRoleOwnershipRptComponent },
-	{ path: 'entUserDef', component: EntUserDefListComponent },
-	{ path: 'entUserDef/add', component: EntUserDefComponent },
-	{ path: 'entUserDef/edit', component: EntUserDefComponent },
+	{ path: 'appApis', component: AppApisListComponent },
+	{ path: 'appApis/add', component: AppApisComponent },
+	{ path: 'appApis/edit', component: AppApisComponent },
+
+	{ path: 'appMenus', component: AppMenusComponent },
+
+	{ path: 'appRoles', component: AppRolesListComponent },
+	{ path: 'appRoles/add', component: AppRolesComponent },
+	{ path: 'appRoles/edit', component: AppRolesComponent },
+
+	{ path: 'appUsers', component: AppUsersListComponent },
+	{ path: 'appUsers/add', component: AppUsersComponent },
+	{ path: 'appUsers/edit', component: AppUsersComponent },
 ];
 
 @NgModule({
@@ -54,21 +58,21 @@ const routes: Routes = [
 	],
 
 	declarations: [
-		EntUserRoleDefComponent,
-		EntUserRoleDefListComponent,
-		EntMenuTreeDefComponent,
-		EntMenuDetailDefComponent,
-		EntApiDefComponent,
-		EntApiDefListComponent,
-		EntUserRoleOwnershipRptComponent,
-		EntUserDefComponent,
-		EntUserDefListComponent,
-		EntUserRolesPopupComponent,
+		AppApisListComponent,
+		AppApisComponent,
+		AppMenusComponent,
+		AppMenuDetailComponent,
+		AppRolesListComponent,
+		AppRolesListComponent,
+		AppRolesComponent,
+		AppUsersListComponent,
+		AppUsersComponent,
+		AppUserRoleRelsPopupComponent,
 	],
 	exports: [RouterModule],
 	entryComponents: [
-		EntMenuDetailDefComponent,
-		EntUserRolesPopupComponent,
+		AppMenuDetailComponent,
+		AppUserRoleRelsPopupComponent,
 	]
 })
 export class AuthorityModule { }

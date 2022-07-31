@@ -1,0 +1,34 @@
+<kt-portlet [options]="{headLarge: true}">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title">
+					<span class="kt-margin-r-10 kt-icon" aria-label="My icon" [inlineSVG]="'./assets/media/icons/svg/Devices/Display1.svg'">
+					</span>{{ 'System.Authority.UserRole' | translate }} | {{ userId }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnClose" class="btn-icon" (click)="close()"> <i class="la la-remove mt-icon-resizeable" matTooltip="{{'General.Close' | translate}}"></i> </a>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<div class="kt-portlet__body">
+			<div class="mat-table__wrapper">
+				<mat-table class="lmat-elevation-z8" style="min-width: 200px !important; width: 200px;" [dataSource]="dataSource" matSort matSortActive="roleId" matSortDirection="asc" matSortDisableClear>
+					<ng-container matColumnDef="roleId">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Authority.UserRole' | translate }}</mat-header-cell>
+						<mat-cell *matCellDef="let row">{{ row.roleId | lookup: entUserRoleDefs }}</mat-cell>
+					</ng-container>
+
+					<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+				</mat-table>
+
+				<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{ 'General.NoRecordsFound' | translate }}</div>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

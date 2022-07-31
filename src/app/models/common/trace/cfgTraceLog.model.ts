@@ -12,7 +12,7 @@ export class CfgTraceLogModel extends BaseModel {
 	type: string = '';
 	userCode: string = '';
 	channel: string = '';
-	correlationId: string = '';
+	referenceId: string = '';
 	actionDate: Date = new Date();
 	actionTime: Date = new Date();
 

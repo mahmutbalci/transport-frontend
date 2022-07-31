@@ -1,0 +1,203 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title" id="title">
+					{{ 'Menu.Common.Auth.UserRoleDefinition' | translate }} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<i class="la la-mail-reply"></i>{{ 'General.Back' | translate }}
+			</a>
+
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<i class="la la-save"></i>{{ 'General.Save' | translate }}
+				</a>
+
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<i class="la la-edit"></i>{{ 'General.Update' | translate }}
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="entityForm" [checkauth]="isReadonly" class="kt-form">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" style="display:block">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{'System.Authority.AuthorizationType' | translate}}" formControlName="roleType" required (ngModelChange)="onChangeRoleType($event)">
+									<mat-option id="roleType" [value]="item.code" *ngFor="let item of appRoleTypes;">{{ item.code}} - {{item.description }} </mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{'General.RoleName' | translate}}" formControlName="description" maxlength="500" required>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<mat-tab-group [(selectedIndex)]="selectedTab" (selectedTabChange)="selectedTabChanged($event)">
+				<!-- MENU TAB -->
+				<mat-tab id="tabRole" label="{{'General.MenuPermission' | translate}}" [disabled]="selectedTab==1">
+					<ng-template matTabContent>
+						<div class="kt-form__section kt-form__section--first kt-form ">
+							<div class="kt-form__group">
+								<div class="row disabled">
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<mat-checkbox [checked]="true">
+											{{ 'System.Authority.Authorized' | translate }}</mat-checkbox>
+									</div>
+
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<mat-checkbox [indeterminate]="true">{{'General.ReadOnly' | translate }}</mat-checkbox>
+									</div>
+
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<mat-checkbox [checked]="false">{{'System.Authority.Unauthorized' | translate }}</mat-checkbox>
+									</div>
+								</div>
+								<hr>
+
+								<div class="row">
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<a id="btnCollapseMenu" class="cursor-pointer" (click)="menuTreeControl.collapseAll()">
+											<span>
+												<mat-icon class="mat-icon-rtl-mirror">
+													{{ 'chevron_right' }}
+												</mat-icon>
+												{{ 'General.CollapseAll' | translate }}
+											</span>
+										</a>
+									</div>
+
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<a id="btnExpandMenu" class="cursor-pointer" (click)="menuTreeControl.expandAll()">
+											<span>
+												<mat-icon class="mat-icon-rtl-mirror">
+													{{ 'expand_more' }}
+												</mat-icon>
+												{{ 'General.ExpandAll' | translate }}
+											</span>
+										</a>
+									</div>
+								</div>
+								<hr>
+
+								<div class="row">
+									<div class="col-md-10 kt-margin-b-10-mobile">
+										<mat-tree #treeControlMenu [dataSource]="menuDataSource" [treeControl]="menuTreeControl" id="menuTree">
+											<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+												<button mat-icon-button disabled></button>
+
+												<mat-checkbox [disabled]="isReadonly" class="checklist-leaf-node" (change)="menuLeafItemSelectionToggle(node, $event)" [checked]="this.authorizedLevelMenuList.isSelected(node)" [indeterminate]="this.readOnlyLevelMenuList.isSelected(node)">
+													{{ node.description | translate }}
+												</mat-checkbox>
+											</mat-tree-node>
+
+											<mat-tree-node *matTreeNodeDef="let node; when: hasMenuChild" matTreeNodePadding>
+												<button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+													<mat-icon class="mat-icon-rtl-mirror">
+														{{ menuTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+													</mat-icon>
+												</button>
+
+												<mat-checkbox [disabled]="isReadonly" (change)="menuItemSelectionToggle(node, $event)" [checked]="getMenuAuthLevel(node)==2" [indeterminate]="getMenuAuthLevel(node)==1">
+													{{ node.description | translate }}
+												</mat-checkbox>
+											</mat-tree-node>
+										</mat-tree>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</mat-tab>
+
+				<!-- API TAB -->
+				<mat-tab id="tabApi" label="{{'General.ApiPermission' | translate}}" [disabled]="selectedTab==0 || !showApiRoles">
+					<ng-template matTabContent>
+						<div class="kt-form__section kt-form__section--first kt-form ">
+							<div class="kt-form__group">
+								<div class="row disabled">
+									<div class="col-md-1 kt-margin-b-10-mobile">
+										<mat-checkbox [checked]="true">
+											{{ 'System.Authority.Authorized' | translate }}</mat-checkbox>
+									</div>
+
+									<div class="col-md-1 kt-margin-b-10-mobile">
+										<mat-checkbox [checked]="false">{{ 'System.Authority.Unauthorized' | translate }}</mat-checkbox>
+									</div>
+								</div>
+								<hr>
+
+								<div class="row">
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<a id="btnCollapseApi" class="cursor-pointer" (click)="apiTreeControl.collapseAll()">
+											<span>
+												<mat-icon class="mat-icon-rtl-mirror">
+													{{ 'chevron_right' }}
+												</mat-icon>
+												{{ 'General.CollapseAll' | translate }}
+											</span>
+										</a>
+									</div>
+
+									<div class="col-md-2 kt-margin-b-10-mobile">
+										<a id="btnExpandApi" class="cursor-pointer" (click)="apiTreeControl.expandAll()">
+											<span>
+												<mat-icon class="mat-icon-rtl-mirror">
+													{{ 'expand_more' }}
+												</mat-icon>
+												{{ 'General.ExpandAll' | translate }}
+											</span>
+										</a>
+									</div>
+								</div>
+								<hr>
+
+								<div class="row">
+									<div class="col-md-10 kt-margin-b-10-mobile">
+										<mat-tree #treeControlApi [dataSource]="apiDataSource" [treeControl]="apiTreeControl" id="apiTree">
+											<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+												<button mat-icon-button disabled></button>
+
+												<mat-checkbox [disabled]="isReadonly" class="checklist-leaf-node" (change)="apiLeafItemSelectionToggle(node, $event)" [checked]="this.authorizedLevelApiList.isSelected(node)" [indeterminate]="this.readOnlyLevelApiList.isSelected(node)">
+													{{ node.description }}
+												</mat-checkbox>
+											</mat-tree-node>
+
+											<mat-tree-node *matTreeNodeDef="let node; when: hasApiChild" matTreeNodePadding>
+												<button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
+													<mat-icon class="mat-icon-rtl-mirror">
+														{{ apiTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+													</mat-icon>
+												</button>
+
+												<mat-checkbox [disabled]="isReadonly" (change)="apiItemSelectionToggle(node, $event)" [checked]="getApiAuthLevel(node)==2" [indeterminate]="getApiAuthLevel(node)==1">
+													{{ node.description }}
+												</mat-checkbox>
+											</mat-tree-node>
+										</mat-tree>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-template>
+				</mat-tab>
+			</mat-tab-group>
+			<div class="row" style="height: 50px;">
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

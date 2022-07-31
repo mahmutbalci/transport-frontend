@@ -126,10 +126,11 @@ export class Api {
 					hasValue = true;
 				}
 			});
+
 			if (hasValue) {
 				query = query.substring(0, query.length - 1);
 				this.get<any>(query).subscribe(res => {
-					res.result.forEach(element => {
+					res.data.forEach(element => {
 						this.cache.set('Lookup?entity=' + element.name, { 'result': [{ 'name': element.name, 'data': element.data }] });
 						result.push(element);
 					});
@@ -138,26 +139,25 @@ export class Api {
 			} else {
 				resolve(result);
 			}
-
 		});
 	}
 
 	public getXLanguage() {
-		let xLanguage = 'en-US';
-
+		let hLanguage = 'en-US';
 		switch (sessionStorage.getItem('language') ? sessionStorage.getItem('language') : 'en') {
 			case 'en': {
-				xLanguage = 'en-US';
+				hLanguage = 'en-US';
 				break;
 			}
 			case 'tr': {
-				xLanguage = 'tr-TR';
+				hLanguage = 'tr-TR';
 				break;
 			}
 			default:
 				break;
 		}
-		return xLanguage;
+
+		return hLanguage;
 	}
 
 	getLookupOData(entityName: string, queryParams: ODataParamsModel): any {

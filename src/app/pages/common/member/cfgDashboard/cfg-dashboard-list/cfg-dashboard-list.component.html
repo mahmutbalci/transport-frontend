@@ -11,8 +11,8 @@
 		</ng-container>
 
 		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
-			<a id="btnNew" [routerLink]="['/common/member/cfgDashboard/add']" class="kt-margin-l-5 btn btn-brand">
-				<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i><span>{{ 'General.CreateNew' | translate }}</span></span>
+			<a id="btnNew" [routerLink]="[menuUrl + '/add']" class="kt-margin-l-5 btn btn-brand">
+				<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i>{{ 'General.CreateNew' | translate }}</span>
 			</a>
 		</ng-container>
 	</kt-portlet-header>
@@ -32,6 +32,33 @@
 
 		<div class="mat-table__wrapper">
 			<mat-table class="lmat-elevation-z8" [dataSource]="dataSource" matSort matSortActive="insertDateTime" matSortDirection="desc" matSortDisableClear>
+				<ng-container matColumnDef="actions">
+					<mat-header-cell *matHeaderCellDef>{{ 'General.Actions' | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let row">
+						<button mat-icon-button [matMenuTriggerFor]="menu" id="moreAction">
+							<mat-icon>more_vert</mat-icon>
+						</button>
+
+						<mat-menu #menu="matMenu">
+							<a mat-menu-item id="edit" *ngIf="'edit'|checkauth" [routerLink]="[menuUrl + '/edit']" [queryParams]="{prmId: row.guid}" class="btn">
+								<mat-icon>create</mat-icon><span> {{ 'General.Edit' | translate }}</span>
+							</a>
+
+							<a mat-menu-item id="view" [routerLink]="[menuUrl + '/edit']" [queryParams]="{prmId: row.guid, type:'show'}" class="btn">
+								<mat-icon>search</mat-icon><span> {{ 'General.ShowRecord' | translate }}</span>
+							</a>
+
+							<a mat-menu-item id="delete" *ngIf="'delete'|checkauth" (click)="delete(row)" class="btn">
+								<mat-icon>delete</mat-icon><span> {{ 'General.Delete' | translate }}</span>
+							</a>
+
+							<a mat-menu-item id="history" (click)="openHistory(row.guid)" class="btn">
+								<mat-icon>history</mat-icon><span> {{ 'General.History' | translate }} </span>
+							</a>
+						</mat-menu>
+					</mat-cell>
+				</ng-container>
+
 				<ng-container matColumnDef="contentHeader">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Member.ContentHeader' | translate }}</mat-header-cell>
 					<mat-cell *matCellDef="let row">{{ row.contentHeader }}</mat-cell>
@@ -74,36 +101,10 @@
 					<mat-cell *matCellDef="let row"> {{ row.updateDateTime | date:'dd.MM.yyyy HH:mm:ss' }} </mat-cell>
 				</ng-container>
 
-				<ng-container matColumnDef="actions">
-					<mat-header-cell *matHeaderCellDef>{{'General.Actions' | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let row">
-						<button mat-icon-button [matMenuTriggerFor]="menu" id="moreAction">
-							<mat-icon>more_vert</mat-icon>
-						</button>
-
-						<mat-menu #menu="matMenu">
-							<a mat-menu-item id="edit" *ngIf="'edit'|checkauth" [routerLink]="['/common/member/cfgDashboard/edit']" [queryParams]="{ prmId: row.guid }" class="btn">
-								<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
-							</a>
-
-							<a mat-menu-item id="view" [routerLink]="['/common/member/cfgDashboard/edit']" [queryParams]="{ prmId: row.guid, type:'show' }" class="btn">
-								<mat-icon>search</mat-icon><span> {{'General.ShowRecord' | translate }}</span>
-							</a>
-
-							<a mat-menu-item id="delete" *ngIf="'delete'|checkauth" (click)="delete(row)" class="btn">
-								<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
-							</a>
-							<a mat-menu-item id="history" (click)="openHistory(row.guid)" class="btn">
-								<mat-icon>history</mat-icon><span> {{'General.History' | translate }} </span>
-							</a>
-						</mat-menu>
-					</mat-cell>
-				</ng-container>
-
 				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 				<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 			</mat-table>
-			<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{'General.NoRecordsFound' | translate }}</div>
+			<div class="mat-table__message kt-font-danger" *ngIf="!dataSource.hasItems && dataSource.wasQuery">{{ 'General.NoRecordsFound' | translate }}</div>
 		</div>
 
 		<div class="mat-table__bottom">

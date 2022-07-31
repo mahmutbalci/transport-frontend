@@ -21,9 +21,7 @@ import { DatePipe } from '@angular/common';
 	templateUrl: './dynamic-history-page.component.html',
 	styleUrls: ['./dynamic-history-page.component.scss']
 })
-
 export class DynamicHistoryPageComponent implements OnInit {
-
 	columnsToDisplay = [];
 	gridColumns = [
 		{
@@ -36,7 +34,7 @@ export class DynamicHistoryPageComponent implements OnInit {
 			actionTime: 'General.ActionTime',
 			userCode: 'General.UserCode',
 			channelCode: 'System.Member.ChannelCode',
-			correlationId: 'General.CorrelationId'
+			referenceId: 'General.CorrelationId'
 		}
 	];
 	dataSource: FilteredDataSource;
@@ -64,7 +62,7 @@ export class DynamicHistoryPageComponent implements OnInit {
 	className: string = '';
 	key: string = '';
 	lookupObjectList: any[] = [];
-	correlationId: string = '';
+	referenceId: string = '';
 
 	isLogTool = false;
 	isScreenTool = false;
@@ -97,14 +95,14 @@ export class DynamicHistoryPageComponent implements OnInit {
 				this.key = data.key.toString();
 			}
 		}
-		if (data.correlationId) {
-			this.correlationId = data.correlationId;
+		if (data.referenceId) {
+			this.referenceId = data.referenceId;
 		}
 		if (data.lookupObjectList) {
 			this.lookupObjectList = data.lookupObjectList;
 		}
 
-		if (this.correlationId) {
+		if (this.referenceId) {
 			this.isLogTool = true;
 		} else if (this.className && this.key) {
 			this.isExternalTool = true;
@@ -219,7 +217,7 @@ export class DynamicHistoryPageComponent implements OnInit {
 			}
 		} else {
 			this.cfgTraceLogRequestModel = new CfgTraceLogRequestModel();
-			this.cfgTraceLogRequestModel.correlationId = this.correlationId;
+			this.cfgTraceLogRequestModel.referenceId = this.referenceId;
 			return true;
 		}
 	}

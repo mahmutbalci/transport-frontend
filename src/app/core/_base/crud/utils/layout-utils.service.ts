@@ -144,7 +144,7 @@ export class LayoutUtilsService {
 		} else
 			if (_.isUndefined(errorData.error.error)) {
 				errorCode = errorData.error.exception.code;
-				traceId = errorData.error.correlationId;
+				traceId = errorData.error.referenceId;
 				errorMessage = errorData.error.exception.message;
 				if (!_.isNull(errorData.error.exception.validationErrors) && !_.isUndefined(errorData.error.exception.validationErrors)) {
 					errorData.error.exception.validationErrors.forEach(element => {
@@ -154,7 +154,7 @@ export class LayoutUtilsService {
 			}
 			else {
 				errorCode = errorData.error.error.code;
-				traceId = errorData.error.correlationId;
+				traceId = errorData.error.referenceId;
 				errorMessage = errorData.error.error.message;
 			}
 
@@ -162,7 +162,7 @@ export class LayoutUtilsService {
 			duration: duration,
 			code: errorCode,
 			message: errorMessage,
-			correlationId: traceId,
+			referenceId: traceId,
 			type: type,
 			showCloseButton: showCloseButton,
 			validation: errorValidation

@@ -23,7 +23,7 @@ export class TxnMccDefComponent implements OnInit {
 	loading$ = this.loadingSubject.asObservable();
 	hasFormErrors: boolean = false;
 	isAdd: boolean = true;
-	isSaving: boolean = false;
+	isProcessing: boolean = false;
 	txnMccDefForm: FormGroup = new FormGroup({});
 	entityModel: TxnMccDefModel = new TxnMccDefModel();
 
@@ -119,7 +119,7 @@ export class TxnMccDefComponent implements OnInit {
 	}
 
 	save() {
-		this.isSaving = true;
+		this.isProcessing = true;
 		this.hasFormErrors = false;
 		const controls = this.txnMccDefForm.controls;
 		controls["description"].setValue(controls["description"].value.trim());
@@ -135,14 +135,14 @@ export class TxnMccDefComponent implements OnInit {
 			}
 
 			this.hasFormErrors = true;
-			this.isSaving = false;
+			this.isProcessing = false;
 			return;
 		}
 
 		this.entityModel = <TxnMccDefModel>this.txnMccDefForm.value;
 
 		if (!this.validateEntity()) {
-			this.isSaving = false;
+			this.isProcessing = false;
 			return;
 		}
 
@@ -166,7 +166,7 @@ export class TxnMccDefComponent implements OnInit {
 				this.errorMessage = error;
 				this.loading = false;
 				this.layoutUtilsService.showError(error);
-				this.isSaving = false;
+				this.isProcessing = false;
 
 			},
 			() => {
@@ -187,7 +187,7 @@ export class TxnMccDefComponent implements OnInit {
 					this.errorMessage = error;
 					this.loading = false;
 					this.layoutUtilsService.showError(error);
-					this.isSaving = false;
+					this.isProcessing = false;
 				},
 				() => {
 					this.loading = false;

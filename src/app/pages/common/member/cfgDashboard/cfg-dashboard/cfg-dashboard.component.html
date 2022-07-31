@@ -18,16 +18,16 @@
 				<span><i class="la la-search-plus"></i><span>{{ 'General.Preview' | translate }}</span></span>
 			</a>
 
-			<a id="btnClear" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()">
+			<a id="btnClear" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()">
 				<span><i class="la la-recycle"></i><span>{{ 'General.Clear' | translate }}</span></span>
 			</a>
 
 			<div *ngIf="'add'|checkauth">
-				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span><i class="la la-save"></i><span>{{ 'General.Save' | translate }}</span></span>
 				</a>
 
-				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isSaving" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span><i class="la la-edit"></i><span>{{ 'General.Update' | translate }}</span></span>
 				</a>
 			</div>
@@ -66,7 +66,7 @@
 						</div>
 
 						<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile align-self-center">
-							<angular-editor name="timelineContent" [(ngModel)]="htmlContent"  formControlName="timelineContent" [config]="config"></angular-editor>
+							<angular-editor name="timelineContent" [(ngModel)]="htmlContent" formControlName="timelineContent" [config]="config"></angular-editor>
 						</div>
 					</div>
 
