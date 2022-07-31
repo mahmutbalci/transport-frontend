@@ -175,12 +175,9 @@ export class AuthService {
 		);
 	}
 
-	public saveAccessData(accessData: any) {
+	public saveAccessData(accessData: any, claims: any[]) {
 		if (typeof accessData !== 'undefined') {
-			this.tokenStorage
-				.setAccessToken(accessData.result.token)
-				.setUserRoles(accessData.result.payload.claims);
-			sessionStorage.setItem('institutionId', accessData.result.payload.institutionId.toString());
+			this.tokenStorage.setAccessToken(accessData.data.token).setUserRoles(claims);
 		}
 	}
 

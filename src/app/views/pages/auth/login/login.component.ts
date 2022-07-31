@@ -231,18 +231,20 @@ export class LoginComponent implements OnInit, OnDestroy {
 							sessionStorage.setItem('userEvent', 'login');
 							sessionStorage.setItem('user', JSON.stringify(res1.data));
 							sessionStorage.setItem('userCode', authData.clientId);
+							sessionStorage.setItem('institutionId', authData.institutionId);
+							sessionStorage.setItem('userClaims', JSON.stringify(res1.data.userRoleIds));
 
-							this.auth.saveAccessData(authTokenModel);
+							this.auth.saveAccessData(authTokenModel, res1.data.userRoleIds);
 
 							this.frameworkApi.get<any>('auth/appMenus/RetrieveMenuTree').subscribe(res2 => {
-								if (res2.result.length === 0) {
+								if (res2.data.length === 0) {
 									this.auth.logout().subscribe();
 									this.authNoticeService.setNotice(this.translate.instant('Auth.Validation.NotAuthorized'), 'error');
 									this.cdr.detectChanges();
 								} else {
-									let userMenus = JSON.stringify(res2.result);
+									let userMenus = JSON.stringify(res2.data);
 									sessionStorage.setItem('userMenus', userMenus);
-									this.menuConfigService.setDynamicMenu(res2.result);
+									this.menuConfigService.setDynamicMenu(res2.data);
 									if (this.previusUrl) {
 										this.router.navigate([this.previusUrl]);
 									} else {
