@@ -99,10 +99,10 @@ export class Api {
 		return new Promise(resolve => {
 			let query = 'Cacheable?entity=' + entityName;
 			this.cache.get(query, this.get<any>(query)).subscribe(res => {
-				if (res.result) {
-					res.result.forEach(element => {
+				if (res.data) {
+					res.data.forEach(element => {
 						if (element.name === entityName) {
-							resolve(res.result[0].data);
+							resolve(res.data[0].data);
 						}
 					});
 				}
@@ -119,7 +119,7 @@ export class Api {
 				let cacheKey = 'Cacheable?entity=' + name;
 				if (this.cache.has(cacheKey)) {
 					this.cache.get(cacheKey).subscribe(t => {
-						result.push(t.result[0]);
+						result.push(t.data[0]);
 					});
 				} else {
 					query = query + 'entity=' + name + '&';
@@ -131,7 +131,7 @@ export class Api {
 				query = query.substring(0, query.length - 1);
 				this.get<any>(query).subscribe(res => {
 					res.data.forEach(element => {
-						this.cache.set('Cacheable?entity=' + element.name, { 'result': [{ 'name': element.name, 'data': element.data }] });
+						this.cache.set('Cacheable?entity=' + element.name, { 'data': [{ 'name': element.name, 'data': element.data }] });
 						result.push(element);
 					});
 					resolve(result);
@@ -171,15 +171,16 @@ export class Api {
 			if (queryParams.orderby) {
 				params = params.set('$orderby', queryParams.orderby);
 			}
+
 			this.cache.get(query, this.get<any>('Cacheable/Filter', params, null, 'response')).subscribe(res => {
-				if (res.body && res.body.result) {
-					res.body.result.forEach(element => {
+				if (res.body && res.body.data) {
+					res.body.data.forEach(element => {
 						result.push(element);
 					});
-					this.cache.set(entityName, { 'result': res.body.result });
+					this.cache.set(entityName, { 'data': res.body.data });
 					resolve(result);
-				} else if (res.result) {
-					res.result.forEach(element => {
+				} else if (res.data) {
+					res.data.forEach(element => {
 						result.push(element);
 					});
 					resolve(result);
@@ -191,7 +192,7 @@ export class Api {
 	getFilteredLookup(entity: string, field: string, filter: any): any {
 		return new Promise(resolve => {
 			this.get<any>('Cacheable/Filter?entity=' + entity + '&$filter=' + field + '%20eq%20%27' + filter + '%27').subscribe(res => {
-				resolve(res.result);
+				resolve(res.data);
 			});
 		});
 	}

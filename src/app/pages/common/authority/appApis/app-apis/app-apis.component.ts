@@ -58,7 +58,7 @@ export class AppApisComponent implements OnInit {
 				this.isReadonly = (params.type === 'show');
 				if (prmId && prmId !== null) {
 					this.entityService.get(prmId).subscribe(res2 => {
-						this.entityModel = res2.result;
+						this.entityModel = res2.data;
 						this.entityModel._isEditMode = !this.isReadonly;
 						this.entityModel._isNew = false;
 

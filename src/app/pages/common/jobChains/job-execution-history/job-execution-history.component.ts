@@ -144,7 +144,7 @@ export class JobExecutionHistoryComponent implements OnInit {
 	chainChange(value) {
 		if (!isNullOrUndefined(value)) {
 			this.btcJobChainDefService.getTriggers(value).subscribe((res: any) => {
-				this.filteredJobTriggerDefs = this.jobTriggerDefs.filter(x => res.result.some(y => y.guid == x.code));
+				this.filteredJobTriggerDefs = this.jobTriggerDefs.filter(x => res.data.some(y => y.guid == x.code));
 			});
 		}
 		else {

@@ -66,7 +66,7 @@ export class JobChainTriggerDefComponent implements OnInit {
 		if (triggerGuid && triggerGuid != null) {
 			this.btcJobChainDefService.getTrigger(triggerGuid).subscribe(trigger => {
 				this.triggerGuidReadOnly = true;
-				this.btcJobChainTriggerModel = trigger.result;
+				this.btcJobChainTriggerModel = trigger.data;
 				let jsonParams = JSON.parse(this.btcJobChainTriggerModel.parameters);
 				this.parameters = [];
 				for (var key in jsonParams) {
@@ -102,7 +102,7 @@ export class JobChainTriggerDefComponent implements OnInit {
 		}
 
 		this.btcJobChainDefService.getTriggers(this.btcJobChainTriggerModel.chainGuid).subscribe(resTrigger => {
-			this.triggers = resTrigger.result;
+			this.triggers = resTrigger.data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
@@ -159,7 +159,7 @@ export class JobChainTriggerDefComponent implements OnInit {
 	create(model: BtcJobChainTriggerModel) {
 		this.btcJobChainDefService.saveTrigger(model).subscribe(response => {
 			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
-			model.guid = response.result;
+			model.guid = response.data;
 			this.saveEmitter.emit(model);
 			this.dialogRef.close();
 		}, (error) => {

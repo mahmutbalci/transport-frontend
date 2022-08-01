@@ -156,7 +156,7 @@ export class JobChainMonitoringComponent implements OnInit {
 
 	getTriggerStatsOnInit(chainGuid) {
 		this.btcJobChainTriggerStatService.getTriggerStat(chainGuid).subscribe((res) => {
-			this.trigerStats = res.result.triggerStats;
+			this.trigerStats = res.data.triggerStats;
 			this.getChainInfo(chainGuid);
 		});
 	}
@@ -165,7 +165,7 @@ export class JobChainMonitoringComponent implements OnInit {
 		this.chainInfo = new BtcJobChainDefModel();
 		this.chainInfo._isNew = false;
 		this.btcJobChainDefService.get(chainGuid).subscribe((res: any) => {
-			this.chainInfo = res.result;
+			this.chainInfo = res.data;
 			this.btcJobChainTriggerStatService.getTriggerStat(chainGuid).subscribe(statRes => {
 				this.buildTree();
 				this.setTriggerStats(statRes);
@@ -207,8 +207,8 @@ export class JobChainMonitoringComponent implements OnInit {
 	}
 
 	setTriggerStats(res) {
-		this.eodDate = res.result.eodDate;
-		this.trigerStats = res.result.triggerStats;
+		this.eodDate = res.data.eodDate;
+		this.trigerStats = res.data.triggerStats;
 		this.graph.refresh();
 		this.handledCount = this.trigerStats.filter(x => x.stat === 'H').length;
 		this.skippedCount = this.trigerStats.filter(x => x.stat === 'S').length;

@@ -45,15 +45,15 @@ export class DashboardComponent implements OnInit {
 
 		this.data = [];
 		this.entityService.getAnnouncements(this.paginator.pageIndex, this.paginator.pageSize).subscribe(res => {
-			if (res.result && res.result.data) {
-				let entitiesResult = res.result.data;
+			if (res.data && res.data.data) {
+				let entitiesResult = res.data.data;
 
 				entitiesResult.forEach(element => {
 					this.data.push(<Widget5Data>element);
 				});
 
 				if (this.paginator.pageIndex === 0) {
-					this.paginatorTotal = res.result.totalCount;
+					this.paginatorTotal = res.data.totalCount;
 				}
 			}
 

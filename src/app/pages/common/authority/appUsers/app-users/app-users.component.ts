@@ -67,7 +67,7 @@ export class AppUsersComponent implements OnInit {
 				this.isReadonly = (params.type === 'show');
 				if (prmId && prmId !== null && institutionId && institutionId !== null) {
 					this.entityService.getUser(prmId, institutionId).subscribe(res => {
-						this.entityModel = res.result;
+						this.entityModel = res.data;
 						this.entityModel._isNew = false;
 						this.entityModel._isEditMode = !this.isReadonly;
 

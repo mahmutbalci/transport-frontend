@@ -69,7 +69,7 @@ export class TxnMccDefComponent implements OnInit {
 			if (prmId && prmId !== null) {
 				this.isAdd = false;
 				this.entityService.get(prmId).subscribe(res => {
-					this.entityModel = res.result;
+					this.entityModel = res.data;
 					this.entityModel._isEditMode = !this.isDisabled;
 
 					this.initForm();

@@ -77,7 +77,7 @@ export class JobChainDefinitionComponent implements OnInit {
 		this.chainInfo = new BtcJobChainDefModel();
 		this.chainInfo._isNew = false;
 		this.btcJobChainDefService.get(chainGuid).subscribe((res: any) => {
-			this.chainInfo = res.result;
+			this.chainInfo = res.data;
 			this.initForm();
 			this.buildTree();
 		},
@@ -114,7 +114,7 @@ export class JobChainDefinitionComponent implements OnInit {
 	create() {
 		this.btcJobChainDefService.create(this.chainInfo)
 			.subscribe((response: any) => {
-				this.chainInfo.guid = response.result;
+				this.chainInfo.guid = response.data;
 
 				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 1000, true, false)
 					.afterClosed().subscribe(res => {

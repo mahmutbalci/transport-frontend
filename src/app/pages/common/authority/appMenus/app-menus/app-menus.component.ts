@@ -39,7 +39,7 @@ export class ChecklistDatabase {
 	constructor(private frameworkApi: FrameworkApi, public dialog: MatDialog,) {
 		this.frameworkApi.get<any>('auth/appMenus').subscribe(res => {
 			if (res.data.length > 0) {
-				res.data = _.orderBy(res.result, ['screenOrder'], ['asc']);
+				res.data = _.orderBy(res.data, ['screenOrder'], ['asc']);
 				this.dataChange.next(this.buildMenuTree(res.data));
 			}
 		});
@@ -48,7 +48,7 @@ export class ChecklistDatabase {
 	reloadMenuTree() {
 		this.frameworkApi.get<any>('auth/appMenus').subscribe(res => {
 			if (res.data.length > 0) {
-				res.data = _.orderBy(res.result, ['screenOrder'], ['asc']);
+				res.data = _.orderBy(res.data, ['screenOrder'], ['asc']);
 				this.dataChange.next(this.buildMenuTree(res.data));
 			}
 		});
