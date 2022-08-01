@@ -60,7 +60,7 @@ export class CfgHolidayDefComponent implements OnInit {
 				this.isAdd = false;
 				if (this.selectedHoliday == "1") {
 					this.cfgHolidayVariablesService.get(guid).subscribe(res => {
-						this.cfgHolidayVariablesModel = res.result;
+						this.cfgHolidayVariablesModel = res.data;
 						this.onItemChange();
 					},
 						(error) => {
@@ -69,7 +69,7 @@ export class CfgHolidayDefComponent implements OnInit {
 				}
 				if (this.selectedHoliday == "2") {
 					this.cfgHolidayNationalService.get(guid).subscribe(res => {
-						this.cfgHolidayNationalModel = res.result;
+						this.cfgHolidayNationalModel = res.data;
 						this.onItemChange();
 					}, (error) => {
 						this.layoutUtilsService.showError(error);

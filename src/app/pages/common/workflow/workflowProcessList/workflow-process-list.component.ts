@@ -19,7 +19,8 @@ import { WorkflowProcessService } from '@common/workflow/workflowProcess.service
 export class WorkflowProcessListComponent implements OnInit {
 	dataSource: FilteredDataSource;
 	dataSource2: FilteredDataSource;
-	displayedColumns = ['choose', 'refNumber', 'menuGuid', 'apiMethod', 'processKey', 'stat', 'expireDate', 'insertUser', 'insertDateTime', 'insertTime', 'actionBy', 'actionDateTime', 'actionTime'];
+	displayedColumns = ['choose', 'refNumber', 'menuId', 'apiMethod', 'processKey', 'stat', 'expireDate',
+		'insertUser', 'insertDateTime', 'insertTime', 'actionBy', 'actionDateTime', 'actionTime'];
 
 	@ViewChild('paginator1') paginator1: MatPaginator;
 	@ViewChild('matSort1') matSort1: MatSort;

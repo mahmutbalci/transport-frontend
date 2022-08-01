@@ -37,7 +37,7 @@ export class WorkflowItemComponent implements OnInit {
 	ngOnInit() {
 		setInterval(() => {
 			if (this.refreshData || this.isInitialLoad) {
-				this.getWaitingWorkflow();
+				// this.getWaitingWorkflow();
 				this.isInitialLoad = false;
 			}
 		}, 3000);
@@ -69,8 +69,8 @@ export class WorkflowItemComponent implements OnInit {
 			this.workflowProcessService.findFiltered(queryParams, 'GetWaitingProcesses').subscribe(result => {
 				if (result.items != null && result.items.length > 0) {
 					result.items.forEach(element => {
-						if (this.entMenuTree.length > 0 && element.menuGuid) {
-							element.menuDescription = this.translate.instant(this.lookupPipe.transform(element.menuGuid, this.entMenuTree));
+						if (this.entMenuTree.length > 0 && element.menuId) {
+							element.menuDescription = this.translate.instant(this.lookupPipe.transform(element.menuId, this.entMenuTree));
 						}
 
 						if (this.entApiMethod.length > 0 && element.apiMethod) {

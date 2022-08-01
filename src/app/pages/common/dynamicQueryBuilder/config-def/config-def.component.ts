@@ -45,7 +45,7 @@ export class ConfigDefComponent implements OnInit {
 			if (guid && guid !== null) {
 				this.cfgExpressionConfigDefModel._isNew = false;
 				this.cfgExpressionConfigDefService.get(guid).subscribe(res => {
-					this.cfgExpressionConfigDefModel = res.result;
+					this.cfgExpressionConfigDefModel = res.data;
 					this.definedCriterias = this.cfgExpressionConfigDefModel.criterias;
 					this.initForm();
 				},
@@ -70,7 +70,7 @@ export class ConfigDefComponent implements OnInit {
 		});
 
 		this.cfgExpressionCriteriaDefService.getAll<any>().subscribe(res => {
-			this.allCriterias = res.result.filter((x: { guid: number; }) => {
+			this.allCriterias = res.data.filter((x: { guid: number; }) => {
 				return !this.cfgExpressionConfigDefModel.criterias.filter(y => y.guid === x.guid).length;
 			})
 		}, (error) => {

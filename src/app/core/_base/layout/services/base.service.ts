@@ -43,20 +43,20 @@ export class BaseService {
 
 	findAll(): Observable<QueryResultsModel> {
 		return this.getAll<any>().pipe(
-			mergeMap(res => of(new QueryResultsModel(res.result)))
+			mergeMap(res => of(new QueryResultsModel(res.data)))
 		);
 	}
 
 	findAllWithEndPointSuffix(enpointSuffix: string = 'all'): Observable<QueryResultsModel> {
 		return this.getAllWithEndPointSuffix<any>(enpointSuffix).pipe(
-			mergeMap(res => of(new QueryResultsModel(res.result)))
+			mergeMap(res => of(new QueryResultsModel(res.data)))
 		);
 	}
 
 	findFiltered(queryParams: QueryParamsModel, enpointSuffix: string = 'filter'): Observable<FilteredQueryResultsModel> {
 		var params = this.httpUtils.setParameters(queryParams);
 		return this.api.get<any>(this.endpoint + '/' + enpointSuffix, params).pipe(
-			mergeMap(res => of(new FilteredQueryResultsModel(res.result, queryParams.useSubData)))
+			mergeMap(res => of(new FilteredQueryResultsModel(res.data, queryParams.useSubData)))
 		);
 	}
 

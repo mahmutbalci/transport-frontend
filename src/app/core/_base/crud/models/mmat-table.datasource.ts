@@ -1,7 +1,6 @@
 import { MatTableDataSource } from "@angular/material";
 
 export class MMatTableDataSource<T> extends MatTableDataSource<T> {
-
 	wasQuery: boolean = false;
 
 	constructor(initialData?: T[]) {
@@ -16,5 +15,4 @@ export class MMatTableDataSource<T> extends MatTableDataSource<T> {
 		this.wasQuery = val !== undefined;
 		this.data = val;
 	}
-
 }

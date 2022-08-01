@@ -210,18 +210,18 @@ export class AuthService {
 		return authenticationLevel;
 	}
 
-	public getCurrentMenuGuid() {
-		let currentMenuGuid = 0;
+	public getCurrentMenuId() {
+		let currentMenuId = '';
 		let pathName = this.getPathName();
 		let userMenus: any[] = JSON.parse(sessionStorage.getItem('userMenus'));
 		if (userMenus) {
 			userMenus.forEach(menu => {
 				if (!_.isUndefined(menu.routeUrl) && !_.isNull(menu.routeUrl) && pathName.toLowerCase().startsWith(menu.routeUrl.toLowerCase())) {
-					currentMenuGuid = menu.guid;
+					currentMenuId = menu.menuId;
 				}
 			});
 		}
-		return currentMenuGuid;
+		return currentMenuId;
 	}
 
 	public getPathName(): string {

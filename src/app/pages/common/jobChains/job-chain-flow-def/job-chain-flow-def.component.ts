@@ -41,11 +41,11 @@ export class JobChainFlowDefComponent implements OnInit {
 			const flowGuid = this.data['flowGuid'];
 			const targetTriggerGuid = this.data['targetTriggerGuid'];
 			this.btcJobChainDefService.getTriggers(this.btcJobChainFlowModel.chainGuid).subscribe(triggers => {
-				this.sourceTriggers = triggers.result;
-				this.targetTriggers = triggers.result;
+				this.sourceTriggers = triggers.data;
+				this.targetTriggers = triggers.data;
 				if (flowGuid && flowGuid !== null) {
 					this.btcJobChainDefService.getFlow(flowGuid).subscribe(flow => {
-						this.btcJobChainFlowModel = flow.result;
+						this.btcJobChainFlowModel = flow.data;
 
 						this.initForm();
 					}, (error) => {
@@ -100,7 +100,7 @@ export class JobChainFlowDefComponent implements OnInit {
 	create(model: BtcJobChainFlowModel) {
 		this.btcJobChainDefService.saveFlow(model).subscribe(response => {
 			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
-			model.guid = response.result;
+			model.guid = response.data;
 			this.saveEmitter.emit(model);
 			this.dialogRef.close();
 		}, (error) => {

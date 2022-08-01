@@ -78,7 +78,7 @@
 						</div>
 						<div class="col-md-3 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<mat-select formControlName="menuGuid" placeholder="{{'System.Authority.MenuName' | translate}}">
+								<mat-select formControlName="menuId" placeholder="{{'System.Authority.MenuName' | translate}}">
 									<ngx-mat-select-search [formControl]="frmControlSearch" #filtermenu placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
 									</ngx-mat-select-search>
 									<mat-option id="chooseMenu">{{'General.None' | translate}}</mat-option>
@@ -178,10 +178,10 @@
 						<span>{{element.parentLog.operatorId}}</span>
 					</td>
 				</ng-container>
-				<ng-container matColumnDef="menuGuid">
+				<ng-container matColumnDef="menuId">
 					<th mat-header-cell *matHeaderCellDef mat-sort-header> {{'System.Authority.MenuName' | translate}} </th>
 					<td mat-cell *matCellDef="let element" class="mat-column">
-						<span>{{element.parentLog.menuGuid | lookup:entMenuTree | translate}}</span>
+						<span>{{element.parentLog.menuId | lookup:entMenuTree | translate}}</span>
 					</td>
 				</ng-container>
 				<ng-container matColumnDef="channel">
@@ -275,10 +275,10 @@
 											<span>{{element.operatorId}}</span>
 										</td>
 									</ng-container>
-									<ng-container matColumnDef="menuGuid">
+									<ng-container matColumnDef="menuId">
 										<th mat-header-cell *matHeaderCellDef> {{'System.Authority.MenuName' | translate}} </th>
 										<td mat-cell *matCellDef="let element" class="mat-column">
-											<span>{{element.menuGuid | lookup:entMenuTree | translate}}</span>
+											<span>{{element.menuId | lookup:entMenuTree | translate}}</span>
 										</td>
 									</ng-container>
 									<ng-container matColumnDef="channel">

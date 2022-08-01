@@ -92,8 +92,8 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 		if (!this.isAdd) {
 			this.service.get(this.key).subscribe(res => {
 				Object.keys(this.model).forEach(name => {
-					if (res && res.result[name]) {
-						this.model[name] = res.result[name];
+					if (res && res.data[name]) {
+						this.model[name] = res.data[name];
 					}
 				});
 

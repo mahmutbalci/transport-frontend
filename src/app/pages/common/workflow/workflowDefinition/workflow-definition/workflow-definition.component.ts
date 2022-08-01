@@ -91,14 +91,14 @@ export class WorkflowDefinitionComponent implements OnInit {
 			this.entUserRoleDefs = res.find(x => x.name === 'EntUserRoleDef').data;
 
 			this.appApisService.getAll().subscribe((apiSer: any) => {
-				this.entApiDefs = apiSer.result;
+				this.entApiDefs = apiSer.data;
 
 				const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 					const guid = params.guid;
 					this.isDisabled = (params.type === 'show');
 					if (guid && guid !== null) {
 						this.entityService.get(guid).subscribe(entSer => {
-							this.entityModel = entSer.result;
+							this.entityModel = entSer.data;
 							this.dataSource.setData(_.orderBy(this.entityModel.workflowState, 'state', 'asc'));
 
 							if (!this.isDisabled) {
@@ -290,8 +290,8 @@ export class WorkflowDefinitionComponent implements OnInit {
 		const guid = item;
 		if (guid && guid !== null) {
 			this.cfgExpressionConfigDefService.get(guid).subscribe(res => {
-				if (res && res.result) {
-					this.selectedConfigName = res.result.name;
+				if (res && res.data) {
+					this.selectedConfigName = res.data.name;
 					this.isExpressionConfig = true;
 				}
 			}, (error) => {

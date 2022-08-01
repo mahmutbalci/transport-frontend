@@ -64,18 +64,18 @@ export class DynamicQueryBuilderComponent implements OnInit {
 		this.frameworkApi.get(endpoint, params).subscribe(res => {
 			let lookups: string[] = [];
 			let filteredLookups: string[] = [];
-			Object.keys(res.result).forEach(item => {
+			Object.keys(res.data).forEach(item => {
 				if (item === 'merchantCode' || item === 'merchantChainCode') {
 					this.isActiveMrcCode = true;
 				}
 
-				res.result[item].name = this.translate.instant(res.result[item].name);
+				res.data[item].name = this.translate.instant(res.data[item].name);
 
-				if (res.result[item].lookupEntity != null) {
-					if (_.startsWith(_.toLower(res.result[item].lookupEntity), 'lookup/filter')) {
-						filteredLookups.push(res.result[item].lookupEntity);
+				if (res.data[item].lookupEntity != null) {
+					if (_.startsWith(_.toLower(res.data[item].lookupEntity), 'Cacheable/filter')) {
+						filteredLookups.push(res.data[item].lookupEntity);
 					} else {
-						lookups.push(res.result[item].lookupEntity);
+						lookups.push(res.data[item].lookupEntity);
 					}
 
 				}
@@ -86,37 +86,37 @@ export class DynamicQueryBuilderComponent implements OnInit {
 				this.transportApi.getLookups(lookups).then(lookUp => {
 					lookupList = lookUp;
 
-					Object.keys(res.result).forEach(resultItem => {
-						if (res.result[resultItem].lookupEntity != null) {
-							if (!_.startsWith(_.toLower(res.result[resultItem].lookupEntity), 'lookup/filter')) {
-								let codeDescLookup = _.cloneDeep(lookupList.find(x => x.name === res.result[resultItem].lookupEntity).data);
+					Object.keys(res.data).forEach(resultItem => {
+						if (res.data[resultItem].lookupEntity != null) {
+							if (!_.startsWith(_.toLower(res.data[resultItem].lookupEntity), 'Cacheable/filter')) {
+								let codeDescLookup = _.cloneDeep(lookupList.find(x => x.name === res.data[resultItem].lookupEntity).data);
 								let nameValueLookup: any[] = [];
 								codeDescLookup.forEach(item => {
 									nameValueLookup.push({ name: item.description, value: item.code });
 								});
-								res.result[resultItem].options = nameValueLookup;
-								this.config = { fields: res.result };
+								res.data[resultItem].options = nameValueLookup;
+								this.config = { fields: res.data };
 							}
 						}
 					});
 
 					if (filteredLookups.length > 0) {
-						Object.keys(res.result).forEach(resultItem => {
-							if (res.result[resultItem].lookupEntity != null) {
-								if (_.startsWith(_.toLower(res.result[resultItem].lookupEntity), 'lookup/filter')) {
-									this.transportApi.get<any>(res.result[resultItem].lookupEntity).subscribe(filteredLookupRes => {
-										if (filteredLookupRes.result) {
-											let codeDescLookup = _.cloneDeep(filteredLookupRes.result);
+						Object.keys(res.data).forEach(resultItem => {
+							if (res.data[resultItem].lookupEntity != null) {
+								if (_.startsWith(_.toLower(res.data[resultItem].lookupEntity), 'Cacheable/filter')) {
+									this.transportApi.get<any>(res.data[resultItem].lookupEntity).subscribe(filteredLookupRes => {
+										if (filteredLookupRes.data) {
+											let codeDescLookup = _.cloneDeep(filteredLookupRes.data);
 											let filteredNameValueLookup: any[] = [];
 											codeDescLookup.forEach(item => {
 												filteredNameValueLookup.push({ name: item.description, value: item.code });
 											});
-											res.result[resultItem].options = filteredNameValueLookup;
-											this.config = { fields: res.result };
+											res.data[resultItem].options = filteredNameValueLookup;
+											this.config = { fields: res.data };
 
 											filteredLookups.pop();
 											if (filteredLookups.length == 0) {
-												this.config = { fields: res.result };
+												this.config = { fields: res.data };
 												this.configLoaded = true;
 											}
 										}
@@ -127,7 +127,7 @@ export class DynamicQueryBuilderComponent implements OnInit {
 					}
 
 					if (filteredLookups.length === 0) {
-						this.config = { fields: res.result };
+						this.config = { fields: res.data };
 						this.configLoaded = true;
 					}
 				});

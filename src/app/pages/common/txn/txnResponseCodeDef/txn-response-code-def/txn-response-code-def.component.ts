@@ -75,7 +75,7 @@ export class TxnResponseCodeDefComponent implements OnInit {
 		if (!this.isAdd) {
 			const code = this.editedRecCode;
 			this.txnResponseCodeDefService.get(code).subscribe(res => {
-				this.txnResponseCodeDefModel = res.result;
+				this.txnResponseCodeDefModel = res.data;
 				if (!this.isDisabled)
 					this.txnResponseCodeDefModel._isEditMode = true;
 				this.initForm();

@@ -50,19 +50,15 @@ export class AppApisComponent implements OnInit {
 			this.entityForm.addControl(name, new FormControl(this.entityModel[name]));
 		});
 
-		let filter = f();
-		filter.eq('apiRoute', null);
-		let queryParams = new ODataParamsModel();
-		queryParams.filter = filter.toString();
 		this.entityService.api.getLookups(['AppApplications']).then(res => {
-			this.appApplications = res.data;
+			this.appApplications = res.find(x => x.name === "AppApplications").data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const prmId = params.prmId;
 				this.isReadonly = (params.type === 'show');
 				if (prmId && prmId !== null) {
 					this.entityService.get(prmId).subscribe(res2 => {
-						this.entityModel = res2.result;
+						this.entityModel = res2.data;
 						this.entityModel._isEditMode = !this.isReadonly;
 						this.entityModel._isNew = false;
 

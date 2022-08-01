@@ -101,8 +101,8 @@
 					</div>
 					<div class="col-md-3 kt-margin-b-10-mobile">
 						<mat-form-field class="mat-form-field-fluid">
-							<mat-select placeholder="{{'System.Authority.MenuName' | translate}}" formControlName="menuGuid" required>
-								<mat-option id="menuGuid" [value]="item.code" *ngFor="let item of entMenuTree"> {{item.description | translate}} </mat-option>
+							<mat-select placeholder="{{'System.Authority.MenuName' | translate}}" formControlName="menuId" required>
+								<mat-option id="menuId" [value]="item.code" *ngFor="let item of entMenuTree"> {{item.description | translate}} </mat-option>
 							</mat-select>
 						</mat-form-field>
 					</div>

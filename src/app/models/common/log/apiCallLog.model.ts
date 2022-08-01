@@ -16,7 +16,7 @@ export class ApiCallLogModel extends BaseModel {
 	requestTime: string = '';
 	elapsedMs: number = 0;
 	channel: string = '';
-	menuGuid: number = 0;
+	menuId: number = 0;
 	eventName: string = '';
 	deviceId: string = '';
 	machineName: string = '';

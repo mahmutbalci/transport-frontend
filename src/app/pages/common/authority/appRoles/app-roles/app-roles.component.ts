@@ -61,7 +61,7 @@ export class ChecklistMenuDatabase {
 
 	setDataChange(): Observable<any> {
 		this.appMenusService.getAll<any>().subscribe(res => {
-			res.data = _.orderBy(res.result, ['screenOrder'], ['asc']);
+			res.data = _.orderBy(res.data, ['screenOrder'], ['asc']);
 			this.resultCheckList = res.data;
 			if (res.data.length > 0) {
 				this.dataChange.next(this.buildMenuTree(<AppMenusModel[]>res.data));
@@ -245,7 +245,7 @@ export class AppRolesComponent implements OnInit {
 		});
 
 		this.entityService.api.getLookups(['AppRoleTypes']).then(res => {
-			this.appRoleTypes = res.find(x => x.name === 'AppRoleTypes').data;
+			this.appRoleTypes = res.data.find(x => x.name === 'AppRoleTypes').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const prmId = params.prmId;
@@ -253,7 +253,7 @@ export class AppRolesComponent implements OnInit {
 
 				if (prmId && prmId > 0) {
 					this.entityService.get(prmId).subscribe(res => {
-						this.entityModel = res.result;
+						this.entityModel = res.data;
 						this.entityModel._isEditMode = !this.isReadonly;
 						this.entityModel._isNew = false;
 

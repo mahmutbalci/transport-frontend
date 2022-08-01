@@ -43,7 +43,7 @@ export class CfgPinEntryDefComponent implements OnInit {
 			if (code && code !== null) {
 				this.isAdd = false;
 				this.entityService.get(code).subscribe(res => {
-					this.cfgPinEntryDefModel = res.result;
+					this.cfgPinEntryDefModel = res.data;
 					this.initForm();
 				},
 					(error) => {

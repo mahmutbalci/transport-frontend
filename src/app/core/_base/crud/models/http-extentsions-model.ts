@@ -3,7 +3,6 @@ import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
 import { QueryResultsModel } from './query-results.model';
 
 export class HttpExtenstionsModel {
-
 	/**
 	 * Filtration with sorting
 	 * First do Sort then filter

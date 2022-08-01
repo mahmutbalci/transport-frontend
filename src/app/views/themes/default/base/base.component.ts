@@ -19,7 +19,7 @@ import { Key } from '@core/_config/keys';
 
 export class DynamicTabComponent {
 	@Input() title;
-	@Input() menuGuid;
+	@Input() menuId;
 	@Input() componentUrl;
 	@Input() component;
 	@Input() modulPath;
@@ -32,7 +32,6 @@ export class DynamicTabComponent {
 	styleUrls: ['./base.component.scss'],
 	encapsulation: ViewEncapsulation.None
 })
-
 export class BaseComponent implements OnInit, OnDestroy {
 	selfLayout: string;
 	asideDisplay: boolean;
@@ -101,7 +100,6 @@ export class BaseComponent implements OnInit, OnDestroy {
 		// this.startTimer();
 		this.loadRolesWithPermissions();
 
-
 		// register configs by demos
 		this.layoutConfigService.loadConfigs(new LayoutConfig().configs);
 		// this.menuConfigService.setDynamicMenu(new MenuConfig().configs);
@@ -128,7 +126,6 @@ export class BaseComponent implements OnInit, OnDestroy {
 				setTimeout(() => {
 					this.isLoadingIndicator = false;
 				}, 100);
-
 			}
 		});
 	}
@@ -161,13 +158,13 @@ export class BaseComponent implements OnInit, OnDestroy {
 	}
 
 	@HostListener('window:keyup', ['$event'])
-    handleKeyUpEvent(event: KeyboardEvent): void {
+	handleKeyUpEvent(event: KeyboardEvent): void {
 		if (event.keyCode === Key.Escape) {
 			if (this.dialog.openDialogs.length > 0 && this.dialog.openDialogs[this.dialog.openDialogs.length - 1].id !== 'mExcelLoadScreenComponent-dialog') {
 				this.dialog.openDialogs[this.dialog.openDialogs.length - 1].close();
 			}
 		}
-    }
+	}
 
 	ngOnDestroy(): void {
 		this.unsubscribe.forEach(sb => sb.unsubscribe());
@@ -193,12 +190,12 @@ export class BaseComponent implements OnInit, OnDestroy {
 			const title = this.getTabTitle(baseUrl);
 
 			if (!_.isUndefined(title[1]) && !_.isNull(title[1]) && title[1].length > 0) {
-				const findIndex = this.dynamicTabs.findIndex(x => x.title === title[1] && x.menuGuid === title[0]);
+				const findIndex = this.dynamicTabs.findIndex(x => x.title === title[1] && x.menuId === title[0]);
 				if (findIndex < 0) {
 					let instance = new DynamicTabComponent();
 					instance.title = title[1];
 					instance.componentUrl = componentUrl;
-					instance.menuGuid = title[0];
+					instance.menuId = title[0];
 					this.dynamicTabs.push(instance);
 					this.selectedTab = this.dynamicTabs.length - 1;
 					this.isLoadComponent = true;
@@ -260,6 +257,7 @@ export class BaseComponent implements OnInit, OnDestroy {
 				baseUrl = baseUrl + '/' + paths[i];
 			}
 		}
+
 		baseUrl += (addParameter && componentUrl.includes('?')) ? ('?' + (componentUrl.split(/[?#]/)[1])) : '';
 
 		return baseUrl;
@@ -272,12 +270,14 @@ export class BaseComponent implements OnInit, OnDestroy {
 					this.dynamicComponent['_results'][i].clear();
 					this.dynamicComponent['_results'].splice(i, 1);
 				}
+
 				if (this.dynamicTabs.length >= i) {
 					if (this.dynamicTabs[i].componentInstance) {
 						this.dynamicTabs[i].componentInstance.destroy();
 					}
 					this.dynamicTabs.splice(i, 1);
 				}
+
 				if (this.dynamicTabs.length > 0) {
 					if (this.selectedTab === i) {
 						this.selectedTab = 0;
@@ -311,31 +311,33 @@ export class BaseComponent implements OnInit, OnDestroy {
 
 	getTabTitle(url: string): any[] {
 		let resp = [];
-		let menuGuid = 0;
+		let menuId = '';
 		let menuTitle = '';
 		let findIndex;
+
 		if ((!this.userMenus || this.userMenus.length === 0) && sessionStorage.getItem('userMenus')) {
 			this.userMenus = JSON.parse(sessionStorage.getItem('userMenus')).filter(x => !_.isUndefined(x.routeUrl) && !_.isNull(x.routeUrl));
 		}
+
 		try {
 			findIndex = this.userMenus.findIndex(x => url.toLowerCase() === x.routeUrl.toLowerCase());
 			if (!_.isUndefined(findIndex) && !_.isNull(findIndex) && findIndex >= 0) {
-				menuGuid = this.userMenus[findIndex].guid;
+				menuId = this.userMenus[findIndex].menuId;
 				menuTitle = this.userMenus[findIndex].description;
 			} else {
 				findIndex = this.userMenus.findIndex(x => url.toLowerCase().startsWith(x.routeUrl.toLowerCase()));
-					if (!_.isUndefined(findIndex) && !_.isNull(findIndex) && findIndex >= 0) {
-						menuGuid = this.userMenus[findIndex].guid;
-						menuTitle = this.userMenus[findIndex].description;
-					}
-			 }
+				if (!_.isUndefined(findIndex) && !_.isNull(findIndex) && findIndex >= 0) {
+					menuId = this.userMenus[findIndex].menuId;
+					menuTitle = this.userMenus[findIndex].description;
+				}
+			}
 		} catch (e) {
 		}
-		resp.push(menuGuid);
+
+		resp.push(menuId);
 		resp.push(menuTitle);
 		return resp;
 	}
-
 
 	async loadComponent() {
 		if (this.isLoadComponent && this.dynamicTabs[this.selectedTab].modulPath) {
@@ -347,10 +349,12 @@ export class BaseComponent implements OnInit, OnDestroy {
 
 				const componentFactory = componentResolver.resolveComponentFactory(this.dynamicTabs[this.selectedTab].component);
 				componentFactory.create(this.injector);
+
 				if (componentFactory) {
 					if (this.dynamicComponent['_results'][this.selectedTab]) {
 						this.dynamicComponent['_results'][this.selectedTab].clear();
 					}
+
 					this.dynamicTabs[this.selectedTab].componentInstance = await this.dynamicComponent['_results'][this.selectedTab].createComponent(componentFactory);
 				}
 			} catch (e) {

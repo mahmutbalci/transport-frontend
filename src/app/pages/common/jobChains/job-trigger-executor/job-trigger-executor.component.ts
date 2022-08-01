@@ -47,7 +47,7 @@ export class JobTriggerExecutorComponent implements OnInit {
 		});
 
 		this.btcJobChainDefService.getTrigger(this.triggerGuid).subscribe(trigger => {
-			this.btcJobChainTriggerModel = trigger.result;
+			this.btcJobChainTriggerModel = trigger.data;
 			let jsonParams = JSON.parse(this.executedParameters);
 			this.parameters = [];
 			for (var key in jsonParams) {

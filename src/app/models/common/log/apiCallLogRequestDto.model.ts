@@ -1,16 +1,16 @@
-import { BaseModel } from "@core/_base/crud/models/_base.model";
+import { BaseModel } from '@core/_base/crud/models/_base.model';
 
 export class ApiCallLogRequestDto extends BaseModel {
-	guid: string = "";
+	guid: string = '';
 	requestDateStart: Date = new Date();
 	requestDateEnd: Date = new Date();
-	requestKey: string = "";
-	applicationName: string = "";
-	actionName: string = "";
-	apiRoute: string = "";
-	request: string = "";
-	userCode: string = "";
-	menuGuid: string = "";
-	channel: string = "";
-	operatorId: string = "";
+	requestKey: string = '';
+	applicationName: string = '';
+	actionName: string = '';
+	apiRoute: string = '';
+	request: string = '';
+	userCode: string = '';
+	menuId: string = '';
+	channel: string = '';
+	operatorId: string = '';
 }

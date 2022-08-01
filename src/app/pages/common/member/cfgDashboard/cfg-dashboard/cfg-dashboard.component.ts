@@ -70,7 +70,7 @@ export class CfgDashboardComponent implements OnInit {
 			this.isReadonly = (params.type === 'show');
 			if (prmId && prmId !== null) {
 				this.entityService.get(prmId).subscribe(res => {
-					this.entityModel = res.result;
+					this.entityModel = res.data;
 					this.entityModel._isEditMode = !this.isReadonly;
 					this.entityModel._isNew = false;
 

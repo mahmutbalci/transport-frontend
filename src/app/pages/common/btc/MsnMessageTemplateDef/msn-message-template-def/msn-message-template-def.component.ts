@@ -112,7 +112,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 			if (code && code !== null) {
 				this.msnMessageTemplateDefModel._isNew = false;
 				this.service.get(code).subscribe(res => {
-					this.msnMessageTemplateDefModel = res.result;
+					this.msnMessageTemplateDefModel = res.data;
 					this.dataSource.setData(_.orderBy(
 						this.msnMessageTemplateDefModel.msnMessageTemplateText,
 						'mailSubject',

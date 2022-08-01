@@ -50,7 +50,7 @@ export class WorkflowDefinitionListComponent implements OnInit, AfterViewInit {
 
 	ngOnInit() {
 		this.appApisService.getAll().subscribe((res: any) => {
-			this.entApiDefs = res.result;
+			this.entApiDefs = res.data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
