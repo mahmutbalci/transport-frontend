@@ -32,7 +32,7 @@ export class ApiCallLogListComponent implements OnInit {
 
 	displayedColumns = ['actions', 'guid',
 		'applicationName', 'actionName', 'requestKey', 'apiRoute', 'direction', 'httpStatusCode', 'elapsedMs', 'requestDate', 'requestTime',
-		'userCode', 'operatorId', 'menuGuid', 'channel'];
+		'userCode', 'operatorId', 'menuId', 'channel'];
 
 	frmControlSearch: FormControl = new FormControl();
 	filterForm: FormGroup = new FormGroup({});

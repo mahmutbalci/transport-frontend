@@ -14,14 +14,14 @@ export class WorkflowProcessService extends BaseService {
 	}
 
 	approve(data): Observable<any> {
-		const menuGuid = JSON.parse(sessionStorage.getItem('userMenus')).find(x => x.routeUrl === '/common/workflow/workflowProcessList').guid;
-		const extraHeaders = [{ key: 'h-menu-id', value: menuGuid }];
+		const menuId = JSON.parse(sessionStorage.getItem('userMenus')).find(x => x.routeUrl === '/common/workflow/workflowProcessList').guid;
+		const extraHeaders = [{ key: 'h-menu-id', value: menuId }];
 		return this.api.post(this.endpoint + '/Approve?refNumber=' + data.refNumber + '&explanation=' + data.explanation, data, extraHeaders);
 	}
 
 	reject(data): Observable<any> {
-		const menuGuid = JSON.parse(sessionStorage.getItem('userMenus')).find(x => x.routeUrl === '/common/workflow/workflowProcessList').guid;
-		const extraHeaders = [{ key: 'h-menu-id', value: menuGuid }];
+		const menuId = JSON.parse(sessionStorage.getItem('userMenus')).find(x => x.routeUrl === '/common/workflow/workflowProcessList').guid;
+		const extraHeaders = [{ key: 'h-menu-id', value: menuId }];
 		return this.api.post(this.endpoint + '/Reject?refNumber=' + data.refNumber + '&explanation=' + data.explanation, data, extraHeaders);
 	}
 }

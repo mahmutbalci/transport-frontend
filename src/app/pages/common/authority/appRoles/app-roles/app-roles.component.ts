@@ -245,7 +245,7 @@ export class AppRolesComponent implements OnInit {
 		});
 
 		this.entityService.api.getLookups(['AppRoleTypes']).then(res => {
-			this.appRoleTypes = res.find(x => x.name === 'AppRoleTypes').data;
+			this.appRoleTypes = res.data.find(x => x.name === 'AppRoleTypes').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const prmId = params.prmId;

@@ -8,7 +8,7 @@ export class WorkflowProcessModel extends BaseModel {
 	request: string = '';
 	screenViewCurrentState: string = '';
 	apiRoute: string = '';
-	menuGuid: number = null;
+	menuId: string = null;
 	expireDate: string = '';
 	insertUser: string = '';
 	insertDateTime: string = '';

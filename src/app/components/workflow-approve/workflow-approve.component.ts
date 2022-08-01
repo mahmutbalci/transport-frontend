@@ -32,8 +32,8 @@ export interface DataTableEntry {
 export class WorkflowApproveComponent implements OnInit {
 	viewLoading: boolean = false;
 	isProcessing: boolean = false;
-	entMenuTree: any[] = [];
-	entApiMethod: any[] = [];
+	appMenus: any[] = [];
+	appApiMethod: any[] = [];
 
 	@Output() saveEmitter = new EventEmitter();
 
@@ -78,12 +78,12 @@ export class WorkflowApproveComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.frameworkApi.getLookups(['EntApiMethod', 'EntMenuTree', 'CfgYesNoNumeric']).then(res => {
-			this.entApiMethod = res.find(x => x.name === 'EntApiMethod').data;
-			this.entMenuTree = res.find(x => x.name === 'EntMenuTree').data;
+		this.frameworkApi.getLookups(['AppApiMethod', 'AppMenus', 'CfgYesNoNumeric']).then(res => {
+			this.appApiMethod = res.find(x => x.name === 'AppApiMethod').data;
+			this.appMenus = res.find(x => x.name === 'AppMenus').data;
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
 
-			this.entMenuTree.forEach(element => {
+			this.appMenus.forEach(element => {
 				if (element.description && element.description.includes('.')) {
 					element.description = this.translate.instant(element.description);
 				}
@@ -688,19 +688,19 @@ export class WorkflowApproveComponent implements OnInit {
 
 	getTitleComponent() {
 		let menuDescription = '';
-		if (this.workflowProcess.menuGuid) {
-			menuDescription = this.lookupPipe.transform(this.workflowProcess.menuGuid, this.entMenuTree);
+		if (this.workflowProcess.menuId) {
+			menuDescription = this.lookupPipe.transform(this.workflowProcess.menuId, this.appMenus);
 		}
 
 		if (!menuDescription) {
-			menuDescription = this.workflowProcess.menuGuid.toString();
+			menuDescription = this.workflowProcess.menuId;
 		} else {
 			menuDescription = this.translate.instant(menuDescription);
 		}
 
 		let apiMethodDescription = '';
 		if (this.workflowProcess.apiMethod) {
-			apiMethodDescription = this.lookupPipe.transform(this.workflowProcess.apiMethod, this.entApiMethod);
+			apiMethodDescription = this.lookupPipe.transform(this.workflowProcess.apiMethod, this.appApiMethod);
 		}
 
 		if (!apiMethodDescription) {

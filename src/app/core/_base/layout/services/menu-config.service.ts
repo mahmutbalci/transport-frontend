@@ -7,7 +7,6 @@ import { MenuConfig } from '@core/_config/default/menu.config';
 
 declare let require: any
 
-
 @Injectable()
 export class MenuConfigService {
 	public configModel: MenuConfig = new MenuConfig();
@@ -90,7 +89,7 @@ export class MenuConfigService {
 		let menuList: any[] = [];
 		if (userMenus) {
 			userMenus.forEach(menu => {
-				if (menu.parentMenuGuid == null) {
+				if (menu.parentMenuId == null) {
 					let item = this.convertToMenuItem(menu);
 					this.pushLeftNode(userMenus, item);
 					item.submenu = _.orderBy(item.submenu, ['screenOrder'], ['asc']);
@@ -103,7 +102,6 @@ export class MenuConfigService {
 
 		return leftMenu;
 	}
-
 
 	getTopMenu(userMenus: any[]) {
 		let topMenu =
@@ -123,9 +121,9 @@ export class MenuConfigService {
 
 		if (userMenus) {
 			userMenus.forEach(menu => {
-				if (menu.parentMenuGuid == null) {
+				if (menu.parentMenuId == null) {
 					let item = {
-						guid: menu.guid,
+						menuId: menu.menuId,
 						heading: {
 							heading: true,
 							title: menu.description,
@@ -149,7 +147,7 @@ export class MenuConfigService {
 
 	pushTopNode(userMenus: any[], item: any) {
 		userMenus.forEach(subMenu => {
-			if (subMenu.parentMenuGuid === item.guid) {
+			if (subMenu.parentMenuId === item.menuId) {
 				let subItem = this.convertToMenuItem(subMenu, true);
 				subItem.aside = {
 					self: {
@@ -166,7 +164,7 @@ export class MenuConfigService {
 
 	pushTopSubNode(userMenus: any[], item: any) {
 		userMenus.forEach(subMenu => {
-			if (subMenu.parentMenuGuid === item.guid) {
+			if (subMenu.parentMenuId === item.menuId) {
 				let subItem = this.convertToMenuItem(subMenu, true);
 				this.pushTopSubNode(userMenus, subItem);
 				if (item.aside) {
@@ -184,9 +182,10 @@ export class MenuConfigService {
 			}
 		});
 	}
+
 	pushLeftNode(userMenus: any[], item: any) {
 		userMenus.forEach(subMenu => {
-			if (subMenu.parentMenuGuid === item.guid) {
+			if (subMenu.parentMenuId === item.menuId) {
 				let subItem = this.convertToMenuItem(subMenu, true);
 				subItem.aside = {
 					self: {
@@ -215,11 +214,10 @@ export class MenuConfigService {
 
 	convertToMenuItem(menu: any, withoutSub: boolean = false): any {
 		let item: any = {};
-		item.guid = menu.guid;
+		item.menuId = menu.menuId;
 		//leaf = false diye bir alan olsa iyi olur suan sadece iconPath den anlayabiliyoruz boşsa leaftir diye...
 		if (menu.iconPath != null && menu.iconPath.length > 0) {
 			item.root = true;
-			item.institutionId = menu.institutionId;
 			item.icon = menu.iconPath;
 			item.desc = menu.description;
 
@@ -227,6 +225,7 @@ export class MenuConfigService {
 				item.submenu = [];
 			}
 		}
+
 		item.screenOrder = menu.screenOrder;
 		item.page = menu.routeUrl;
 		item.title = menu.description;

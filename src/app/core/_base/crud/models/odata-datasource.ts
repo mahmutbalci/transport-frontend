@@ -13,7 +13,6 @@ import { ODataResultsModel } from './odata-results.model';
 	Read the article: 'https://blog.angular-university.io/angular-material-data-table/'
 **/
 export class ODataDataSource implements DataSource<BaseModel> {
-
 	errorSubject = new BehaviorSubject<any>({});
 
 	entitySubject = new BehaviorSubject<any[]>([]);
@@ -44,6 +43,7 @@ export class ODataDataSource implements DataSource<BaseModel> {
 	clearError() {
 		this.errorSubject.next({});
 	}
+
 	setError(result) {
 		if (result) {
 			if (result.error) {
@@ -58,8 +58,9 @@ export class ODataDataSource implements DataSource<BaseModel> {
 			_hasError = true;
 		return _hasError;
 	}
+
 	getErrorMessage() {
-		var errorMessage = "";
+		var errorMessage = '';
 		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined') {
 			errorMessage = this.errorSubject.value.error.message;
 			if (this.errorSubject.value.error.referenceId) {
@@ -100,7 +101,7 @@ export class ODataDataSource implements DataSource<BaseModel> {
 			});
 	}
 
-	loadWithEndPointSuffix(queryParams: ODataParamsModel, enpointSuffix: string = "all") {
+	loadWithEndPointSuffix(queryParams: ODataParamsModel, enpointSuffix: string = 'all') {
 		this.loadingSubject.next(true);
 		this.service.getODataWithEndPointSuffix(queryParams, enpointSuffix)
 			.pipe(

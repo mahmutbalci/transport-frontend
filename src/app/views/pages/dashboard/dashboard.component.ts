@@ -37,7 +37,7 @@ export class DashboardComponent implements OnInit {
 
 	getData() {
 		this.paginator.pageIndex = 0;
-		this.loadData();
+		// this.loadData();
 	}
 
 	loadData() {

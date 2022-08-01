@@ -40,6 +40,7 @@ export class AppApisListComponent implements OnInit, AfterViewInit {
 	ngAfterViewInit(): void {
 		this.entityService.api.getLookups(["AppApplications",]).then(res => {
 			this.appApplications = res.find(x => x.name === "AppApplications").data;
+
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});

@@ -49,7 +49,7 @@
 
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<mat-select formControlName="menuGuid" placeholder="{{ 'System.Authority.MenuName' | translate }}">
+								<mat-select formControlName="menuId" placeholder="{{ 'System.Authority.MenuName' | translate }}">
 									<ngx-mat-select-search [formControl]="frmControlSearch" #filtermenu placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{ 'General.NoRecordsFound' | translate }}">
 									</ngx-mat-select-search>
 									<mat-option id="chooseMenu">{{ 'General.None' | translate }}</mat-option>
@@ -112,9 +112,9 @@
 							<mat-cell *matCellDef="let row">{{ row.refNumber }}</mat-cell>
 						</ng-container>
 
-						<ng-container matColumnDef="menuGuid">
+						<ng-container matColumnDef="menuId">
 							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Authority.MenuName' | translate }}</mat-header-cell>
-							<mat-cell *matCellDef="let row">{{ row.menuGuid | lookup: entMenuTree }}</mat-cell>
+							<mat-cell *matCellDef="let row">{{ row.menuId | lookup: entMenuTree }}</mat-cell>
 						</ng-container>
 
 						<ng-container matColumnDef="apiMethod">
@@ -199,9 +199,9 @@
 							<mat-cell *matCellDef="let row">{{ row.refNumber }}</mat-cell>
 						</ng-container>
 
-						<ng-container matColumnDef="menuGuid">
+						<ng-container matColumnDef="menuId">
 							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'System.Authority.MenuName' | translate }}</mat-header-cell>
-							<mat-cell *matCellDef="let row">{{ row.menuGuid | lookup: entMenuTree }}</mat-cell>
+							<mat-cell *matCellDef="let row">{{ row.menuId | lookup: entMenuTree }}</mat-cell>
 						</ng-container>
 
 						<ng-container matColumnDef="apiMethod">

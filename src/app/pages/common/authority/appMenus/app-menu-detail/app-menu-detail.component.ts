@@ -50,7 +50,7 @@ export class AppMenuDetailComponent implements OnInit {
 		this.entityForm.addControl('menuApis', new FormControl([]));
 
 		this.entityService.api.getLookups(['AppApis']).then(res => {
-			this.appApis = res.find(x => x.name === 'AppApis').data;
+			this.appApis = res.data.find(x => x.name === 'AppApis').data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
