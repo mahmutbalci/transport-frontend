@@ -6,6 +6,5 @@ export const environment = {
 	commonApiUrl: 'https://prodUrl:44341/api',
 	frameworkApiUrl: 'https://prodUrl:44341/api',
 	transportApiUrl: 'https://prodUrl:44341/api',
-	quartzMinUrl: 'http://prodUrl:8088/',
 	crystalQuartzUrl: 'http://prodUrl:8088/quartz/',
 };

@@ -58,7 +58,7 @@
 								<ngx-mat-select-search [formControl]="frmControlSearch" #filterChannel placeholderLabel="{{'General.Search' | translate}}" noEntriesFoundLabel="{{'General.NoRecordsFound' | translate }}">
 								</ngx-mat-select-search>
 								<mat-option id="chooseChannel">{{'General.None' | translate}}</mat-option>
-								<mat-option id="channel.code" [value]="channel.code" *ngFor="let channel of cfgChannel | filterByProperty: ['description',filterChannel.value]; ">{{channel.description}} </mat-option>
+								<mat-option id="channel.code" [value]="channel.code" *ngFor="let channel of appChannelCodes | filterByProperty: ['description',filterChannel.value]; ">{{channel.description}} </mat-option>
 							</mat-select>
 						</mat-form-field>
 					</div>
@@ -90,7 +90,7 @@
 				<div class="header-above-scroller" #headerScroller (scroll)="scrollHead()">
 					<div class="header-scroller" [ngStyle]="{'width': scrollWidth + 'px'}"></div>
 				</div>
-				<div class="mat-table__wrapper" #tableScroller  (scroll)="scrollFoot()">
+				<div class="mat-table__wrapper" #tableScroller (scroll)="scrollFoot()">
 					<mat-spinner [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
 					<mat-table mat-table class="mat-elevation-z8" [dataSource]="dataSource" #nationSort="matSort" matSort matSortActive="actionDate" matSortDirection="desc" matSortDisableClear>
 						<ng-container matColumnDef="className">
@@ -112,15 +112,15 @@
 							</mat-cell>
 						</ng-container>
 						<ng-container matColumnDef="oldValue">
-							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.OldValue' | translate}} </mat-header-cell>
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.OldValue' | translate}} </mat-header-cell>
 							<mat-cell *matCellDef="let element" class="mat-column">
-								<span>{{findLookupObjcet(element.field, element.oldValue)  | langparser }}</span>
+								<span>{{findLookupObjcet(element.field, element.oldValue) | langparser }}</span>
 							</mat-cell>
 						</ng-container>
 						<ng-container matColumnDef="newValue">
-							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'System.Member.NewValue' | translate}} </mat-header-cell>
+							<mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.NewValue' | translate}} </mat-header-cell>
 							<mat-cell *matCellDef="let element" class="mat-column">
-								<span>{{findLookupObjcet(element.field, element.newValue)  | langparser }}</span>
+								<span>{{findLookupObjcet(element.field, element.newValue) | langparser }}</span>
 							</mat-cell>
 						</ng-container>
 						<ng-container matColumnDef="actionDate">
@@ -144,7 +144,7 @@
 						<ng-container matColumnDef="channelCode">
 							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'System.Member.ChannelCode' | translate}} </mat-header-cell>
 							<mat-cell *matCellDef="let element" class="mat-column">
-								<span>{{element.channelCode | lookup:cfgChannel}}</span>
+								<span>{{element.channelCode | lookup:appChannelCodes}}</span>
 							</mat-cell>
 						</ng-container>
 						<ng-container matColumnDef="referenceId">

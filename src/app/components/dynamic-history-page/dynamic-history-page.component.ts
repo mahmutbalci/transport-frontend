@@ -45,7 +45,7 @@ export class DynamicHistoryPageComponent implements OnInit {
 	translactionEntityList: any[] = [];
 	cfgTraceType: any[] = [];
 	cfgYesNoNumeric: any[] = [];
-	cfgChannel: any[] = [];
+	appChannelCodes: any[] = [];
 	dateDiff: number = 30;
 	lookupPipe: LookupPipe = new LookupPipe(new LangParserPipe());
 	filterForm: FormGroup = new FormGroup({});
@@ -140,10 +140,10 @@ export class DynamicHistoryPageComponent implements OnInit {
 				).subscribe();
 		}
 
-		this.frameworkApi.getLookups(['CfgTraceType', 'CfgYesNoNumeric', 'CfgChannelCodeDef']).then(res => {
-			this.cfgTraceType = res.find(x => x.name === 'CfgTraceType').data;
+		this.frameworkApi.getLookups(['CfgTraceTypeDef', 'CfgYesNoNumeric', 'AppChannelCodes']).then(res => {
+			this.cfgTraceType = res.find(x => x.name === 'CfgTraceTypeDef').data;
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
-			this.cfgChannel = res.find(x => x.name === 'CfgChannelCodeDef').data;
+			this.appChannelCodes = res.find(x => x.name === 'AppChannelCodes').data;
 		});
 
 		Object.keys(this.gridColumns[0]).forEach(key => {
