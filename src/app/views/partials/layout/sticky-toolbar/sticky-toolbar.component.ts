@@ -1,6 +1,6 @@
 // Angular
 import { Component } from '@angular/core';
-// Aktifbank / Atlas
+// Trasport
 import { OffcanvasOptions } from '@core/_base/metronic';
 
 @Component({

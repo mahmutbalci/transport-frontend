@@ -37,7 +37,6 @@ import { HeaderMobileComponent } from './header/header-mobile/header-mobile.comp
 import { ErrorPageComponent } from './content/error-page/error-page.component';
 import { PermissionEffects, permissionsReducer, RoleEffects, rolesReducer } from '@core/auth';
 import { MenuSectionComponent } from './aside/menu-section/menu-section.component';
-import { UserProfileComponent } from 'app/views/partials/layout/topbar/user-profile/user-profile.component';
 import { UserProfile2Component } from 'app/views/partials/layout/topbar/user-profile2/user-profile2.component';
 import { ClickEventThemeDirective } from 'app/directives/click-event-theme.directive';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
@@ -60,7 +59,6 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 		MenuHorizontalComponent,
 		MenuSectionComponent,
 		ErrorPageComponent,
-		UserProfileComponent,
 		UserProfile2Component,
 		ClickEventThemeDirective
 	],

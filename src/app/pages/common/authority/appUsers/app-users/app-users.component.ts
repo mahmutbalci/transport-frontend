@@ -20,13 +20,14 @@ export class AppUsersComponent implements OnInit {
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 
+	succesMessage = this.translate.instant('General.Success');
+	menuUrl: string = '/common/authority/appUsers';
 	frmControlSearch: FormControl = new FormControl();
 	entityForm: FormGroup = new FormGroup({});
 	entityModel: AppUsersModel = new AppUsersModel();
 
 	isReadonly: boolean = false;
 	isProcessing: boolean = false;
-	menuUrl: string = '/common/authority/appUsers';
 	hasFormErrors: boolean = false;
 	validationMessage: string;
 
@@ -196,8 +197,8 @@ export class AppUsersComponent implements OnInit {
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false).afterClosed().subscribe(() => {
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false).afterClosed().subscribe(() => {
 				this.router.navigate([this.menuUrl]);
 			});
 		}, (error) => {
@@ -210,18 +211,17 @@ export class AppUsersComponent implements OnInit {
 	}
 
 	create() {
-		this.entityService.create(this.entityModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(() => {
-					this.router.navigate([this.menuUrl]);
-				});
-			}, (error) => {
-				this.loading = false;
-				this.layoutUtilsService.showError(error);
-				this.isProcessing = false;
-			}, () => {
-				this.loading = false;
+		this.entityService.create(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(() => {
+				this.router.navigate([this.menuUrl]);
 			});
+		}, (error) => {
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+			this.isProcessing = false;
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	clearScreen() {

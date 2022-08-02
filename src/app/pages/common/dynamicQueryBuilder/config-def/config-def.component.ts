@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 	styleUrls: ['./config-def.component.scss']
 })
 export class ConfigDefComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	cfgExpressionConfigDefModel: CfgExpressionConfigDefModel = new CfgExpressionConfigDefModel();
 	cfgExpressionConfigDefForm: FormGroup = new FormGroup({});
 	allCriterias: CfgExpressionCriteriaDefModel[] = [];
@@ -28,7 +29,7 @@ export class ConfigDefComponent implements OnInit {
 		public cfgExpressionConfigDefService: CfgExpressionConfigDefService,
 		public cfgExpressionCriteriaDefService: CfgExpressionCriteriaDefService,
 		public translate: TranslateService,
-		private layoutUtilsService: LayoutUtilsService, ) { }
+		private layoutUtilsService: LayoutUtilsService,) { }
 
 	ngOnInit() {
 		Object.keys(this.cfgExpressionConfigDefModel).forEach(name => {
@@ -94,31 +95,29 @@ export class ConfigDefComponent implements OnInit {
 	}
 
 	create() {
-		this.cfgExpressionConfigDefService.create(this.cfgExpressionConfigDefModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/dynamicQueryBuilder/configDef']);
-					})
-			},
-				(error) => {
-					this.layoutUtilsService.showError(error);
-				}
-			);
+		this.cfgExpressionConfigDefService.create(this.cfgExpressionConfigDefModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/dynamicQueryBuilder/configDef']);
+				})
+		},
+			(error) => {
+				this.layoutUtilsService.showError(error);
+			}
+		);
 	}
 
 	update() {
-		this.cfgExpressionConfigDefService.update(this.cfgExpressionConfigDefModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/dynamicQueryBuilder/configDef']);
-					})
-			},
-				(error) => {
-					this.layoutUtilsService.showError(error);
-				}
-			);
+		this.cfgExpressionConfigDefService.update(this.cfgExpressionConfigDefModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/dynamicQueryBuilder/configDef']);
+				})
+		},
+			(error) => {
+				this.layoutUtilsService.showError(error);
+			}
+		);
 	}
 
 	goBack() {

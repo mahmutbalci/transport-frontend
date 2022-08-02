@@ -176,6 +176,7 @@ export class AppRolesComponent implements OnInit {
 	loading: any;
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
+	succesMessage = this.translate.instant('General.Success');
 
 	entityForm: FormGroup = new FormGroup({});
 	entityModel: AppRolesModel = new AppRolesModel();
@@ -526,9 +527,9 @@ export class AppRolesComponent implements OnInit {
 			this.entityModel.roleType = 'A';
 		}
 
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 10000, true, false)
-				.afterClosed().subscribe(res => {
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+				.afterClosed().subscribe(() => {
 					this.goBack();
 				});
 		}, (error) => {
@@ -574,9 +575,9 @@ export class AppRolesComponent implements OnInit {
 			this.entityModel.roleApiRels = selectApiList;
 		}
 
-		this.entityService.create(this.entityModel).subscribe((response: any) => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-				.afterClosed().subscribe(res => {
+		this.entityService.create(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(() => {
 					this.goBack();
 				});
 		}, (error) => {

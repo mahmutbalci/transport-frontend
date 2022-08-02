@@ -1,6 +1,6 @@
 // Angular
 import { Component, OnInit } from '@angular/core';
-// Aktifbank / Atlas
+// Trasport
 import { ToggleOptions } from '@core/_base/metronic';
 // Layout
 import { LayoutConfigService } from '@core/_base/layout';
