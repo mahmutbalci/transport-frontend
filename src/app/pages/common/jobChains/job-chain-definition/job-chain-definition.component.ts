@@ -24,6 +24,7 @@ const mx = require('mxgraph')({
 })
 
 export class JobChainDefinitionComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	@ViewChild('graphContainer') graphContainer: ElementRef;
 	isDisabled: boolean = false;
 
@@ -112,29 +113,26 @@ export class JobChainDefinitionComponent implements OnInit {
 	}
 
 	create() {
-		this.btcJobChainDefService.create(this.chainInfo)
-			.subscribe((response: any) => {
-				this.chainInfo.guid = response.data;
-
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 1000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/jobChains/jobChainDef']);
-					});
-			}, (error) => {
-				this.layoutUtilsService.showError(error);
-			});
+		this.btcJobChainDefService.create(this.chainInfo).subscribe((response: any) => {
+			this.chainInfo.guid = response.data;
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 1000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/jobChains/jobChainDef']);
+				});
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+		});
 	}
 
 	update() {
-		this.btcJobChainDefService.update(this.chainInfo)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/jobChains/jobChainDef']);
-					});
-			}, (error) => {
-				this.layoutUtilsService.showError(error);
-			});
+		this.btcJobChainDefService.update(this.chainInfo).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/jobChains/jobChainDef']);
+				});
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+		});
 	}
 
 	goBack() {

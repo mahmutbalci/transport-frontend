@@ -570,6 +570,11 @@ export const locale = {
 			willBeMasked: 'Will Card Be Masked',
 			RowNumber: 'Row Number',
 			ProcessUser: 'Process User',
+			
+			DeleteConfirmation: 'Delete Confirmation!',
+			AreYouSureToPermanentlyDeleteThisRecord: 'Are you sure to permanently delete this record',
+			RecordIsBeingDeleted: 'Record is being deleted...',
+			RecordHasBeenDeleted: 'Record has been deleted',
 
 			Exception: {
 				PleaseEnterASearchCriteria: 'Please enter a search criteria.',
@@ -580,10 +585,6 @@ export const locale = {
 				ProfileCannotDeleteMessage: 'There are data to which the specified profile is associated in the system. Firstly you must delete all of these relationships from the <strong>System Profile Configurations</strong> and <strong>Card Profile Map</strong> screens.',
 				FileUploadedSuccessfully: 'File uploaded successfully.',
 				ErrorOccurredLoodingFile: 'An error occurred while loading the file.',
-				DeleteConfirmation: 'Delete Confirmation!',
-				AreYouSureToPermanentlyDeleteThisRecord: 'Are you sure to permanently delete this record',
-				RecordIsBeingDeleted: 'Record is being deleted...',
-				RecordHasBeenDeleted: 'Record has been deleted',
 				PleaseEnterDescription: 'Please enter description.',
 				PleaseEnterValueWithValidLength: 'Please enter value with valid length.',
 				CannotDefinedMoreThanOneGroup: 'A txn definition cannot be defined in more than one group. [TXN_DEF] is defined in the [GROUP_DEF] group.',

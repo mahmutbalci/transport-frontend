@@ -21,6 +21,7 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 	@Input() model: BaseModel;
 	@Input() service: BaseService;
 	@Input() page: any = {};
+	succesMessage = this.translate.instant('General.Success');
 
 	loading: any;
 	loadingSubject = new BehaviorSubject<boolean>(false);
@@ -154,20 +155,6 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 	}
 
 	save() {
-		if (this.isAdd) {
-			if (this.form.value['code'] == null || this.form.value['code'] === '' || this.form.value['code'] === '  ' || this.form.value['code'] === ' ') {
-				const message = this.translate.instant('Issuing.Courier.EnterCode');
-				this.layoutUtilsService.showNotification(message, MessageType.Create, 10000, true, false);
-				return;
-			}
-		}
-
-		if (this.form.value['description'] === 'TR:=;;EN:=' || this.form.value['description'] === '') {
-			const message = this.translate.instant('Issuing.Courier.EnterDescription');
-			this.layoutUtilsService.showError(message);
-			return;
-		}
-
 		this.hasFormErrors = false;
 		this.isDisabled = true;
 		const controls = this.form.controls;
@@ -204,9 +191,9 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 	}
 
 	update() {
-		this.service.update(this.model).subscribe((response: any) => {
+		this.service.update(this.model).subscribe(() => {
 			this.cache.delete(this.service.endpoint);
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
 				this.router.navigateByUrl(this.page.backUrl);
 			});
 		}, (error) => {
@@ -220,9 +207,9 @@ export class DynamicParamaterPageDefComponent implements OnInit {
 	}
 
 	create() {
-		this.service.create(this.model).subscribe((response: any) => {
+		this.service.create(this.model).subscribe(() => {
 			this.cache.delete(this.service.endpoint);
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
 				this.router.navigateByUrl(this.page.backUrl);
 			});
 		}, (error) => {

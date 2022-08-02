@@ -30,6 +30,7 @@ export interface DataTableEntry {
 	styleUrls: ['./workflow-approve.component.scss']
 })
 export class WorkflowApproveComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	viewLoading: boolean = false;
 	isProcessing: boolean = false;
 	appMenus: any[] = [];
@@ -644,17 +645,16 @@ export class WorkflowApproveComponent implements OnInit {
 		}
 
 		this.workflowProcess = <WorkflowProcessModel>this.workflowApproveForm.value;
-		this.entWorkflowProcessService.approve(this.workflowProcess)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-					.afterClosed().subscribe(res => {
-						this.dialogRef.close();
-					});
-				this.isProcessing = false;
-			}, (error) => {
-				this.isProcessing = false;
-				this.layoutUtilsService.showError(error);
-			});
+		this.entWorkflowProcessService.approve(this.workflowProcess).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(() => {
+					this.dialogRef.close();
+				});
+			this.isProcessing = false;
+		}, (error) => {
+			this.isProcessing = false;
+			this.layoutUtilsService.showError(error);
+		});
 	}
 
 	reject() {
@@ -669,17 +669,16 @@ export class WorkflowApproveComponent implements OnInit {
 		}
 
 		this.workflowProcess = <WorkflowProcessModel>this.workflowApproveForm.value;
-		this.entWorkflowProcessService.reject(this.workflowProcess)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-					.afterClosed().subscribe(res => {
-						this.dialogRef.close();
-					});
-				this.isProcessing = false;
-			}, (error) => {
-				this.isProcessing = false;
-				this.layoutUtilsService.showError(error);
-			});
+		this.entWorkflowProcessService.reject(this.workflowProcess).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(() => {
+					this.dialogRef.close();
+				});
+			this.isProcessing = false;
+		}, (error) => {
+			this.isProcessing = false;
+			this.layoutUtilsService.showError(error);
+		});
 	}
 
 	cancel() {

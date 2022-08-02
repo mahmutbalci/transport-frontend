@@ -7,7 +7,7 @@ export class LayoutConfig {
 		'self': {
 			'layout': 'fluid', // fluid|boxed
 			'body': {
-				'background-image': './assets/media/misc/bg-1.jpg',
+				'background-image': './assets/media/misc/bg-2.jpg',
 			},
 			'logo': {
 				'dark': './assets/media/logos/logo-2.png',

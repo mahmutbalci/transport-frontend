@@ -6,12 +6,14 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { BtcJobChainDefService } from '@common/framework/btcJobChainDef.service';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { MMatTableDataSource } from '@core/models/mmat-table.datasource';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'm-job-chain-trigger-def',
 	templateUrl: './job-chain-trigger-def.component.html'
 })
 export class JobChainTriggerDefComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	frmControlSearch: FormControl = new FormControl();
 	btcJobChainTriggerModel: BtcJobChainTriggerModel = new BtcJobChainTriggerModel();
 	btcJobChainTriggerDefForm: FormGroup = new FormGroup({});
@@ -49,7 +51,9 @@ export class JobChainTriggerDefComponent implements OnInit {
 		public dialogRef: MatDialogRef<JobChainTriggerDefComponent>,
 		private layoutUtilsService: LayoutUtilsService,
 		private btcJobChainDefService: BtcJobChainDefService,
-		public dialog: MatDialog) { }
+		private translate: TranslateService,
+		public dialog: MatDialog
+	) { }
 
 	ngOnInit() {
 		Object.keys(this.btcJobChainTriggerModel).forEach(name => {
@@ -158,7 +162,7 @@ export class JobChainTriggerDefComponent implements OnInit {
 
 	create(model: BtcJobChainTriggerModel) {
 		this.btcJobChainDefService.saveTrigger(model).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			model.guid = response.data;
 			this.saveEmitter.emit(model);
 			this.dialogRef.close();
@@ -168,8 +172,8 @@ export class JobChainTriggerDefComponent implements OnInit {
 	}
 
 	update(model: BtcJobChainTriggerModel) {
-		this.btcJobChainDefService.updateTrigger(model).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+		this.btcJobChainDefService.updateTrigger(model).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			this.saveEmitter.emit(model);
 			this.dialogRef.close();
 		}, (error) => {

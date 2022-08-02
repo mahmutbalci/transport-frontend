@@ -13,8 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 	selector: 'm-cfg-holiday-def',
 	templateUrl: './cfg-holiday-def.component.html'
 })
-
 export class CfgHolidayDefComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	holidayVariablesForm: FormGroup = new FormGroup({});
 	holidayNationalForm: FormGroup = new FormGroup({});
 	cfgHolidayVariablesModel: CfgHolidayVariablesModel = new CfgHolidayVariablesModel();
@@ -22,14 +22,13 @@ export class CfgHolidayDefComponent implements OnInit {
 	visible_1: Boolean = true;
 	visible_2: Boolean = false;
 	isAdd: boolean = true;
-	state: string = "";
-	selectedHoliday: string = "";
+	state: string = '';
+	selectedHoliday: string = '';
 	hasFormErrors: boolean = false;
 	loading: any;
 	errorMessage: any;
-	days: number = 31;
-	saveresult: string;
 	isDisabled: boolean = false;
+	days: number = 31;
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 	isView: boolean = false;
@@ -40,7 +39,7 @@ export class CfgHolidayDefComponent implements OnInit {
 		private layoutUtilsService: LayoutUtilsService,
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		private translate: TranslateService, ) { }
+		private translate: TranslateService,) { }
 
 	ngOnInit() {
 		Object.keys(this.cfgHolidayVariablesModel).forEach(name => {
@@ -53,12 +52,12 @@ export class CfgHolidayDefComponent implements OnInit {
 		const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 			const guid = params.guid;
 			const selected = params.selected;
-			this.isDisabled = (params.type == "show");
-			this.isView = (params.type == "view");
+			this.isDisabled = (params.type === 'show');
+			this.isView = (params.type === 'view');
 			if (guid && guid !== null) {
 				this.selectedHoliday = selected;
 				this.isAdd = false;
-				if (this.selectedHoliday == "1") {
+				if (this.selectedHoliday === '1') {
 					this.cfgHolidayVariablesService.get(guid).subscribe(res => {
 						this.cfgHolidayVariablesModel = res.data;
 						this.onItemChange();
@@ -67,7 +66,7 @@ export class CfgHolidayDefComponent implements OnInit {
 							this.layoutUtilsService.showError(error);
 						});
 				}
-				if (this.selectedHoliday == "2") {
+				if (this.selectedHoliday == '2') {
 					this.cfgHolidayNationalService.get(guid).subscribe(res => {
 						this.cfgHolidayNationalModel = res.data;
 						this.onItemChange();
@@ -78,7 +77,7 @@ export class CfgHolidayDefComponent implements OnInit {
 			}
 			else {
 				this.isAdd = true;
-				this.selectedHoliday = "1";
+				this.selectedHoliday = '1';
 				this.cfgHolidayVariablesModel = new CfgHolidayVariablesModel();
 				this.cfgHolidayNationalModel = new CfgHolidayNationalModel();
 				this.initForm();
@@ -90,7 +89,7 @@ export class CfgHolidayDefComponent implements OnInit {
 	initForm(): any {
 		this.loadingSubject.next(false);
 
-		if (this.selectedHoliday == "1") {
+		if (this.selectedHoliday == '1') {
 			const controls = this.holidayVariablesForm.controls;
 			Object.keys(this.cfgHolidayVariablesModel).forEach(name => {
 				if (controls[name]) {
@@ -99,7 +98,7 @@ export class CfgHolidayDefComponent implements OnInit {
 			});
 		}
 
-		if (this.selectedHoliday == "2") {
+		if (this.selectedHoliday == '2') {
 			const controls = this.holidayNationalForm.controls;
 			Object.keys(this.cfgHolidayNationalModel).forEach(name => {
 				if (controls[name]) {
@@ -116,11 +115,11 @@ export class CfgHolidayDefComponent implements OnInit {
 
 	onItemChange() {
 		this.state = this.selectedHoliday;
-		if (this.state == "1") {
+		if (this.state == '1') {
 			this.visible_1 = true;
 			this.visible_2 = false;
 		}
-		else if (this.state == "2") {
+		else if (this.state == '2') {
 			this.visible_1 = false;
 			this.visible_2 = true;
 		}
@@ -170,27 +169,24 @@ export class CfgHolidayDefComponent implements OnInit {
 	}
 
 	createCfgHolidayNational() {
-		this.cfgHolidayNationalService.create(this.cfgHolidayNationalModel)
-			.subscribe((response: any) => {
-				this.saveresult = response;
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/member/cfgHolidayDef']);
-					})
-			}, (error) => {
-				this.errorMessage = error;
-				this.loading = false;
-				this.layoutUtilsService.showError(error);
-			}, () => {
-				this.loading = false;
-			});
+		this.cfgHolidayNationalService.create(this.cfgHolidayNationalModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(res => {
+					this.router.navigate(['/common/member/cfgHolidayDef']);
+				})
+		}, (error) => {
+			this.errorMessage = error;
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	updateCfgHolidayNational() {
-		this.cfgHolidayNationalService.update(this.cfgHolidayNationalModel).subscribe((response: any) => {
-			this.saveresult = response;
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-				.afterClosed().subscribe(res => {
+		this.cfgHolidayNationalService.update(this.cfgHolidayNationalModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(() => {
 					this.router.navigate(['/common/member/cfgHolidayDef']);
 				})
 		}, (error) => {
@@ -211,28 +207,25 @@ export class CfgHolidayDefComponent implements OnInit {
 	}
 
 	createCfgHolidayVariable() {
-		this.cfgHolidayVariablesService.create(this.cfgHolidayVariablesModel)
-			.subscribe((response: any) => {
-				this.saveresult = response;
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/member/cfgHolidayDef']);
-					})
-			}, (error) => {
-				this.errorMessage = error;
-				this.loading = false;
-				this.isProcessing = false;
-				this.layoutUtilsService.showError(error);
-			}, () => {
-				this.isProcessing = false;
-				this.loading = false;
-			});
+		this.cfgHolidayVariablesService.create(this.cfgHolidayVariablesModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(res => {
+					this.router.navigate(['/common/member/cfgHolidayDef']);
+				})
+		}, (error) => {
+			this.errorMessage = error;
+			this.loading = false;
+			this.isProcessing = false;
+			this.layoutUtilsService.showError(error);
+		}, () => {
+			this.isProcessing = false;
+			this.loading = false;
+		});
 	}
 
 	updateCfgHolidayVariable() {
-		this.cfgHolidayVariablesService.update(this.cfgHolidayVariablesModel).subscribe((response: any) => {
-			this.saveresult = response;
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
+		this.cfgHolidayVariablesService.update(this.cfgHolidayVariablesModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
 				.afterClosed().subscribe(res => {
 					this.router.navigate(['/common/member/cfgHolidayDef']);
 				})

@@ -148,6 +148,7 @@ export class AppUsersListComponent implements OnInit {
 		const _title: string = this.translate.instant('General.DeleteConfirmation');
 		const _description: string = this.translate.instant('General.AreYouSureToPermanentlyDeleteThisRecord');
 		const _waitDesciption: string = this.translate.instant('General.RecordIsBeingDeleted');
+		const _deleteMessage = this.translate.instant('General.RecordHasBeenDeleted');
 
 		const dialogRef = this.layoutUtilsService.deleteElement(_title, _description, _waitDesciption);
 		dialogRef.afterClosed().subscribe(res => {
@@ -159,8 +160,8 @@ export class AppUsersListComponent implements OnInit {
 			key.clientId = item.clientId;
 			key.institutionId = item.institutionId;
 
-			this.entityService.delete(key).subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Delete);
+			this.entityService.delete(key).subscribe(() => {
+				this.layoutUtilsService.showNotification(_deleteMessage, MessageType.Delete);
 				this.loadDataSource();
 			}, (error) => {
 				this.layoutUtilsService.showError(error);

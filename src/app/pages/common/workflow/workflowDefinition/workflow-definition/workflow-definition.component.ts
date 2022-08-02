@@ -25,6 +25,7 @@ import { WorkflowDefinitionService } from '@common/workflow/workflowDefinition.s
 	templateUrl: './workflow-definition.component.html',
 })
 export class WorkflowDefinitionComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	lookupPipe: LookupPipe = new LookupPipe(new LangParserPipe());
 	frmControlSearch: FormControl = new FormControl();
 	loading: any;
@@ -186,8 +187,8 @@ export class WorkflowDefinitionComponent implements OnInit {
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false)
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false)
 				.afterClosed().subscribe(() => {
 					this.router.navigate(['/common/workflow/workflowDefinition']);
 				});
@@ -202,20 +203,19 @@ export class WorkflowDefinitionComponent implements OnInit {
 	}
 
 	create() {
-		this.entityService.create(this.entityModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false)
-					.afterClosed().subscribe(() => {
-						this.router.navigate(['/common/workflow/workflowDefinition']);
-					});
-			}, (error) => {
-				this.loading = false;
-				this.isProcessing = false;
-				this.layoutUtilsService.showError(error);
-			}, () => {
-				this.isProcessing = false;
-				this.loading = false;
-			});
+		this.entityService.create(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/workflow/workflowDefinition']);
+				});
+		}, (error) => {
+			this.loading = false;
+			this.isProcessing = false;
+			this.layoutUtilsService.showError(error);
+		}, () => {
+			this.isProcessing = false;
+			this.loading = false;
+		});
 	}
 
 	addStateExpressionButtonOnClick() {

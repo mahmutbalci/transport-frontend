@@ -16,9 +16,9 @@ import { TransportApi } from '@services/transport.api';
 	templateUrl: './txn-mcc-def.component.html'
 })
 export class TxnMccDefComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	loading: any;
 	errorMessage: any;
-	saveresult: string;
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 	hasFormErrors: boolean = false;
@@ -58,14 +58,14 @@ export class TxnMccDefComponent implements OnInit {
 			this.txnMccDefForm.addControl(name, new FormControl(this.entityModel[name]));
 		});
 
-		this.transportApi.getLookups(["TrmCategoryDef", "TxnMccGroupDef"]).then(res => {
-			this.trmCategoryDefs = res.find(x => x.name === "TrmCategoryDef").data;
-			this.txnMccGroupDefs = _.sortBy(res.find(x => x.name === "TxnMccGroupDef").data, [function (o) { return o.description; }]);
+		this.transportApi.getLookups(['TrmCategoryDef', 'TxnMccGroupDef']).then(res => {
+			this.trmCategoryDefs = res.find(x => x.name === 'TrmCategoryDef').data;
+			this.txnMccGroupDefs = _.sortBy(res.find(x => x.name === 'TxnMccGroupDef').data, [function (o) { return o.description; }]);
 		});
 
 		const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 			const prmId = params.prmId;
-			this.isDisabled = (params.type == "show");
+			this.isDisabled = (params.type == 'show');
 			if (prmId && prmId !== null) {
 				this.isAdd = false;
 				this.entityService.get(prmId).subscribe(res => {
@@ -111,7 +111,7 @@ export class TxnMccDefComponent implements OnInit {
 		else if (!this.isDisabled)
 			return this.translate.instant('General.Edit');
 
-		return "";
+		return '';
 	}
 
 	onAlertClose() {
@@ -122,7 +122,7 @@ export class TxnMccDefComponent implements OnInit {
 		this.isProcessing = true;
 		this.hasFormErrors = false;
 		const controls = this.txnMccDefForm.controls;
-		controls["description"].setValue(controls["description"].value.trim());
+		controls['description'].setValue(controls['description'].value.trim());
 
 		/** check form */
 		if (this.txnMccDefForm.invalid) {
@@ -130,7 +130,7 @@ export class TxnMccDefComponent implements OnInit {
 				controls[name].markAsTouched()
 			);
 
-			if (!controls["description"].value.trim()) {
+			if (!controls['description'].value.trim()) {
 				this.layoutUtilsService.showError(this.translate.instant('General.Exception.PleaseEnterDescription'));
 			}
 
@@ -146,53 +146,44 @@ export class TxnMccDefComponent implements OnInit {
 			return;
 		}
 
-		if (this.isAdd)
+		if (this.isAdd) {
 			this.create();
-		else
-			this.update()
+		} else {
+			this.update();
+		}
 
 		this.loading = true;
 		this.errorMessage = '';
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.saveresult = response;
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false).afterClosed().subscribe(res => {
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false).afterClosed().subscribe(res => {
 				this.router.navigate(['/common/txn/txnMccDef']);
-			})
-		},
-			(error) => {
-				this.errorMessage = error;
-				this.loading = false;
-				this.layoutUtilsService.showError(error);
-				this.isProcessing = false;
-
-			},
-			() => {
-				this.loading = false;
-			}
-		);
+			});
+		}, (error) => {
+			this.errorMessage = error;
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+			this.isProcessing = false;
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	create() {
-		this.entityService.create(this.entityModel)
-			.subscribe((response: any) => {
-				this.saveresult = response;
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
-					this.router.navigate(['/common/txn/txnMccDef']);
-				})
-			},
-				(error) => {
-					this.errorMessage = error;
-					this.loading = false;
-					this.layoutUtilsService.showError(error);
-					this.isProcessing = false;
-				},
-				() => {
-					this.loading = false;
-				}
-			);
+		this.entityService.create(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
+				this.router.navigate(['/common/txn/txnMccDef']);
+			});
+		}, (error) => {
+			this.errorMessage = error;
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+			this.isProcessing = false;
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	validateEntity(): boolean {

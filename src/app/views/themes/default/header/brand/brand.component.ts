@@ -2,7 +2,7 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 // Layout
 import { LayoutConfigService } from '@core/_base/layout';
-// Aktifbank / Atlas
+// Trasport
 import { ToggleOptions } from '@core/_base/metronic';
 import { HtmlClassService } from '../../html-class.service';
 

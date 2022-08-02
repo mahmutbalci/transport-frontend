@@ -33,6 +33,7 @@ const mx = require('mxgraph')({
 	templateUrl: './job-chain-monitoring.component.html'
 })
 export class JobChainMonitoringComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	displayedColumnsDetail = ['guid', 'description'];
 
 	@ViewChild('graphContainer') graphContainer: ElementRef;
@@ -818,8 +819,8 @@ export class JobChainMonitoringComponent implements OnInit {
 	skip(trigger: BtcJobChainTriggerModel) {
 		trigger.isSkip = true;
 		trigger.isPause = false;
-		this.btcJobChainDefService.updateTrigger(trigger).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+		this.btcJobChainDefService.updateTrigger(trigger).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			let updatedTrigger = this.chainInfo.triggers.find(x => x.guid === trigger.guid);
 			updatedTrigger.isSkip = true;
 			updatedTrigger.isPause = false;
@@ -840,8 +841,8 @@ export class JobChainMonitoringComponent implements OnInit {
 				return;
 			}
 
-			this.btcJobChainTriggerStatService.skipTriggerOneTime(this.chainInfo.guid, triggerGuid).subscribe(response => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+			this.btcJobChainTriggerStatService.skipTriggerOneTime(this.chainInfo.guid, triggerGuid).subscribe(() => {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 				let updatedTrigger = this.trigerStats.find(x => x.triggerGuid === triggerGuid);
 				updatedTrigger.stat = 'F';
 				this.graph.refresh();
@@ -853,8 +854,8 @@ export class JobChainMonitoringComponent implements OnInit {
 
 	takeOn(trigger: BtcJobChainTriggerModel) {
 		trigger.isSkip = false;
-		this.btcJobChainDefService.updateTrigger(trigger).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+		this.btcJobChainDefService.updateTrigger(trigger).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			let updatedTrigger = this.chainInfo.triggers.find(x => x.guid === trigger.guid);
 			updatedTrigger.isSkip = false;
 			this.graph.refresh();
@@ -866,8 +867,8 @@ export class JobChainMonitoringComponent implements OnInit {
 	pause(trigger: BtcJobChainTriggerModel) {
 		trigger.isSkip = false;
 		trigger.isPause = true;
-		this.btcJobChainDefService.updateTrigger(trigger).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+		this.btcJobChainDefService.updateTrigger(trigger).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			let updatedTrigger = this.chainInfo.triggers.find(x => x.guid === trigger.guid);
 			updatedTrigger.isSkip = false;
 			updatedTrigger.isPause = true;
@@ -879,8 +880,8 @@ export class JobChainMonitoringComponent implements OnInit {
 
 	resume(trigger: BtcJobChainTriggerModel) {
 		trigger.isPause = false;
-		this.btcJobChainDefService.updateTrigger(trigger).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+		this.btcJobChainDefService.updateTrigger(trigger).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			let updatedTrigger = this.chainInfo.triggers.find(x => x.guid === trigger.guid);
 			updatedTrigger.isPause = false;
 			this.graph.refresh();

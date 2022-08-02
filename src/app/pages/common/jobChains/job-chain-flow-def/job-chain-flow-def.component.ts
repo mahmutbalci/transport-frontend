@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 	templateUrl: './job-chain-flow-def.component.html'
 })
 export class JobChainFlowDefComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	frmControlSearch: FormControl = new FormControl();
 	btcJobChainFlowModel: BtcJobChainFlowModel = new BtcJobChainFlowModel();
 	btcJobChainFlowDefForm: FormGroup = new FormGroup({});
@@ -99,7 +100,7 @@ export class JobChainFlowDefComponent implements OnInit {
 
 	create(model: BtcJobChainFlowModel) {
 		this.btcJobChainDefService.saveFlow(model).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			model.guid = response.data;
 			this.saveEmitter.emit(model);
 			this.dialogRef.close();
@@ -109,8 +110,8 @@ export class JobChainFlowDefComponent implements OnInit {
 	}
 
 	update(model: BtcJobChainFlowModel) {
-		this.btcJobChainDefService.updateFlow(model).subscribe(response => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Create, 10000, true, false);
+		this.btcJobChainDefService.updateFlow(model).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false);
 			this.saveEmitter.emit(model);
 			this.dialogRef.close();
 		}, (error) => {

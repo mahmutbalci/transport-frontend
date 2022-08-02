@@ -7,8 +7,6 @@ import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-u
 import { TranslateService } from '@ngx-translate/core';
 import { AppApisModel } from '@common/authority/appApis.model';
 import { AppApisService } from '@common/authority/appApis.service';
-import f from '@assets/lib/odata/ODataFilterBuilder.js';
-import { ODataParamsModel } from '@core/_base/crud/models/odata-params.model';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 @Component({
@@ -20,12 +18,13 @@ export class AppApisComponent implements OnInit {
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 
+	menuUrl: string = '/common/authority/appApis';
+	succesMessage = this.translate.instant('General.Success');
 	entityForm: FormGroup = new FormGroup({});
 	entityModel: AppApisModel = new AppApisModel();
 
 	isReadonly: boolean = false;
 	isProcessing: boolean = false;
-	menuUrl: string = '/common/authority/appApis';
 
 	appApplications: any[] = [];
 
@@ -134,8 +133,8 @@ export class AppApisComponent implements OnInit {
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false).afterClosed().subscribe(() => {
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false).afterClosed().subscribe(() => {
 				this.router.navigate([this.menuUrl]);
 			});
 		}, (error) => {
@@ -149,8 +148,8 @@ export class AppApisComponent implements OnInit {
 
 	create() {
 		this.entityService.create(this.entityModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(() => {
+			.subscribe(() => {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(() => {
 					this.router.navigate([this.menuUrl]);
 				});
 			}, (error) => {

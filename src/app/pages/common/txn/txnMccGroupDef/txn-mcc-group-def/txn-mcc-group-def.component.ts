@@ -15,9 +15,9 @@ import { TransportApi } from '@services/transport.api';
 	templateUrl: './txn-mcc-group-def.component.html'
 })
 export class TxnMccGroupDefComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	loading: any;
 	errorMessage: any;
-	saveresult: string;
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 	hasFormErrors: boolean = false;
@@ -125,54 +125,44 @@ export class TxnMccGroupDefComponent implements OnInit {
 		}
 
 		this.entityModel = <TxnMccGroupDefModel>this.txnMccGroupDefForm.value;
-		if (this.isAdd)
+		if (this.isAdd) {
 			this.create();
-		else
-			this.update()
+		} else {
+			this.update();
+		}
 
 		this.loading = true;
 		this.errorMessage = '';
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.saveresult = response;
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false).afterClosed().subscribe(res => {
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false).afterClosed().subscribe(res => {
 				this.router.navigate(['/common/txn/txnMccGroupDef']);
-			})
-		},
-			(error) => {
-				this.errorMessage = error;
-				this.loading = false;
-				this.layoutUtilsService.showError(error);
-				this.isProcessing = false;
-
-			},
-			() => {
-				this.loading = false;
-			}
-		);
+			});
+		}, (error) => {
+			this.errorMessage = error;
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+			this.isProcessing = false;
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	create() {
-		this.entityService.create(this.entityModel)
-			.subscribe((response: any) => {
-				this.saveresult = response;
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
-					this.router.navigate(['/common/txn/txnMccGroupDef']);
-				})
-			},
-				(error) => {
-					this.errorMessage = error;
-					this.loading = false;
-					this.layoutUtilsService.showError(error);
-					this.isProcessing = false;
-
-				},
-				() => {
-					this.loading = false;
-				}
-			);
+		this.entityService.create(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(res => {
+				this.router.navigate(['/common/txn/txnMccGroupDef']);
+			});
+		}, (error) => {
+			this.errorMessage = error;
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+			this.isProcessing = false;
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	clearScreen() {

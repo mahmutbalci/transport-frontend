@@ -272,7 +272,7 @@ export const locale = {
 		},
 
 		General: {
-			ApplicationName: 'Transportation Ödeme Sistemleri',
+			ApplicationName: '',
 			ParentApplication: 'Üst Uygulama',
 			ClickForDetails: 'Detaylar için tıklayınız',
 			Approve: 'Onay',
@@ -571,6 +571,11 @@ export const locale = {
 			RowNumber: 'Satır No',
 			ProcessUser: 'İşleyen Kullanıcı',
 
+			DeleteConfirmation: 'Silme Onayı!',
+			AreYouSureToPermanentlyDeleteThisRecord: 'Bu kaydı silmek istediğinizden emin misiniz?',
+			RecordIsBeingDeleted: 'Kayıt siliniyor...',
+			RecordHasBeenDeleted: 'Kayıt silindi.',
+
 			Exception: {
 				PleaseEnterASearchCriteria: 'Lütfen bir arama kriteri giriniz.',
 				PleaseFillAllTextBoxes: 'Lütfen tüm metin kutularını doldurun.',
@@ -580,10 +585,6 @@ export const locale = {
 				ProfileCannotDeleteMessage: 'Belirtilen profilin sistemde ilişkili olduğu veriler mevcuttur. Öncelikle <strong>Sistem Profil Konfigürasyonları</strong> ve <strong>Müşteri ve Kart Bazında Profil İlişkisi Oluşturma</strong> ekranlarından bu ilişkilerin tümünü silmeniz gerekmektedir.',
 				FileUploadedSuccessfully: 'Dosya başarıyla yüklenmiştir.',
 				ErrorOccurredLoodingFile: 'Dosya yüklenirken bir hata oluşmuştur.',
-				DeleteConfirmation: 'Silme Onayı!',
-				AreYouSureToPermanentlyDeleteThisRecord: 'Bu kaydı silmek istediğinizden emin misiniz?',
-				RecordIsBeingDeleted: 'Kayıt siliniyor...',
-				RecordHasBeenDeleted: 'Kayıt silindi.',
 				PleaseEnterDescription: 'Lütfen açıklama giriniz.',
 				PleaseEnterValueWithValidLength: 'Lütfen geçerli uzunlukta bir değer giriniz.',
 				CannotDefinedMoreThanOneGroup: 'Bir işlem tanımı birden fazla gruba tanımlanamaz. [TXN_DEF], [GROUP_DEF] grubunda tanımlanmıştır.',

@@ -14,9 +14,11 @@ import { AppMenuApiRelModel } from '@common/authority/appMenuApiRel.model';
 	templateUrl: './app-menu-detail.component.html'
 })
 export class AppMenuDetailComponent implements OnInit {
+	succesMessage = this.translate.instant('General.Success');
 	frmControlSearch: FormControl = new FormControl();
 	entityForm: FormGroup = new FormGroup({});
 	entityModel: AppMenusModel = new AppMenusModel();
+
 	processing: boolean = false;
 	appApis: any[] = [];
 	newRecord: boolean = true;
@@ -40,7 +42,7 @@ export class AppMenuDetailComponent implements OnInit {
 		private entityService: AppMenusService,
 		public dialogRef: MatDialogRef<AppMenuDetailComponent>,
 		private layoutUtilsService: LayoutUtilsService,
-		private translateService: TranslateService,
+		private translate: TranslateService,
 	) { }
 
 	ngOnInit() {
@@ -153,8 +155,8 @@ export class AppMenuDetailComponent implements OnInit {
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe((response: any) => {
-			this.layoutUtilsService.showNotification(response.message, MessageType.Update, 5000, true, false);
+		this.entityService.update(this.entityModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false);
 			this.dialogRef.close();
 		}, (error) => {
 			this.processing = false;
@@ -166,8 +168,8 @@ export class AppMenuDetailComponent implements OnInit {
 
 	create() {
 		this.entityService.create(this.entityModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(response.message, MessageType.Create, 5000, true, false);
+			.subscribe(() => {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false);
 				this.dialogRef.close();
 			}, (error) => {
 				this.layoutUtilsService.showError(error);
@@ -178,13 +180,13 @@ export class AppMenuDetailComponent implements OnInit {
 	}
 
 	getTitle(): string {
-		let menuName = this.translateService.instant(this.data.parentMenuName);
+		let menuName = this.translate.instant(this.data.parentMenuName);
 
 		if (this.data.menuId && this.data.menuId !== '') {
-			return menuName + ' | ' + this.translateService.instant('General.Edit');
+			return menuName + ' | ' + this.translate.instant('General.Edit');
 		}
 
-		return menuName + ' | ' + this.translateService.instant('General.Add');
+		return menuName + ' | ' + this.translate.instant('General.Add');
 	}
 
 	onNoClick(): void {

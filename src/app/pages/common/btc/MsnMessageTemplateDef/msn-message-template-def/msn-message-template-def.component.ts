@@ -63,6 +63,8 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 	msnMessageTemplateModelForm: FormGroup = new FormGroup({});
 	ind: number = 1;
 	sameLanguage: boolean = false;
+	succesMessage = this.translate.instant('General.Success');
+
 	@ViewChild(MatSort) sort: MatSort;
 
 	constructor(
@@ -192,29 +194,25 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 	}
 
 	create() {
-		this.service.create(this.msnMessageTemplateDefModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(
-					response.message, MessageType.Create, 10000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/btc/msnMessageTemplateDef']);
-					});
-			}
-			);
+		this.service.create(this.msnMessageTemplateDefModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/btc/msnMessageTemplateDef']);
+				});
+		}
+		);
 	}
 
 	update() {
-		this.service.update(this.msnMessageTemplateDefModel)
-			.subscribe((response: any) => {
-				this.layoutUtilsService.showNotification(
-					response.message, MessageType.Create, 10000, true, false)
-					.afterClosed().subscribe(res => {
-						this.router.navigate(['/common/btc/msnMessageTemplateDef']);
-					});
-			}, (error) => {
-				this.layoutUtilsService.showError(error);
-			}
-			);
+		this.service.update(this.msnMessageTemplateDefModel).subscribe(() => {
+			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
+				.afterClosed().subscribe(() => {
+					this.router.navigate(['/common/btc/msnMessageTemplateDef']);
+				});
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+		}
+		);
 	}
 
 	addMsnMessageTemplateText() {
