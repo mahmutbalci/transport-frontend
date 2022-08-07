@@ -30,13 +30,6 @@ export class AppMenuDetailComponent implements OnInit {
 		includeThousandsSeparator: false,
 	});
 
-	guidMask = createNumberMask({
-		prefix: '',
-		suffix: '',
-		includeThousandsSeparator: false,
-		integerLimit: 16,
-	});
-
 	constructor(
 		@Inject(MAT_DIALOG_DATA) public data: any,
 		private entityService: AppMenusService,
