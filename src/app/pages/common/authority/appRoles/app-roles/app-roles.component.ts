@@ -121,7 +121,7 @@ export class ChecklistApiDatabase {
 
 	setDataChange(): Observable<any> {
 		this.appApisService.api.getLookups(['AppApplications']).then(res => {
-			this.appApplications = res.data;
+			this.appApplications = res.find(x => x.name === 'AppApplications').data;
 
 			this.appApisService.getAll<any>().subscribe(res => {
 				if (res.data.length > 0) {
@@ -246,7 +246,7 @@ export class AppRolesComponent implements OnInit {
 		});
 
 		this.entityService.api.getLookups(['AppRoleTypes']).then(res => {
-			this.appRoleTypes = res.data.find(x => x.name === 'AppRoleTypes').data;
+			this.appRoleTypes = res.find(x => x.name === 'AppRoleTypes').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const prmId = params.prmId;

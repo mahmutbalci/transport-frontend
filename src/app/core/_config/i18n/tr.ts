@@ -536,7 +536,7 @@ export const locale = {
 			DropColumnDescription: 'Gruplama için başlığı sürekleyerek buraya bırakınız',
 			TableName: 'Tablo Adı',
 			Key: 'Key',
-			EmployeeId: 'Sicil No',
+			EmployeeId: 'Çalışan No',
 			Restriction: 'Kısıtlama',
 			RestrictionProfile: 'Kısıt Profili',
 			TicketType: 'Yetki Tipi',

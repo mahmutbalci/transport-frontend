@@ -50,7 +50,7 @@ export class AppApisComponent implements OnInit {
 		});
 
 		this.entityService.api.getLookups(['AppApplications']).then(res => {
-			this.appApplications = res.find(x => x.name === "AppApplications").data;
+			this.appApplications = res.find(x => x.name === 'AppApplications').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const prmId = params.prmId;

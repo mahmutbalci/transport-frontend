@@ -57,17 +57,17 @@ export class AppUsersComponent implements OnInit {
 		this.entityForm.addControl('userRoleIds', new FormControl([]));
 
 		this.entityService.api.getLookups(['CfgYesNoNumeric', 'AppUserStats', 'AppChannelCodes', 'AppRoles']).then(res => {
-			this.cfgYesNoNumeric = res.data.find(x => x.name === 'CfgYesNoNumeric').data;
-			this.appUserStats = res.data.find(x => x.name === 'AppUserStats').data;
-			this.appChannelCodes = res.data.find(x => x.name === 'AppChannelCodes').data;
-			this.appRoles = res.data.find(x => x.name === 'AppRoles').data;
+			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
+			this.appUserStats = res.find(x => x.name === 'AppUserStats').data;
+			this.appChannelCodes = res.find(x => x.name === 'AppChannelCodes').data;
+			this.appRoles = res.find(x => x.name === 'AppRoles').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
 				const prmId = params.prmId;
-				const institutionId = params.institutionId;
+				const institutionId = sessionStorage.getItem('institutionId');
 				this.isReadonly = (params.type === 'show');
 				if (prmId && prmId !== null && institutionId && institutionId !== null) {
-					this.entityService.getUser(prmId, institutionId).subscribe(res => {
+					this.entityService.getUser(prmId, +institutionId).subscribe(res => {
 						this.entityModel = res.data;
 						this.entityModel._isNew = false;
 						this.entityModel._isEditMode = !this.isReadonly;
