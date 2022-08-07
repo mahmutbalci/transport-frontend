@@ -206,7 +206,7 @@ export class AppRolesComponent implements OnInit {
 
 	isReadonly: boolean = false;
 	isProcessing: boolean = false;
-	menuUrl: string = '/common/authority/AppRoles';
+	menuUrl: string = '/common/authority/appRoles';
 	hasFormErrors: boolean = false;
 
 	showApiRoles: boolean = true; //api definition disable
