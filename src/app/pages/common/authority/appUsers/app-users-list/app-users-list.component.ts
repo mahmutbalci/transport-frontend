@@ -36,8 +36,6 @@ export class AppUsersListComponent implements OnInit {
 			isBuiltInUser: 'General.IsBuiltInUser',
 			channelCode: 'System.Member.ChannelCode',
 			sessionDuration: 'General.SessionDuration',
-			validPasswordRegex: 'General.ValidPasswordRegex',
-			blockWrongPasswordCount: 'General.BlockWrongPasswordCount',
 			incorrectPasswordEntries: 'General.IncorrectPasswordEntries',
 		}
 	];
@@ -80,10 +78,10 @@ export class AppUsersListComponent implements OnInit {
 		});
 
 		this.entityService.api.getLookups(['CfgYesNoNumeric', 'AppUserStats', 'AppChannelCodes', 'AppRoles']).then(res => {
-			this.cfgYesNoNumeric = res.data.find(x => x.name === 'CfgYesNoNumeric').data;
-			this.appUserStats = res.data.find(x => x.name === 'AppUserStats').data;
-			this.appChannelCodes = res.data.find(x => x.name === 'AppChannelCodes').data;
-			this.appRoles = res.data.find(x => x.name === 'AppRoles').data;
+			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
+			this.appUserStats = res.find(x => x.name === 'AppUserStats').data;
+			this.appChannelCodes = res.find(x => x.name === 'AppChannelCodes').data;
+			this.appRoles = res.find(x => x.name === 'AppRoles').data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});

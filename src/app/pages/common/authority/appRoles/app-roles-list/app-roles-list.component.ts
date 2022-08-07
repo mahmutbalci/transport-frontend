@@ -44,7 +44,7 @@ export class AppRolesListComponent implements OnInit, AfterViewInit {
 
 	ngAfterViewInit(): void {
 		this.entityService.api.getLookups(['AppRoleTypes',]).then(res => {
-			this.appRoleTypes = res.data.find(x => x.name === 'AppRoleTypes').data;
+			this.appRoleTypes = res.find(x => x.name === 'AppRoleTypes').data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
