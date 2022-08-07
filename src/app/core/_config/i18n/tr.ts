@@ -19,6 +19,10 @@ export const locale = {
 
 			Transportation: {
 				Title: 'Ulaşım',
+				Campaign: {
+					Title: 'Kampanya',
+					CampaignDefinition: 'Kampanya Tanım',
+				},
 				Txn: {
 					Title: 'İşlemler',
 					ProvisionMonitoring: 'Provizyon Gözlem',
@@ -41,7 +45,7 @@ export const locale = {
 				},
 				Auth: {
 					Title: 'Yetkilendirme',
-					ApiDefinition: 'Api Tanımlama',
+					ApiDefinition: 'API Tanımlama',
 					MenuTree: 'Menü Ağacı',
 					UserRoleDefinition: 'Kullanıcı Rol Tanımlama',
 					UserDefinition: 'Kullanıcı Tanımlama',
@@ -213,9 +217,9 @@ export const locale = {
 				ParentMenuName: 'Üst Menü Adı',
 				MenuName: 'Menü Adı',
 				ApiDefinition: 'API Tanımlama',
-				Api: 'Api-Servis',
+				Api: 'API-Servis',
 				Menus: 'Menüler',
-				Apis: 'Apiler-Servisler',
+				Apis: 'API-Servisler',
 				AuthenticationLevel: 'Yetki Seviyesi',
 
 				Exception: {

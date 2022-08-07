@@ -19,6 +19,10 @@ export const locale = {
 
 			Transportation: {
 				Title: 'Transportation',
+				Campaign: {
+					Title: 'Campaign',
+					CampaignDefinition: 'Campaign Definition',
+				},
 				Txn: {
 					Title: 'Transaction',
 					ProvisionMonitoring: 'Provision Monitoring',
@@ -41,7 +45,7 @@ export const locale = {
 				},
 				Auth: {
 					Title: 'Authority',
-					ApiDefinition: 'Api Definition',
+					ApiDefinition: 'API Definition',
 					MenuTree: 'Menu Tree',
 					UserRoleDefinition: 'User Role Definition',
 					UserDefinition: 'User Definition',
@@ -213,9 +217,9 @@ export const locale = {
 				ParentMenuName: 'Parent Menu Name',
 				MenuName: 'Menu Name',
 				ApiDefinition: 'API Definition',
-				Api: 'Api-Service',
+				Api: 'API-Service',
 				Menus: 'Menus',
-				Apis: 'Apis-Services',
+				Apis: 'APIs-Services',
 				AuthenticationLevel: 'Authentication Level',
 
 				Exception: {
@@ -570,7 +574,7 @@ export const locale = {
 			willBeMasked: 'Will Card Be Masked',
 			RowNumber: 'Row Number',
 			ProcessUser: 'Process User',
-			
+
 			DeleteConfirmation: 'Delete Confirmation!',
 			AreYouSureToPermanentlyDeleteThisRecord: 'Are you sure to permanently delete this record',
 			RecordIsBeingDeleted: 'Record is being deleted...',

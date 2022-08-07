@@ -60,6 +60,14 @@ const routes: Routes = [
 				loadChildren: './common/jobChains/jobChains.module#JobChainsModule'
 			},
 			{
+				path: 'transport/campaign',
+				loadChildren: './transport/campaign/campaign.module#CampaignModule'
+			},
+			{
+				path: 'transport/txn',
+				loadChildren: './transport/txn/transportTxn.module#TransportTxnModule'
+			},
+			{
 				path: 'error/403',
 				component: ErrorPageComponent,
 				data: {
