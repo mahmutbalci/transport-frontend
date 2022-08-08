@@ -135,21 +135,33 @@ export class ChecklistApiDatabase {
 	}
 
 	buildApiTree(apiTree: AppApisModel[]): ApiItemNode[] {
-		let masterApi: any[] = [];
+		let masterApiTree: any[] = [];
 
-		let dst = apiTree.map(function (obj) { return obj.applicationId });
-		dst.forEach(appId => {
+		apiTree = apiTree.sort(x => x.applicationId);
+
+		let flags = [], distinctAppIds = [], l = apiTree.length, i;
+		for (i = 0; i < l; i++) {
+			if (flags[apiTree[i].applicationId]) {
+				continue;
+			}
+
+			flags[apiTree[i].applicationId] = true;
+
+			distinctAppIds.push(apiTree[i].applicationId);
+		}
+
+		distinctAppIds.forEach(appId => {
 			let appDef = this.appApplications.find(app => app.code === appId);
 
 			let tempNode = new ApiItemNode();
-			tempNode.applicationId = appDef.applicationId;
+			tempNode.applicationId = appId;
 			tempNode.description = appDef.description;
-			tempNode.children = this.getApiObject(apiTree, appId);
+			tempNode.children = this.getApiObject(apiTree, +appId)
 
-			masterApi.push(tempNode);
+			masterApiTree.push(tempNode);
 		});
 
-		return masterApi;
+		return masterApiTree;
 	}
 
 	getApiObject(apiList: any[], applicationId: number): ApiItemNode[] {
@@ -504,6 +516,10 @@ export class AppRolesComponent implements OnInit {
 				let roleLevel = this.getApiAuthLevel(node);
 
 				if (roleLevel && roleLevel != null) {
+					if (!node.apiId || node.apiId == null || node.apiId == undefined) {
+						return;
+					}
+
 					let existsApi = _.find(this.entityModel.roleApiRels, function (o) {
 						return o.apiId == node.apiId;
 					});
@@ -527,15 +543,20 @@ export class AppRolesComponent implements OnInit {
 			this.entityModel.roleType = 'A';
 		}
 
-		this.entityService.update(this.entityModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
-				.afterClosed().subscribe(() => {
-					this.goBack();
-				});
+		this.entityService.update(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.loading = false;
+				this.isProcessing = false;
+				this.layoutUtilsService.showError(res);
+			}
 		}, (error) => {
 			this.loading = false;
 			this.isProcessing = false;
-
 			this.layoutUtilsService.showError(error);
 		});
 	}
@@ -575,15 +596,20 @@ export class AppRolesComponent implements OnInit {
 			this.entityModel.roleApiRels = selectApiList;
 		}
 
-		this.entityService.create(this.entityModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false)
-				.afterClosed().subscribe(() => {
-					this.goBack();
-				});
+		this.entityService.create(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.loading = false;
+				this.isProcessing = false;
+				this.layoutUtilsService.showError(res);
+			}
 		}, (error) => {
 			this.loading = false;
 			this.isProcessing = false;
-
 			this.layoutUtilsService.showError(error);
 		}, () => {
 			this.isProcessing = false;

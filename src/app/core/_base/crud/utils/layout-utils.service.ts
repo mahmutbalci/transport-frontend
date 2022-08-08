@@ -139,24 +139,24 @@ export class LayoutUtilsService {
 		let traceId = '';
 		let errorMessage = '';
 		let errorValidation: any[] = [];
-		if (typeof errorData == 'string') {
+		if (typeof errorData === 'string') {
 			errorMessage = errorData;
-		} else
-			if (_.isUndefined(errorData.error.error)) {
-				errorCode = errorData.error.exception.code;
-				traceId = errorData.error.referenceId;
-				errorMessage = errorData.error.exception.message;
-				if (!_.isNull(errorData.error.exception.validationErrors) && !_.isUndefined(errorData.error.exception.validationErrors)) {
-					errorData.error.exception.validationErrors.forEach(element => {
+		} else {
+			traceId = errorData.referenceId;
+
+			if (_.isUndefined(errorData.error)) {
+				errorCode = errorData.exception.errorCode;
+				errorMessage = errorData.exception.errorMessage;
+				if (!_.isNull(errorData.exception.validationErrors) && !_.isUndefined(errorData.exception.validationErrors)) {
+					errorData.exception.validationErrors.forEach(element => {
 						errorValidation.push(element.message)
 					});
 				}
+			} else {
+				errorCode = errorData.error.errorCode;
+				errorMessage = errorData.error.errorMessage;
 			}
-			else {
-				errorCode = errorData.error.error.code;
-				traceId = errorData.error.referenceId;
-				errorMessage = errorData.error.error.message;
-			}
+		}
 
 		let _data = {
 			duration: duration,

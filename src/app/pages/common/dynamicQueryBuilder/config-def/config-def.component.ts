@@ -16,7 +16,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ConfigDefComponent implements OnInit {
 	succesMessage = this.translate.instant('General.Success');
-	cfgExpressionConfigDefModel: CfgExpressionConfigDefModel = new CfgExpressionConfigDefModel();
+	menuUrl = '/common/dynamicQueryBuilder/configDef';
+	entityModel: CfgExpressionConfigDefModel = new CfgExpressionConfigDefModel();
 	cfgExpressionConfigDefForm: FormGroup = new FormGroup({});
 	allCriterias: CfgExpressionCriteriaDefModel[] = [];
 	definedCriterias: CfgExpressionCriteriaDefModel[] = [];
@@ -26,17 +27,17 @@ export class ConfigDefComponent implements OnInit {
 	constructor(
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		public cfgExpressionConfigDefService: CfgExpressionConfigDefService,
+		public entityService: CfgExpressionConfigDefService,
 		public cfgExpressionCriteriaDefService: CfgExpressionCriteriaDefService,
 		public translate: TranslateService,
 		private layoutUtilsService: LayoutUtilsService,) { }
 
 	ngOnInit() {
-		Object.keys(this.cfgExpressionConfigDefModel).forEach(name => {
-			this.cfgExpressionConfigDefForm.addControl(name, new FormControl(this.cfgExpressionConfigDefModel[name]));
+		Object.keys(this.entityModel).forEach(name => {
+			this.cfgExpressionConfigDefForm.addControl(name, new FormControl(this.entityModel[name]));
 		});
 
-		this.cfgExpressionConfigDefService.api.getLookup("CfgExpressionConfigType").then(res => {
+		this.entityService.api.getLookup("CfgExpressionConfigType").then(res => {
 			this.configTypeDefs = res;
 		});
 
@@ -44,18 +45,20 @@ export class ConfigDefComponent implements OnInit {
 			const guid = params.guid;
 			this.isView = (params.type == "show");
 			if (guid && guid !== null) {
-				this.cfgExpressionConfigDefModel._isNew = false;
-				this.cfgExpressionConfigDefService.get(guid).subscribe(res => {
-					this.cfgExpressionConfigDefModel = res.data;
-					this.definedCriterias = this.cfgExpressionConfigDefModel.criterias;
+				this.entityModel._isNew = false;
+				this.entityModel._isEditMode = true;
+				this.entityService.get(guid).subscribe(res => {
+					this.entityModel = res.data;
+					this.definedCriterias = this.entityModel.criterias;
 					this.initForm();
 				},
 					(error) => {
 						this.layoutUtilsService.showError(error);
 					});
 			} else {
-				this.cfgExpressionConfigDefModel = new CfgExpressionConfigDefModel();
-				this.cfgExpressionConfigDefModel._isNew = true;
+				this.entityModel = new CfgExpressionConfigDefModel();
+				this.entityModel._isNew = true;
+				this.entityModel._isEditMode = false;
 				this.initForm();
 			}
 		});
@@ -64,15 +67,15 @@ export class ConfigDefComponent implements OnInit {
 
 	initForm() {
 		const controls = this.cfgExpressionConfigDefForm.controls;
-		Object.keys(this.cfgExpressionConfigDefModel).forEach(name => {
+		Object.keys(this.entityModel).forEach(name => {
 			if (controls[name]) {
-				controls[name].setValue(this.cfgExpressionConfigDefModel[name]);
+				controls[name].setValue(this.entityModel[name]);
 			}
 		});
 
 		this.cfgExpressionCriteriaDefService.getAll<any>().subscribe(res => {
 			this.allCriterias = res.data.filter((x: { guid: number; }) => {
-				return !this.cfgExpressionConfigDefModel.criterias.filter(y => y.guid === x.guid).length;
+				return !this.entityModel.criterias.filter(y => y.guid === x.guid).length;
 			})
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
@@ -80,49 +83,53 @@ export class ConfigDefComponent implements OnInit {
 	}
 
 	onSubmit() {
-		this.cfgExpressionConfigDefModel = <CfgExpressionConfigDefModel>this.cfgExpressionConfigDefForm.value;
-		this.cfgExpressionConfigDefModel.criterias = [];
+		this.entityModel = <CfgExpressionConfigDefModel>this.cfgExpressionConfigDefForm.value;
+		this.entityModel.criterias = [];
 		this.definedCriterias.forEach(element => {
-			this.cfgExpressionConfigDefModel.criterias.push(element);
+			this.entityModel.criterias.push(element);
 		});
 
-		if (this.cfgExpressionConfigDefModel._isNew) {
+		if (this.entityModel._isNew) {
 			this.create();
-		}
-		else {
+		} else {
 			this.update();
 		}
 	}
 
 	create() {
-		this.cfgExpressionConfigDefService.create(this.cfgExpressionConfigDefModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
-				.afterClosed().subscribe(() => {
-					this.router.navigate(['/common/dynamicQueryBuilder/configDef']);
-				})
-		},
-			(error) => {
-				this.layoutUtilsService.showError(error);
+		this.entityService.create(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.layoutUtilsService.showError(res);
 			}
-		);
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+		}, () => {
+		});
 	}
 
 	update() {
-		this.cfgExpressionConfigDefService.update(this.cfgExpressionConfigDefModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
-				.afterClosed().subscribe(() => {
-					this.router.navigate(['/common/dynamicQueryBuilder/configDef']);
-				})
-		},
-			(error) => {
-				this.layoutUtilsService.showError(error);
+		this.entityService.update(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.layoutUtilsService.showError(res);
 			}
-		);
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+		}, () => {
+		});
 	}
 
 	goBack() {
-		let _backUrl = '/common/dynamicQueryBuilder/configDef';
-		this.router.navigateByUrl(_backUrl);
+		this.router.navigateByUrl(this.menuUrl);
 	}
 
 	reset() {
@@ -141,10 +148,10 @@ export class ConfigDefComponent implements OnInit {
 	}
 
 	getComponentTitle() {
-		if (this.cfgExpressionConfigDefModel._isNew) {
+		if (this.entityModel._isNew) {
 			return this.translate.instant('General.Add');
 		}
-		else if (!this.cfgExpressionConfigDefModel._isNew && !this.isView) {
+		else if (!this.entityModel._isNew && !this.isView) {
 			return this.translate.instant('General.Edit');
 		}
 		else {
