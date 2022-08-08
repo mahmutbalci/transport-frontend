@@ -46,6 +46,7 @@ export const locale = {
 				Msn: {
 					Title: 'Messenger',
 					MsnMessageTemplateDef: 'Mesaj Taslak Tanımlama',
+					MessagePoolMonitoring: 'Mesaj İzleme',
 				},
 				Auth: {
 					Title: 'Yetkilendirme',
