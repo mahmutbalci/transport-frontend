@@ -43,6 +43,10 @@ export const locale = {
 					MaskedCardMonitoring: 'Maskeli Kart İzleme',
 					TxnIrcDef: 'IRC Tanımları',
 				},
+				Msn: {
+					Title: 'Messenger',
+					MsnMessageTemplateDef: 'Mesaj Taslak Tanımlama',
+				},
 				Auth: {
 					Title: 'Yetkilendirme',
 					ApiDefinition: 'API Tanımlama',

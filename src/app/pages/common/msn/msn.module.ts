@@ -9,8 +9,8 @@ import { SharedModule } from '../../../shared.module';
 import { CoreModule } from '@core/core.module';
 import { CoreComponentsModule } from '@core/core.components.module';
 import { MatTreeModule } from '@angular/material/tree';
-import { MessagePoolMonitoringComponent } from '@common/btc/messagePool/message-pool-monitoring/message-pool-monitoring.component';
-import { MessagePoolDetailComponent } from '@common/btc/messagePool/message-pool-detail/message-pool-detail.component';
+import { MessagePoolMonitoringComponent } from '@common/msn/messagePool/message-pool-monitoring/message-pool-monitoring.component';
+import { MessagePoolDetailComponent } from '@common/msn/messagePool/message-pool-detail/message-pool-detail.component';
 import { PartialsModule } from 'app/views/partials/partials.module';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { AngularEditorModule } from '@kolkov/angular-editor';
@@ -19,7 +19,7 @@ import { MsnMessageTemplateDefComponent } from './MsnMessageTemplateDef/msn-mess
 
 const routes: Routes = [
 	{ path: 'msnMessagePoolMonitoring', component: MessagePoolMonitoringComponent },
-	{ path: 'msnMessagePoolDetail', component: MessagePoolDetailComponent },
+
 	{ path: 'msnMessageTemplateDef', component: MsnMessageTemplateDefListComponent },
 	{ path: 'msnMessageTemplateDef/add', component: MsnMessageTemplateDefComponent },
 	{ path: 'msnMessageTemplateDef/edit', component: MsnMessageTemplateDefComponent },
@@ -51,6 +51,7 @@ const routes: Routes = [
 	],
 	exports: [RouterModule],
 	entryComponents: [
+		MessagePoolDetailComponent,
 	]
 })
 export class BtcModule { }

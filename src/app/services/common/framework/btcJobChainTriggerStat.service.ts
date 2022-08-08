@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { FrameworkApi } from '@services/framework.api';
 import { BaseService } from '@core/_base/layout/services/base.service';
 import { HttpUtilsService } from '@core/_base/crud/utils/http-utils.service';
-import { BtcJobExecutionHistoryRequestModel } from '@common/btcJobChains/btcJobExecutionHistoryRequest.model';
 
 @Injectable()
 export class BtcJobChainTriggerStatService extends BaseService {

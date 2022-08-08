@@ -43,6 +43,10 @@ export const locale = {
 					MaskedCardMonitoring: 'Masked Card Monitoring',
 					TxnIrcDef: 'IRC Definitions',
 				},
+				Msn: {
+					Title: 'Messenger',
+					MsnMessageTemplateDef: 'Message Template Definition',
+				},
 				Auth: {
 					Title: 'Authority',
 					ApiDefinition: 'API Definition',
