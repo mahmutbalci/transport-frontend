@@ -11,11 +11,11 @@
 
 		<ng-container ktPortletTools>
 			<a id="btnGoBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()"><span> <i class="la la-mail-reply"></i> <span>{{'General.Back' | translate}}</span> </span></a>
-			<a id="btnClear" *ngIf="cfgExpressionConfigDefModel._isNew" class="kt-margin-l-5 btn btn-secondary" (click)="reset()"><span> <i class="la la-recycle"></i> <span>{{'General.Clear' | translate}}</span> </span></a>
+			<a id="btnClear" *ngIf="entityModel._isNew" class="kt-margin-l-5 btn btn-secondary" (click)="reset()"><span> <i class="la la-recycle"></i> <span>{{'General.Clear' | translate}}</span> </span></a>
 
 			<div *ngIf="'add'|checkauth" class="m-buttons--wrapper">
-				<a id="btnSave" *ngIf="cfgExpressionConfigDefModel._isNew" class="kt-margin-l-5 btn btn-brand" (click)="onSubmit()"><span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span></a>
-				<a id="btnUpdate" *ngIf="!cfgExpressionConfigDefModel._isNew && !isView" class="kt-margin-l-5 btn btn-brand" (click)="onSubmit()"><span><i class="la la-edit"></i><span>{{'General.Update' | translate}}</span></span></a>
+				<a id="btnSave" *ngIf="entityModel._isNew" class="kt-margin-l-5 btn btn-brand" (click)="onSubmit()"><span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span></a>
+				<a id="btnUpdate" *ngIf="!entityModel._isNew && !isView" class="kt-margin-l-5 btn btn-brand" (click)="onSubmit()"><span><i class="la la-edit"></i><span>{{'General.Update' | translate}}</span></span></a>
 			</div>
 		</ng-container>
 	</kt-portlet-header>

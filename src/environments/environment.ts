@@ -11,5 +11,5 @@ export const environment = {
 	commonApiUrl: 'https://localhost:44341/api',
 	frameworkApiUrl: 'https://localhost:44341/api',
 	transportApiUrl: 'https://localhost:44341/api',
-	crystalQuartzUrl: 'http://localhost:8088/quartz/',
+	crystalQuartzUrl: 'http://transportation.provisionpay.com:8088/quartz/',
 };
