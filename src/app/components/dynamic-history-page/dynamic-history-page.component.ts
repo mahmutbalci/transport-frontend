@@ -34,7 +34,7 @@ export class DynamicHistoryPageComponent implements OnInit {
 			actionTime: 'General.ActionTime',
 			userCode: 'General.UserCode',
 			channelCode: 'System.Member.ChannelCode',
-			referenceId: 'General.CorrelationId'
+			referenceId: 'General.ReferenceId'
 		}
 	];
 	dataSource: FilteredDataSource;

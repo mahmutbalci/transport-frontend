@@ -148,9 +148,15 @@ export class AppMenuDetailComponent implements OnInit {
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false);
-			this.dialogRef.close();
+		this.entityService.update(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.dialogRef.close();
+					});
+			} else {
+				this.layoutUtilsService.showError(res);
+			}
 		}, (error) => {
 			this.processing = false;
 			this.layoutUtilsService.showError(error);
@@ -160,16 +166,21 @@ export class AppMenuDetailComponent implements OnInit {
 	}
 
 	create() {
-		this.entityService.create(this.entityModel)
-			.subscribe(() => {
-				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false);
-				this.dialogRef.close();
-			}, (error) => {
-				this.layoutUtilsService.showError(error);
-				this.processing = false;
-			}, () => {
-				this.processing = false;
-			});
+		this.entityService.create(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.dialogRef.close();
+					});
+			} else {
+				this.layoutUtilsService.showError(res);
+			}
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+			this.processing = false;
+		}, () => {
+			this.processing = false;
+		});
 	}
 
 	getTitle(): string {

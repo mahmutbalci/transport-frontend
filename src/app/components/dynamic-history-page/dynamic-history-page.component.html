@@ -39,7 +39,7 @@
 					</div>
 					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
 						<mat-form-field class="mat-form-field-fluid">
-							<input matInput placeholder="{{'General.CorrelationId' | translate}}" formControlName="referenceId" type="text">
+							<input matInput placeholder="{{'General.ReferenceId' | translate}}" formControlName="referenceId" type="text">
 						</mat-form-field>
 					</div>
 					<div class="col-md-4 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="isScreenTool">
@@ -148,7 +148,7 @@
 							</mat-cell>
 						</ng-container>
 						<ng-container matColumnDef="referenceId">
-							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.CorrelationId' | translate}} </mat-header-cell>
+							<mat-header-cell *matHeaderCellDef mat-sort-header> {{'General.ReferenceId' | translate}} </mat-header-cell>
 							<mat-cell *matCellDef="let element" class="mat-column">
 								<span>{{element.referenceId}}</span>
 							</mat-cell>

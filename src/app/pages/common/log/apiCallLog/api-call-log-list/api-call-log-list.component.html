@@ -9,7 +9,7 @@
 				</h3>
 			</div>
 		</ng-container>
-		
+
 		<ng-container ktPortletTools>
 			<a id="btnGet" class="kt-margin-l-5 btn btn-brand" [class.disabled]="!dataSource.loading$" (click)="loadDataSource()">
 				<span> <i class="la la-search"></i> <span>{{'General.Get' | translate}}</span> </span>
@@ -38,7 +38,7 @@
 						</div>
 						<div class="col-md-3 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<input matInput placeholder="{{'General.CorrelationId' | translate}}" formControlName="guid" type="text">
+								<input matInput placeholder="{{'General.ReferenceId' | translate}}" formControlName="guid" type="text">
 							</mat-form-field>
 						</div>
 						<div class="col-md-3 kt-margin-b-10-mobile">
@@ -104,10 +104,10 @@
 		<div class="header-above-scroller" #headerScroller (scroll)="scrollHead()">
 			<div class="header-scroller" [ngStyle]="{'width': scrollWidth+'px'}"></div>
 		</div>
-		<div class="mat-table__wrapper" #tableScroller  (scroll)="scrollFoot()">
+		<div class="mat-table__wrapper" #tableScroller (scroll)="scrollFoot()">
 			<table mat-table class="detail-grid-expanded-container mat-elevation-z8" [dataSource]="dataSource" multiTemplateDataRows #nationSort="matSort" matSort matSortActive="requestDate" matSortDirection="desc" matSortDisableClear>
 				<ng-container matColumnDef="guid">
-					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.CorrelationId' | translate}} </th>
+					<th mat-header-cell *matHeaderCellDef mat-sort-header>{{'General.ReferenceId' | translate}} </th>
 					<td mat-cell *matCellDef="let element" class="mat-column">
 						<span>{{element.parentLog.guid}}</span>
 					</td>
@@ -204,7 +204,7 @@
 							<div *ngIf="element.childLog.length>0">
 								<table mat-table class="mat-elevation-z8" multiTemplateDataRows [dataSource]="element.childLog" matSort matSortDisableClear>
 									<ng-container matColumnDef="guid">
-										<th mat-header-cell *matHeaderCellDef>{{'General.CorrelationId' | translate}} </th>
+										<th mat-header-cell *matHeaderCellDef>{{'General.ReferenceId' | translate}} </th>
 										<td mat-cell *matCellDef="let element" class="mat-column">
 											<span>{{element.guid}}</span>
 										</td>

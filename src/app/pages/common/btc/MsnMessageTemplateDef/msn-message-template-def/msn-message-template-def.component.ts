@@ -18,7 +18,6 @@ import { TransportApi } from '@services/transport.api';
 	selector: 'm-msn-message-template-def',
 	templateUrl: './msn-message-template-def.component.html'
 })
-
 export class MsnMessageTemplateDefComponent implements OnInit {
 	htmlContent = '';
 	config: AngularEditorConfig = {
@@ -59,11 +58,12 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 	templateText: MsnMessageTemplateTextModel = new MsnMessageTemplateTextModel();
 	displayedColumns = ['actions', 'language', 'mailSubject', 'mailBody', 'smsBody'];
 	loadingAfterSubmitData: boolean = false;
-	msnMessageTemplateDefModel: MsnMessageTemplateDefModel = new MsnMessageTemplateDefModel();
+	entityModel: MsnMessageTemplateDefModel = new MsnMessageTemplateDefModel();
 	msnMessageTemplateModelForm: FormGroup = new FormGroup({});
 	ind: number = 1;
 	sameLanguage: boolean = false;
 	succesMessage = this.translate.instant('General.Success');
+	menuUrl: string = '/common/btc/msnMessageTemplateDef';
 
 	@ViewChild(MatSort) sort: MatSort;
 
@@ -72,7 +72,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 		public dialogRefOwn: MatDialogRef<MsnMessageTemplateDefComponent>,
 		private activatedRoute: ActivatedRoute,
 		private router: Router,
-		public service: MsnMessageTemplateDefService,
+		public entityService: MsnMessageTemplateDefService,
 		private layoutUtilsService: LayoutUtilsService,
 		private transportApi: TransportApi,
 		public dialog: MatDialog,
@@ -81,9 +81,9 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 
 	ngOnInit() {
 		this.loadingSubject.next(false);
-		Object.keys(this.msnMessageTemplateDefModel).forEach(name => {
+		Object.keys(this.entityModel).forEach(name => {
 			this.msnMessageTemplateModelForm.addControl(name,
-				new FormControl(this.msnMessageTemplateDefModel[name]));
+				new FormControl(this.entityModel[name]));
 		});
 
 		this.transportApi.getLookups(['CfgLanguageDef', 'MsnMessageTemplateTypeDef', 'CfgYesNoNumeric']).then(res => {
@@ -112,11 +112,12 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 				this.displayedColumns.splice(0, 1);
 			}
 			if (code && code !== null) {
-				this.msnMessageTemplateDefModel._isNew = false;
-				this.service.get(code).subscribe(res => {
-					this.msnMessageTemplateDefModel = res.data;
+				this.entityModel._isNew = false;
+				this.entityModel._isEditMode = true;
+				this.entityService.get(code).subscribe(res => {
+					this.entityModel = res.data;
 					this.dataSource.setData(_.orderBy(
-						this.msnMessageTemplateDefModel.msnMessageTemplateText,
+						this.entityModel.msnMessageTemplateText,
 						'mailSubject',
 						'asc'));
 					this.initForm();
@@ -124,8 +125,8 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 					this.layoutUtilsService.showError(error);
 				});
 			} else {
-				this.msnMessageTemplateDefModel = new MsnMessageTemplateDefModel();
-				this.msnMessageTemplateDefModel._isNew = true;
+				this.entityModel = new MsnMessageTemplateDefModel();
+				this.entityModel._isNew = true;
 				this.initForm();
 			}
 		});
@@ -134,16 +135,15 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 
 	initForm() {
 		const controls = this.msnMessageTemplateModelForm.controls;
-		Object.keys(this.msnMessageTemplateDefModel).forEach(name => {
+		Object.keys(this.entityModel).forEach(name => {
 			if (controls[name]) {
-				controls[name].setValue(this.msnMessageTemplateDefModel[name]);
+				controls[name].setValue(this.entityModel[name]);
 			}
 		});
 	}
 
 	goBack() {
-		let _backUrl = '/common/btc/msnMessageTemplateDef';
-		this.router.navigateByUrl(_backUrl);
+		this.router.navigateByUrl(this.menuUrl);
 	}
 
 	reset() {
@@ -159,18 +159,16 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 			return;
 		}
 
-		this.msnMessageTemplateDefModel =
-			<MsnMessageTemplateDefModel>this.msnMessageTemplateModelForm.value;
-		this.msnMessageTemplateDefModel.msnMessageTemplateText =
-			<MsnMessageTemplateTextModel[]>this.dataSource.data;
+		this.entityModel = <MsnMessageTemplateDefModel>this.msnMessageTemplateModelForm.value;
+		this.entityModel.msnMessageTemplateText = <MsnMessageTemplateTextModel[]>this.dataSource.data;
 
-		this.msnMessageTemplateDefModel.msnMessageTemplateText.forEach(element => {
+		this.entityModel.msnMessageTemplateText.forEach(element => {
 			if (element.templateCode === 0 || element.templateCode == null) {
-				element.templateCode = this.msnMessageTemplateDefModel.code;
+				element.templateCode = this.entityModel.code;
 			}
 		});
 
-		if (this.msnMessageTemplateDefModel.code == null || this.msnMessageTemplateDefModel.code === 0) {
+		if (this.entityModel.code == null || this.entityModel.code === 0) {
 			const message = this.translate.instant('Issuing.Card.FillTemplateCode');
 			this.layoutUtilsService.showError(message).afterClosed().subscribe(res => {
 				window.close();
@@ -186,7 +184,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 			return;
 		}
 
-		if (this.msnMessageTemplateDefModel._isNew) {
+		if (this.entityModel._isNew) {
 			this.create();
 		} else {
 			this.update();
@@ -194,25 +192,41 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 	}
 
 	create() {
-		this.service.create(this.msnMessageTemplateDefModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
-				.afterClosed().subscribe(() => {
-					this.router.navigate(['/common/btc/msnMessageTemplateDef']);
-				});
-		}
-		);
+		this.entityService.create(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.loading = false;
+				this.layoutUtilsService.showError(res);
+			}
+		}, (error) => {
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	update() {
-		this.service.update(this.msnMessageTemplateDefModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 10000, true, false)
-				.afterClosed().subscribe(() => {
-					this.router.navigate(['/common/btc/msnMessageTemplateDef']);
-				});
+		this.entityService.update(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.loading = false;
+				this.layoutUtilsService.showError(res);
+			}
 		}, (error) => {
+			this.loading = false;
 			this.layoutUtilsService.showError(error);
-		}
-		);
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	addMsnMessageTemplateText() {
@@ -230,7 +244,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 			return;
 		}
 
-		this.templateText.templateCode = this.msnMessageTemplateDefModel.code;
+		this.templateText.templateCode = this.entityModel.code;
 		this.templateText.language = this.msnMessageTemplateModelForm.value['language'];
 		let htmlContentVar = this.msnMessageTemplateModelForm.value['htmlContent'].replaceAll('&lt;', '<').replaceAll('&gt;', '>');
 		let indexofFirstHtml = htmlContentVar.toLowerCase().indexOf('html');
@@ -248,7 +262,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 		this.templateText.mailSubject = this.msnMessageTemplateModelForm.value['mailSubject'];
 		this.templateText.smsBody = this.msnMessageTemplateModelForm.value['smsBody'];
 
-		if (!this.msnMessageTemplateDefModel._isNew && this.selectedGuid !== 0) {
+		if (!this.entityModel._isNew && this.selectedGuid !== 0) {
 			this.templateText.guid = this.selectedGuid;
 			this.templateText.lastUpdated = this.lastUpdated;
 		}
@@ -272,8 +286,8 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 			return;
 		}
 
-		this.msnMessageTemplateDefModel.msnMessageTemplateText.push(this.templateText);
-		this.dataSource.setData(this.msnMessageTemplateDefModel.msnMessageTemplateText);
+		this.entityModel.msnMessageTemplateText.push(this.templateText);
+		this.dataSource.setData(this.entityModel.msnMessageTemplateText);
 		this.msnMessageTemplateModelForm.controls['language'].setValue(null);
 		this.msnMessageTemplateModelForm.controls['htmlContent'].setValue(null);
 		this.msnMessageTemplateModelForm.controls['mailSubject'].setValue(null);
@@ -298,31 +312,31 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 	}
 
 	deleteMsnMessageTexttButtonOnClick(selectedData: MsnMessageTemplateTextModel) {
-		const y = this.msnMessageTemplateDefModel.msnMessageTemplateText.indexOf(selectedData);
+		const y = this.entityModel.msnMessageTemplateText.indexOf(selectedData);
 		if (y !== -1) {
-			this.msnMessageTemplateDefModel.msnMessageTemplateText.splice(y, 1);
+			this.entityModel.msnMessageTemplateText.splice(y, 1);
 		}
-		this.dataSource.setData(this.msnMessageTemplateDefModel.msnMessageTemplateText);
+		this.dataSource.setData(this.entityModel.msnMessageTemplateText);
 	}
 
 	dropped(event: CdkDragDrop<MsnMessageTemplateTextModel[]>) {
 		this.ind = 1;
 		moveItemInArray(
-			this.msnMessageTemplateDefModel.msnMessageTemplateText,
+			this.entityModel.msnMessageTemplateText,
 			event.previousIndex,
 			event.currentIndex
 		);
 		this.dataSource.setData(null);
-		this.msnMessageTemplateDefModel
-			.msnMessageTemplateText
-			.forEach(el => { el.templateCode = this.ind; this.ind = this.ind + 1; });
-		this.dataSource.setData(this.msnMessageTemplateDefModel.msnMessageTemplateText);
+		this.entityModel.msnMessageTemplateText.forEach(el => {
+			el.templateCode = this.ind; this.ind = this.ind + 1;
+		});
+		this.dataSource.setData(this.entityModel.msnMessageTemplateText);
 	}
 
 	getComponentTitle() {
 		if (this.isDisabled) {
 			return this.translate.instant('General.View');
-		} else if (!this.msnMessageTemplateDefModel || !this.msnMessageTemplateDefModel.code) {
+		} else if (!this.entityModel || !this.entityModel.code) {
 			return this.translate.instant('General.Add');
 		} else if (!this.isDisabled) {
 			return this.translate.instant('General.Edit');

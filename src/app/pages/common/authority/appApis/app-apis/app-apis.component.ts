@@ -133,10 +133,17 @@ export class AppApisComponent implements OnInit {
 	}
 
 	update() {
-		this.entityService.update(this.entityModel).subscribe(() => {
-			this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 5000, true, false).afterClosed().subscribe(() => {
-				this.router.navigate([this.menuUrl]);
-			});
+		this.entityService.update(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
+				this.loading = false;
+				this.isProcessing = false;
+				this.layoutUtilsService.showError(res);
+			}
 		}, (error) => {
 			this.loading = false;
 			this.layoutUtilsService.showError(error);
@@ -147,18 +154,24 @@ export class AppApisComponent implements OnInit {
 	}
 
 	create() {
-		this.entityService.create(this.entityModel)
-			.subscribe(() => {
-				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Create, 5000, true, false).afterClosed().subscribe(() => {
-					this.router.navigate([this.menuUrl]);
-				});
-			}, (error) => {
+		this.entityService.create(this.entityModel).subscribe((res: any) => {
+			if (res.success) {
+				this.layoutUtilsService.showNotification(this.succesMessage, MessageType.Update, 10000, true, false)
+					.afterClosed().subscribe(() => {
+						this.goBack();
+					});
+			} else {
 				this.loading = false;
-				this.layoutUtilsService.showError(error);
 				this.isProcessing = false;
-			}, () => {
-				this.loading = false;
-			});
+				this.layoutUtilsService.showError(res);
+			}
+		}, (error) => {
+			this.loading = false;
+			this.layoutUtilsService.showError(error);
+			this.isProcessing = false;
+		}, () => {
+			this.loading = false;
+		});
 	}
 
 	clearScreen() {

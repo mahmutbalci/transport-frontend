@@ -64,7 +64,7 @@ export class ODataDataSource implements DataSource<BaseModel> {
 		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined') {
 			errorMessage = this.errorSubject.value.error.message;
 			if (this.errorSubject.value.error.referenceId) {
-				errorMessage += ' CorrelationId : ' + this.errorSubject.value.error.referenceId;
+				errorMessage += ' ReferenceId : ' + this.errorSubject.value.error.referenceId;
 			}
 		}
 		return errorMessage;
