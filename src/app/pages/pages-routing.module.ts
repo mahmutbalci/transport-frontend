@@ -48,8 +48,8 @@ const routes: Routes = [
 				loadChildren: './common/log/log.module#LogModule'
 			},
 			{
-				path: 'common/btc',
-				loadChildren: './common/btc/btc.module#BtcModule'
+				path: 'common/msn',
+				loadChildren: './common/msn/msn.module#MsnModule'
 			},
 			{
 				path: 'common/dynamicQueryBuilder',

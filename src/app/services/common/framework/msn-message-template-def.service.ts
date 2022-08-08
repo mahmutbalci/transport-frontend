@@ -6,7 +6,6 @@ import { HttpUtilsService } from '@core/_base/crud';
 @Injectable({
 	providedIn: 'root'
 })
-
 export class MsnMessageTemplateDefService extends BaseService {
 	public endpoint = 'msn/MsnMessageTemplateDef';
 

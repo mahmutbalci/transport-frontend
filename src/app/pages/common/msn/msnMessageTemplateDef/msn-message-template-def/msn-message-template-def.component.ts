@@ -12,7 +12,6 @@ import { MsnMessageTemplateDefModel } from '@common/btc/msn-message-template-def
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud';
 import { MsnMessageTemplateDefService } from '@common/framework/msn-message-template-def.service';
-import { TransportApi } from '@services/transport.api';
 
 @Component({
 	selector: 'm-msn-message-template-def',
@@ -74,7 +73,6 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 		private router: Router,
 		public entityService: MsnMessageTemplateDefService,
 		private layoutUtilsService: LayoutUtilsService,
-		private transportApi: TransportApi,
 		public dialog: MatDialog,
 		private translate: TranslateService,
 	) { }
@@ -86,7 +84,7 @@ export class MsnMessageTemplateDefComponent implements OnInit {
 				new FormControl(this.entityModel[name]));
 		});
 
-		this.transportApi.getLookups(['CfgLanguageDef', 'MsnMessageTemplateTypeDef', 'CfgYesNoNumeric']).then(res => {
+		this.entityService.api.getLookups(['CfgLanguageDef', 'MsnMessageTemplateTypeDef', 'CfgYesNoNumeric']).then(res => {
 			this.cfgLanguageDefs = res.find(x => x.name === 'CfgLanguageDef').data;
 			this.templateTypeDefs = res.find(x => x.name === 'MsnMessageTemplateTypeDef').data;
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;

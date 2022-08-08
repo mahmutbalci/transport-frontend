@@ -16,9 +16,9 @@ import { InlineSVGModule } from 'ng-inline-svg';
 
 
 const routes: Routes = [
+	{ path: 'configDef', component: ConfigListComponent },
 	{ path: 'configDef/add', component: ConfigDefComponent },
 	{ path: 'configDef/edit', component: ConfigDefComponent },
-	{ path: 'configDef', component: ConfigListComponent },
 ];
 
 @NgModule({
@@ -36,6 +36,9 @@ const routes: Routes = [
 		RouterModule.forChild(routes),
 		TranslateModule.forChild(),
 	],
-	declarations: [ConfigDefComponent, ConfigListComponent]
+	declarations: [
+		ConfigListComponent,
+		ConfigDefComponent,
+	]
 })
 export class DynamicQueryBuilderModule { }

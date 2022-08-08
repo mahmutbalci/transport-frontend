@@ -11,7 +11,7 @@ import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
 import { MsnMessageTemplateDefService } from '@common/framework/msn-message-template-def.service';
 import { DynamicHistoryPageComponent } from '@components/dynamic-history-page/dynamic-history-page.component';
 import { LayoutUtilsService } from '@core/_base/crud';
-import { FrameworkApi } from '@services/framework.api';
+
 export enum MessageType {
 	Create,
 	Read,
@@ -43,7 +43,6 @@ export class MsnMessageTemplateDefListComponent implements OnInit {
 		private msnMessageTemplateDefService: MsnMessageTemplateDefService,
 		public dialog: MatDialog,
 		private layoutUtilsService: LayoutUtilsService,
-		private api: FrameworkApi,
 		public translate: TranslateService) { }
 
 	ngOnInit() {
@@ -69,7 +68,7 @@ export class MsnMessageTemplateDefListComponent implements OnInit {
 			)
 			.subscribe();
 
-		this.api.getLookup("MsnMessageTemplateTypeDef").then(res => {
+		this.msnMessageTemplateDefService.api.getLookup("MsnMessageTemplateTypeDef").then(res => {
 			this.templateTypeDefs = res;
 		});
 
@@ -80,10 +79,10 @@ export class MsnMessageTemplateDefListComponent implements OnInit {
 			this.dataSource.load(queryParams);
 		});
 		dynSub.unsubscribe();
-		
+
 		this.dataSource.entitySubject.subscribe(res => {
 			this.result = res;
-		});  
+		});
 	}
 
 	delete(_item: MsnMessageTemplateDefModel) {
@@ -133,7 +132,7 @@ export class MsnMessageTemplateDefListComponent implements OnInit {
 		return filter;
 	}
 
-	openHistory(key: string) {		
+	openHistory(key: string) {
 		this.dialog.open(DynamicHistoryPageComponent, {
 			data: {
 				className: 'MsnMessageTemplateDef',

@@ -20,7 +20,6 @@ import { TransportApi } from '@services/transport.api';
 	selector: 'm-message-pool-monitoring',
 	templateUrl: './message-pool-monitoring.component.html'
 })
-
 export class MessagePoolMonitoringComponent implements OnInit {
 	dataSource: FilteredDataSource;
 	displayedColumns = ['actions', 'templateCode', 'key', 'messageType', 'messageTo', 'dueDateTime', 'channelCode', 'processedStatus', 'processDate', 'processTime', 'errorCode'];
@@ -112,7 +111,6 @@ export class MessagePoolMonitoringComponent implements OnInit {
 		this.dataSource.load(queryParams, 'GetMsnMessagePool');
 	}
 
-
 	filterConfiguration(): any {
 		let filter: any = {};
 		filter.ProcessStartDate = this.messageMonitoringForm.value['startDate'];
@@ -124,8 +122,9 @@ export class MessagePoolMonitoringComponent implements OnInit {
 		if (this.messageMonitoringForm.value['templateCode'])
 			templateCodes.push(<number>this.messageMonitoringForm.value['templateCode']);
 
-		if (templateCodes.length > 0)
+		if (templateCodes.length > 0) {
 			filter.templateCodes = templateCodes;
+		}
 
 		if (this.filteredTemplateCodes.length > 0) {
 			if (templateCodes.length == 0) {
@@ -137,10 +136,11 @@ export class MessagePoolMonitoringComponent implements OnInit {
 			filter.templateCodes = templateCodes;
 		}
 
-		if (this.messageMonitoringForm.value['isProcessed'] == '0')
+		if (this.messageMonitoringForm.value['isProcessed'] == '0') {
 			filter.isProcessed = false;
-		else
+		} else {
 			filter.isProcessed = true;
+		}
 
 		return filter;
 	}
@@ -153,7 +153,6 @@ export class MessagePoolMonitoringComponent implements OnInit {
 	}
 
 	showDetail(item: any) {
-
 		this.dialogRef = this.dialog.open(MessagePoolDetailComponent, {
 			data: { guid: item.guid, showBatchCloseButton: false }
 		});
@@ -165,12 +164,21 @@ export class MessagePoolMonitoringComponent implements OnInit {
 	}
 
 	exportAsXLSX(exportAll: boolean): void {
-		if (this.lookupObjectList.length == 0)
+		if (this.lookupObjectList.length === 0)
 			this.addLookupObject();
 
-		const queryParams = new QueryParamsModel(this.filterConfiguration(), this.sort.direction, this.sort.active, (exportAll ? 0 : this.paginator.pageIndex), (exportAll ? -1 : this.paginator.pageSize));
-		queryParams.useSubData = true;
-		this.excelService.exportAsExcelFileRouting(this.msnMessagePoolService, queryParams, 'GetMsnMessagePool', 'MessagePool', this.gridColumns, this.lookupObjectList);
+		const queryParams = new QueryParamsModel(this.filterConfiguration(),
+			this.sort.direction,
+			this.sort.active,
+			(exportAll ? 0 : this.paginator.pageIndex),
+			(exportAll ? -1 : this.paginator.pageSize));
+
+		this.excelService.exportAsExcelFileRouting(this.msnMessagePoolService,
+			queryParams,
+			'GetMsnMessagePool',
+			'MessagePool',
+			this.gridColumns,
+			this.lookupObjectList);
 	}
 
 	openHistory(key: string) {
