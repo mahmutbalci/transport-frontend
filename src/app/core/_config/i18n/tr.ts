@@ -61,6 +61,7 @@ export const locale = {
 					JobChainMonitoring: 'Job Chain İzleme ve Çalıştırma',
 					JobChainExecutionHistory: 'Job Chain Tarihçe',
 					JobChainErrorPool: 'Job Chain Hatalı Kayıtlar',
+					CrystalQuartz: 'Crystal Quartz',
 				},
 				DynamicQueryBuilder: {
 					ConfigDefinition: 'Konfig Tanımlama'
