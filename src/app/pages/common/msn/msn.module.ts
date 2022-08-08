@@ -14,8 +14,8 @@ import { MessagePoolDetailComponent } from '@common/msn/messagePool/message-pool
 import { PartialsModule } from 'app/views/partials/partials.module';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-import { MsnMessageTemplateDefListComponent } from './MsnMessageTemplateDef/msn-message-template-def-list/msn-message-template-def-list.component';
-import { MsnMessageTemplateDefComponent } from './MsnMessageTemplateDef/msn-message-template-def/msn-message-template-def.component';
+import { MsnMessageTemplateDefListComponent } from './msnMessageTemplateDef/msn-message-template-def-list/msn-message-template-def-list.component';
+import { MsnMessageTemplateDefComponent } from './msnMessageTemplateDef/msn-message-template-def/msn-message-template-def.component';
 
 const routes: Routes = [
 	{ path: 'msnMessagePoolMonitoring', component: MessagePoolMonitoringComponent },
@@ -47,11 +47,11 @@ const routes: Routes = [
 		MessagePoolMonitoringComponent,
 		MessagePoolDetailComponent,
 		MsnMessageTemplateDefListComponent,
-		MsnMessageTemplateDefComponent
+		MsnMessageTemplateDefComponent,
 	],
 	exports: [RouterModule],
 	entryComponents: [
 		MessagePoolDetailComponent,
 	]
 })
-export class BtcModule { }
+export class MsnModule { }

@@ -49,7 +49,7 @@ const routes: Routes = [
 			},
 			{
 				path: 'common/msn',
-				loadChildren: './common/msn/msn.module#BtcModule'
+				loadChildren: './common/msn/msn.module#MsnModule'
 			},
 			{
 				path: 'common/dynamicQueryBuilder',
