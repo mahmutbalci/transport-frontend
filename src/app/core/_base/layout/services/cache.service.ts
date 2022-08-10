@@ -24,7 +24,6 @@ export class CacheService {
 	 * Subject inFlightObservable and return the source observable.
 	 */
 	get(key: string, fallback?: Observable<any>, maxAge?: number): Observable<any> | Subject<any> {
-
 		if (this.hasValidCachedValue(key)) {
 			// console.log(`%cGetting from cache ${key}`, 'color: green');
 			return of(this.cache.get(key).value);
@@ -42,17 +41,13 @@ export class CacheService {
 
 			return fallback.pipe(tap((value) => {
 				this.set(key, value, maxAge);
-			}),
-				catchError(e => {
-					this.inFlightObservables.delete(key);
-					return Observable.throw(e);
-				}));
-
-
+			}), catchError(e => {
+				this.inFlightObservables.delete(key);
+				return Observable.throw(e);
+			}));
 		} else {
 			return Observable.throw('Requested key is not available in Cache');
 		}
-
 	}
 
 	/**
@@ -69,7 +64,7 @@ export class CacheService {
 	 * Checks if the a key exists in cache
 	 */
 	has(key: string): boolean {
-		return (this.cache.has(key) && this.checkExpiry(key)); 
+		return (this.cache.has(key) && this.checkExpiry(key));
 	}
 
 	/**

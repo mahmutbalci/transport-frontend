@@ -126,6 +126,11 @@ export const locale = {
 				Exception: {
 				},
 			},
+			Campaign: {
+				BeginDate: 'Başlangıç Tarihi',
+				EndDate: 'Bitiş Tarihi',
+				Weekday: 'Kampanya Günleri',
+			},
 		},
 
 		System: {
@@ -316,6 +321,7 @@ export const locale = {
 			Filter: 'Filtre',
 			Add: 'Ekle',
 			Remove: 'Çıkar',
+			Code: 'Kod',
 			Description: 'Açıklama',
 			Required: ' Zorunlu Alan',
 			CreateNew: 'Yeni Kayıt',
@@ -339,7 +345,6 @@ export const locale = {
 			Yes: 'Evet',
 			No: 'Hayır',
 			Send: 'Gönder',
-			Code: 'Kod',
 			ShowRecord: 'Gözlem',
 			SuccessfullyUpdated: 'Başarıyla güncellendi.',
 			SuccessfullyCreated: 'Başarıyla kaydedildi.',

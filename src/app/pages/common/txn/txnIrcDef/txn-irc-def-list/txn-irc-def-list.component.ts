@@ -15,7 +15,6 @@ import { TransportApi } from '@services/transport.api';
 	selector: 'kt-txn-irc-def-list',
 	templateUrl: './txn-irc-def-list.component.html'
 })
-
 export class TxnIrcDefListComponent implements OnInit, AfterViewInit {
 	dataSource: ParameterDataSource;
 	displayedColumns = ['code', 'description', 'responseCode',];

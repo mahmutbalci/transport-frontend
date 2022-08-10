@@ -22,7 +22,8 @@ import { TransportApi } from '@services/transport.api';
 })
 export class MessagePoolMonitoringComponent implements OnInit {
 	dataSource: FilteredDataSource;
-	displayedColumns = ['actions', 'templateCode', 'key', 'messageType', 'messageTo', 'dueDateTime', 'channelCode', 'processedStatus', 'processDate', 'processTime', 'errorCode'];
+	displayedColumns = ['actions', 'templateCode', 'key', 'messageType', 'messageTo', 'dueDateTime',
+		'channelCode', 'processedStatus', 'processDate', 'processTime', 'errorCode'];
 	templateCodes: any = [];
 	filteredTemplateCodes: any = [];
 	templateTypes: any = [];
@@ -136,7 +137,7 @@ export class MessagePoolMonitoringComponent implements OnInit {
 			filter.templateCodes = templateCodes;
 		}
 
-		if (this.messageMonitoringForm.value['isProcessed'] == '0') {
+		if (this.messageMonitoringForm.value['isProcessed'] === '0') {
 			filter.isProcessed = false;
 		} else {
 			filter.isProcessed = true;
@@ -182,7 +183,7 @@ export class MessagePoolMonitoringComponent implements OnInit {
 	}
 
 	openHistory(key: string) {
-		if (this.lookupObjectList.length == 0)
+		if (this.lookupObjectList.length === 0)
 			this.addLookupObject();
 
 		this.dialog.open(DynamicHistoryPageComponent, {

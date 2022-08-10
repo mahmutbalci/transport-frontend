@@ -126,6 +126,11 @@ export const locale = {
 				Exception: {
 				},
 			},
+			Campaign: {
+				BeginDate: 'Begin Date',
+				EndDate: 'End Date',
+				Weekday: 'Campaign Days',
+			},
 		},
 
 		System: {
@@ -316,6 +321,7 @@ export const locale = {
 			Filter: 'Filter',
 			Add: 'Add',
 			Remove: 'Remove',
+			Code: 'Code',
 			Description: 'Description',
 			Required: 'Required ',
 			CreateNew: 'Create New',
@@ -339,7 +345,6 @@ export const locale = {
 			Yes: 'Yes',
 			No: 'No',
 			Send: 'Send',
-			Code: 'Code',
 			ShowRecord: 'Show Record',
 			SuccessfullyUpdated: 'Successfully Updated.',
 			SuccessfullyCreated: 'Successfully Created.',
