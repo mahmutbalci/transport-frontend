@@ -126,6 +126,15 @@ export const locale = {
 				Exception: {
 				},
 			},
+			Campaign: {
+				BeginDate: 'Begin Date',
+				EndDate: 'End Date',
+				BeginTime: 'Begin Time',
+				EndTime: 'End Time',
+				Weekday: 'Campaign Days',
+				CardDigits: 'Card Digits',
+				D042AcqId: 'D042AcqId',
+			},
 		},
 
 		System: {
@@ -316,6 +325,7 @@ export const locale = {
 			Filter: 'Filter',
 			Add: 'Add',
 			Remove: 'Remove',
+			Code: 'Code',
 			Description: 'Description',
 			Required: 'Required ',
 			CreateNew: 'Create New',
@@ -339,7 +349,6 @@ export const locale = {
 			Yes: 'Yes',
 			No: 'No',
 			Send: 'Send',
-			Code: 'Code',
 			ShowRecord: 'Show Record',
 			SuccessfullyUpdated: 'Successfully Updated.',
 			SuccessfullyCreated: 'Successfully Created.',
@@ -425,6 +434,7 @@ export const locale = {
 			ActionTime: 'Action Time',
 			ActionChannel: 'Action Channel',
 			IsActive: 'Is Active',
+			Proiority: 'Proiority',
 			Active: 'Active',
 			Passive: 'Passive',
 			OrderNo: 'Order No',

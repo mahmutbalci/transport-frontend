@@ -1,3 +1,201 @@
-<p>
-	cmp-campaign-def works!
-</p>
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title" id="title">
+					{{ 'Menu.Transportation.Campaign.CampaignDefinition' | translate }} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<span><i class="la la-mail-reply"></i><span>{{ 'General.Back' | translate }}</span></span>
+			</a>
+
+			<a id="btnClear" *ngIf="entityModel._isNew" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()">
+				<span><i class="la la-recycle"></i><span>{{ 'General.Clear' | translate }}</span></span>
+			</a>
+
+			<div *ngIf="'add'|checkauth">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-save"></i><span>{{ 'General.Save' | translate }}</span></span>
+				</a>
+
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-edit"></i><span>{{ 'General.Update' | translate }}</span></span>
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="entityForm" [checkauth]="isReadonly" class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.Code' | translate }}" formControlName="code" readonly="{{ entityModel._isEditMode }}" maxlength="5" [textMask]="{mask: cmpCodeMask, guide:false}" stringUpper required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.Description' | translate }}" formControlName="description" maxlength="4000" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'General.Proiority' | translate }}" formControlName="proiority" maxlength="4" [textMask]="{mask: numberMask, guide:false}" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{ 'Transportation.Campaign.Weekday' | translate }}" [multiple]="true" formControlName="campaignDays">
+									<mat-option id="weekday" [value]="item.code" *ngFor="let item of weekDays;">{{ item.description }}</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="beginDate" id="beginDate" formControlName="beginDate" placeholder="{{ 'Transportation.Campaign.BeginDate' | translate }}" readonly="true">
+								<mat-datepicker-toggle matSuffix [for]="beginDate"></mat-datepicker-toggle>
+								<mat-datepicker #beginDate></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="endDate" id="endDate" formControlName="endDate" placeholder="{{ 'Transportation.Campaign.EndDate' | translate }}" readonly="true">
+								<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+								<mat-datepicker #endDate></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Campaign.BeginTime' | translate }}" formControlName="beginTime" [textMask]="{mask: timeMask, guide:false}" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Campaign.EndTime' | translate }}" formControlName="endTime" [textMask]="{mask: timeMask, guide:false}" required>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="kt-form__section kt-form__section--first">
+				<mat-tab-group>
+					<mat-tab label="{{ 'General.Details' | translate }}" [formGroup]="detailEntityForm">
+						<div class="kt-form">
+							<div class="kt-form">
+								<div class="kt-form__filtration">
+									<div class="row align-items-center">
+										<div class="col-md-10 kt-margin-b-10-mobile"></div>
+										<div class="col-md-2 text-right kt-margin-b-10-mobile">
+											<a class="kt-margin-l-5 btn btn-brand" *ngIf="!isReadonly" [class.disabled]="isProcessing || isEditModeDetail" (click)="addDetailButtonOnClick()" matTooltip="{{ 'General.CreateNew' | translate }}">
+												<i class="la la-plus-circle mt-icon-resizeable-xs"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="mat-table__wrapper">
+							<mat-table class="lmat-elevation-z8" [dataSource]="dataSourceDetail" matSort matSortActive="add-cardDigits" matSortDirection="asc" matSortDisableClear>
+								<ng-container matColumnDef="add-actions">
+									<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
+										<span class="mat-column-actions-wrapper" *ngIf="detailModel._isNew">
+											<button mat-icon-button color="{{ checkDetailForm() ? 'primary' : 'warn' }}" type="button" (click)="addDetail()" matTooltip="{{ 'General.Add' | translate }}">
+												<mat-icon>done</mat-icon>
+											</button>
+
+											<button type="button" mat-icon-button color="warn" (click)="cancelDetailAddButtonOnClick()" matTooltip="{{ 'General.Cancel' | translate }}">
+												<mat-icon>clear</mat-icon>
+											</button>
+										</span>
+									</mat-header-cell>
+								</ng-container>
+
+								<ng-container matColumnDef="add-cardDigits">
+									<mat-header-cell *matHeaderCellDef class="mat-column">
+										<mat-form-field *ngIf="detailModel._isNew" class="mat-form-field-fluid">
+											<input matInput placeholder="{{ 'Transportation.Campaign.CardDigits' | translate }}" formControlName="cardDigits" maxlength="10" [textMask]="{mask: numberMask, guide:false}" required>
+										</mat-form-field>
+									</mat-header-cell>
+								</ng-container>
+
+								<ng-container matColumnDef="add-d042AcqId">
+									<mat-header-cell *matHeaderCellDef class="mat-column">
+										<mat-form-field *ngIf="detailModel._isNew" class="mat-form-field-fluid">
+											<input matInput placeholder="{{ 'Transportation.Campaign.D042AcqId' | translate }}" formControlName="d042AcqId" maxlength="15" [textMask]="{mask: numberMask, guide:false}">
+										</mat-form-field>
+									</mat-header-cell>
+								</ng-container>
+
+								<ng-container matColumnDef="actions">
+									<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
+										{{ 'General.Actions' | translate }}
+									</mat-header-cell>
+									<mat-cell *matCellDef="let row" class="mat-column mat-column-actions">
+										<button *ngIf="!row._isEditMode" [disabled]="isProcessing || isEditModeDetail" type="button" mat-icon-button color="primary" (click)="editDetailButtonOnClick(row)" matTooltip="{{ 'General.Edit' | translate }}">
+											<mat-icon>create</mat-icon>
+										</button>
+
+										<button *ngIf="row._isEditMode" mat-icon-button color="{{ checkDetailForm() ? 'primary' : 'accent' }}" type="button" (click)="updateDetail(row)" matTooltip="{{ 'General.Save' | translate }}">
+											<mat-icon>done</mat-icon>
+										</button>
+
+										<button *ngIf="!row._isEditMode" [disabled]="isProcessing || isEditModeDetail" mat-icon-button color="warn" type="button" (click)="deleteDetail(row)" matTooltip="{{ 'General.Delete' | translate }}">
+											<mat-icon>delete</mat-icon>
+										</button>
+
+										<button *ngIf="row._isEditMode" type="button" mat-icon-button color="warn" (click)="cancelDetailEditButtonOnClick(row)" matTooltip="{{ 'General.Cancel' | translate }}">
+											<mat-icon>clear</mat-icon>
+										</button>
+									</mat-cell>
+								</ng-container>
+
+								<ng-container matColumnDef="cardDigits">
+									<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column">{{ 'Transportation.Campaign.CardDigits' | translate }}</mat-header-cell>
+									<mat-cell *matCellDef="let row" class="mat-column">
+										<mat-form-field class="mat-form-field-fluid" *ngIf="row._isEditMode">
+											<input matInput [(ngModel)]="row.cardDigits" [ngModelOptions]="{standalone: true}" maxlength="10" [textMask]="{mask: numberMask, guide:false}" required>
+										</mat-form-field>
+
+										<span *ngIf="!row._isEditMode">{{ row.cardDigits }}</span>
+									</mat-cell>
+								</ng-container>
+
+								<ng-container matColumnDef="d042AcqId">
+									<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column">{{ 'Transportation.Campaign.D042AcqId' | translate }}</mat-header-cell>
+									<mat-cell *matCellDef="let row" class="mat-column">
+										<mat-form-field class="mat-form-field-fluid" *ngIf="row._isEditMode">
+											<input matInput [(ngModel)]="row.d042AcqId" [ngModelOptions]="{standalone: true}" maxlength="15" [textMask]="{mask: numberMask, guide:false}">
+										</mat-form-field>
+
+										<span *ngIf="!row._isEditMode">{{ row.d042AcqId }}</span>
+									</mat-cell>
+								</ng-container>
+
+								<mat-row *matRowDef="let row; columns: detailColumns" [ngClass]="{'mat-row-editing' : row._isEditMode}"></mat-row>
+								<mat-header-row *matHeaderRowDef="detailColumns"></mat-header-row>
+								<mat-header-row *matHeaderRowDef="detailAddColumns" class="mat-row-editing mat-row-add" [ngClass]="{'mat-row-inactive' : !detailModel._isNew}">
+								</mat-header-row>
+							</mat-table>
+							<div class="mat-table__message kt-font-danger" *ngIf="!dataSourceDetail.hasItems && dataSourceDetail.wasQuery">{{ 'General.NoRecordsFound' | translate }}</div>
+						</div>
+					</mat-tab>
+				</mat-tab-group>
+			</div>
+		</form>
+	</kt-portlet-body>
+</kt-portlet>

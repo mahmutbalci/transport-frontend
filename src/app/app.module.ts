@@ -83,6 +83,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
 import { CustomMatPaginatorIntl } from '@core/models/custom-mat-paginator-intl';
 import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { TransportApi } from '@services/transport.api';
+import { CampaignServiceModule } from '@services/transport/campaign/campaign-service.module';
+import { TransportTxnServiceModule } from '@services/transport/txn/transportTxn-service.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	wheelSpeed: 0.5,
@@ -136,6 +138,8 @@ registerLocaleData(localetr, localetrExtra);
 		LogServiceModule,
 		MemberServiceModule,
 		TxnServiceModule,
+		CampaignServiceModule,
+		TransportTxnServiceModule,
 		FrameworkServiceModule,
 		SharedModule,
 		MatTableModule,

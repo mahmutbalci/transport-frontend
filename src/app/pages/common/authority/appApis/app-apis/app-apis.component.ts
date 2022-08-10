@@ -5,9 +5,9 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { TranslateService } from '@ngx-translate/core';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { AppApisModel } from '@common/authority/appApis.model';
 import { AppApisService } from '@common/authority/appApis.service';
-import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 @Component({
 	selector: 'kt-ent-api-def',

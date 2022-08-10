@@ -126,6 +126,15 @@ export const locale = {
 				Exception: {
 				},
 			},
+			Campaign: {
+				BeginDate: 'Başlangıç Tarihi',
+				EndDate: 'Bitiş Tarihi',
+				BeginTime: 'Başlangıç Saati',
+				EndTime: 'Bitiş Saati',
+				Weekday: 'Kampanya Günleri',
+				CardDigits: 'Kartın İlk Rakamları',
+				D042AcqId: 'D042AcqId',
+			},
 		},
 
 		System: {
@@ -316,6 +325,7 @@ export const locale = {
 			Filter: 'Filtre',
 			Add: 'Ekle',
 			Remove: 'Çıkar',
+			Code: 'Kod',
 			Description: 'Açıklama',
 			Required: ' Zorunlu Alan',
 			CreateNew: 'Yeni Kayıt',
@@ -339,7 +349,6 @@ export const locale = {
 			Yes: 'Evet',
 			No: 'Hayır',
 			Send: 'Gönder',
-			Code: 'Kod',
 			ShowRecord: 'Gözlem',
 			SuccessfullyUpdated: 'Başarıyla güncellendi.',
 			SuccessfullyCreated: 'Başarıyla kaydedildi.',
@@ -425,6 +434,7 @@ export const locale = {
 			ActionTime: 'Aksiyon Saati',
 			ActionChannel: 'Aksiyon Kanalı',
 			IsActive: 'Aktif mi?',
+			Proiority: 'Öncelik',
 			Active: 'Aktif',
 			Passive: 'Pasif',
 			OrderNo: 'Sıra No',

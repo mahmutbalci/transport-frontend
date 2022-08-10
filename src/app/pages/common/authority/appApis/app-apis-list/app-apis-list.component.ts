@@ -45,7 +45,6 @@ export class AppApisListComponent implements OnInit, AfterViewInit {
 			this.layoutUtilsService.showError(error);
 		});
 
-
 		const dynSub = this.route.queryParams.subscribe(() => {
 			this.loadDataSource();
 		});
