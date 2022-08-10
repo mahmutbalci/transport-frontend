@@ -6,7 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { TranslateService } from '@ngx-translate/core';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
-import { CmpCampaignDefModel } from '@models/transport/campaign/cmpCampaignDef.model';
+import { MMatTableDataSource } from '@core/models/mmat-table.datasource';
+import { CmpCampaignDefModel, CmpCampaignDetModel } from '@models/transport/campaign/cmpCampaignDef.model';
 import { CmpCampaignDefService } from '@services/transport/campaign/cmpCampaignDef.service';
 
 @Component({
@@ -23,6 +24,14 @@ export class CmpCampaignDefComponent implements OnInit {
 	entityForm: FormGroup = new FormGroup({});
 	entityModel: CmpCampaignDefModel = new CmpCampaignDefModel();
 
+	detailColumns = ['actions', 'cardDigits', 'd042AcqId',];
+	detailAddColumns = ['add-actions', 'add-cardDigits', 'add-d042AcqId',];
+	dataSourceDetail = new MMatTableDataSource<CmpCampaignDetModel>();
+	detailEntityForm: FormGroup = new FormGroup({});
+	detailModel: CmpCampaignDetModel = new CmpCampaignDetModel();
+	detailModelBack: CmpCampaignDetModel = new CmpCampaignDetModel();
+	isEditModeDetail: boolean = false;
+
 	isReadonly: boolean = false;
 	isProcessing: boolean = false;
 
@@ -30,6 +39,12 @@ export class CmpCampaignDefComponent implements OnInit {
 	weekDays: any[] = [];
 
 	cmpCodeMask = [/[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/,];
+	numberMask = createNumberMask({
+		prefix: '',
+		suffix: '',
+		includeThousandsSeparator: false,
+		decimalLimit: 0,
+	});
 	amountMask = createNumberMask({
 		prefix: '',
 		suffix: '',
@@ -53,6 +68,10 @@ export class CmpCampaignDefComponent implements OnInit {
 		});
 		this.entityForm.addControl('campaignDays', new FormControl());
 
+		Object.keys(this.detailModel).forEach(name => {
+			this.detailEntityForm.addControl(name, new FormControl(this.detailModel[name]));
+		});
+
 		this.weekDays.push({ code: '1', description: this.translate.instant('General.Monday') });
 		this.weekDays.push({ code: '2', description: this.translate.instant('General.Tuesday') });
 		this.weekDays.push({ code: '3', description: this.translate.instant('General.Wednesday') });
@@ -69,6 +88,8 @@ export class CmpCampaignDefComponent implements OnInit {
 					this.entityModel = res2.data;
 					this.entityModel._isEditMode = !this.isReadonly;
 					this.entityModel._isNew = false;
+
+					this.dataSourceDetail.setData(this.entityModel.cmpCampaignDets);
 
 					this.initForm();
 				}, (error) => {
@@ -205,6 +226,7 @@ export class CmpCampaignDefComponent implements OnInit {
 	clearScreen() {
 		this.entityForm.reset();
 		this.entityModel = new CmpCampaignDefModel();
+		this.entityModel.cmpCampaignDets = [];
 		this.entityModel._isNew = true;
 
 		const controls = this.entityForm.controls;
@@ -213,5 +235,108 @@ export class CmpCampaignDefComponent implements OnInit {
 				controls[name].setValue(this.entityModel[name]);
 			}
 		});
+
+		this.dataSourceDetail.setData(this.entityModel.cmpCampaignDets);
 	}
+
+	//#region detail process
+	addDetail() {
+		if (!this.checkDetailForm()) {
+			return;
+		}
+
+		let row = <CmpCampaignDetModel>this.detailEntityForm.value;
+		row.campaignId = this.entityModel.guid === 0 ? null : this.entityModel.guid;
+		this.entityModel.cmpCampaignDets.push(row);
+		this.dataSourceDetail.setData(this.entityModel.cmpCampaignDets);
+		this.detailEntityForm.reset();
+		Object.keys(this.detailModel).forEach(name => {
+			if (this.detailEntityForm.controls[name]) {
+				this.detailEntityForm.controls[name].markAsPristine();
+				this.detailEntityForm.controls[name].markAsUntouched();
+				let temp: CmpCampaignDetModel = new CmpCampaignDetModel();
+				this.detailEntityForm.controls[name].setValue(temp[name]);
+			}
+		});
+
+		this.detailModel._isNew = false;
+		this.detailModel._isEditMode = false;
+		this.isEditModeDetail = false;
+	}
+
+	addDetailButtonOnClick() {
+		Object.keys(this.detailModel).forEach(name => {
+			this.detailEntityForm.controls[name].markAsPristine();
+			this.detailEntityForm.controls[name].markAsUntouched();
+			let temp: CmpCampaignDetModel = new CmpCampaignDetModel();
+			this.detailEntityForm.controls[name].setValue(temp[name]);
+		});
+
+		this.detailModel._isNew = true;
+		this.detailModel._isEditMode = false;
+		this.isEditModeDetail = true;
+	}
+
+	deleteDetail(row: CmpCampaignDetModel) {
+		const y = this.entityModel.cmpCampaignDets.indexOf(row);
+		if (y !== -1) {
+			this.entityModel.cmpCampaignDets.splice(y, 1);
+		}
+
+		this.dataSourceDetail.setData(this.entityModel.cmpCampaignDets);
+	}
+
+	checkDetailForm() {
+		if (this.detailEntityForm.invalid) {
+			Object.keys(this.detailModel).forEach(name =>
+				this.detailEntityForm.controls[name].markAsTouched()
+			);
+
+			return false;
+		}
+
+		return true;
+	}
+
+	cancelDetailAddButtonOnClick() {
+		this.detailModel._isNew = false;
+		this.isEditModeDetail = false;
+	}
+
+	cancelDetailEditButtonOnClick(item: CmpCampaignDetModel) {
+		Object.keys(this.detailModel).forEach(name => {
+			item[name] = this.detailModelBack[name];
+		});
+
+		item._isEditMode = false;
+		this.isEditModeDetail = false;
+	}
+
+	editDetailButtonOnClick(item: CmpCampaignDetModel) {
+		Object.keys(this.detailModel).forEach(name => {
+			if (this.detailEntityForm.controls[name]) {
+				this.detailEntityForm.controls[name].setValue(item[name]);
+				this.detailModelBack[name] = item[name];
+			}
+		});
+
+		item._isEditMode = true;
+		this.isEditModeDetail = true;
+	}
+
+	updateDetail(item: CmpCampaignDetModel) {
+		Object.keys(this.detailModel).forEach(name => {
+			this.detailEntityForm.controls[name].markAsPristine();
+			this.detailEntityForm.controls[name].markAsUntouched();
+			this.detailEntityForm.controls[name].setValue(item[name]);
+		});
+
+		if (!this.checkDetailForm()) {
+			return;
+		}
+
+		item._isEditMode = false;
+		this.isEditModeDetail = false;
+	}
+	//#endregion
 }

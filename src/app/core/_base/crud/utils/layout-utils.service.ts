@@ -149,7 +149,7 @@ export class LayoutUtilsService {
 				errorMessage = errorData.exception.errorMessage;
 				if (!_.isNull(errorData.exception.validationErrors) && !_.isUndefined(errorData.exception.validationErrors)) {
 					errorData.exception.validationErrors.forEach(element => {
-						errorValidation.push(element.message)
+						errorValidation.push(element.validationMessage)
 					});
 				}
 			} else {

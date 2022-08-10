@@ -79,6 +79,11 @@
 					</mat-cell>
 				</ng-container>
 
+				<ng-container matColumnDef="proiority">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'General.Proiority' | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let row">{{ row.proiority }}</mat-cell>
+				</ng-container>
+
 				<ng-container matColumnDef="beginDate">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'Transportation.Campaign.BeginDate' | translate }}</mat-header-cell>
 					<mat-cell *matCellDef="let row">{{ row.beginDate | date:'dd.MM.yyyy' }}</mat-cell>

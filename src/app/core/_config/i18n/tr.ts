@@ -130,6 +130,8 @@ export const locale = {
 				BeginDate: 'Başlangıç Tarihi',
 				EndDate: 'Bitiş Tarihi',
 				Weekday: 'Kampanya Günleri',
+				CardDigits: 'Kartın İlk Rakamları',
+				D042AcqId: 'D042AcqId',
 			},
 		},
 
@@ -430,6 +432,7 @@ export const locale = {
 			ActionTime: 'Aksiyon Saati',
 			ActionChannel: 'Aksiyon Kanalı',
 			IsActive: 'Aktif mi?',
+			Proiority: 'Öncelik',
 			Active: 'Aktif',
 			Passive: 'Pasif',
 			OrderNo: 'Sıra No',

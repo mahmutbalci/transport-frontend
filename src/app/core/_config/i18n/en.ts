@@ -130,6 +130,8 @@ export const locale = {
 				BeginDate: 'Begin Date',
 				EndDate: 'End Date',
 				Weekday: 'Campaign Days',
+				CardDigits: 'Card Digits',
+				D042AcqId: 'D042AcqId',
 			},
 		},
 
@@ -430,6 +432,7 @@ export const locale = {
 			ActionTime: 'Action Time',
 			ActionChannel: 'Action Channel',
 			IsActive: 'Is Active',
+			Proiority: 'Proiority',
 			Active: 'Active',
 			Passive: 'Passive',
 			OrderNo: 'Order No',
