@@ -9,8 +9,8 @@ export class CmpCampaignDefModel extends BaseModel {
 	isActive: boolean = true;
 	beginDate: Date = new Date();
 	endDate: Date = new Date();
-	beginTime: string = '00:00:000';
-	endTime: string = '00:00:000';
+	beginTime: string = '00:00:00';
+	endTime: string = '00:00:00';
 	passedNumber: number = 0;
 	maxTxnAmount: number = 0;
 	dailyTotalCount: number = 0;

@@ -59,6 +59,34 @@
 								</mat-select>
 							</mat-form-field>
 						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="beginDate" id="beginDate" formControlName="beginDate" placeholder="{{ 'Transportation.Campaign.BeginDate' | translate }}" readonly="true">
+								<mat-datepicker-toggle matSuffix [for]="beginDate"></mat-datepicker-toggle>
+								<mat-datepicker #beginDate></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="endDate" id="endDate" formControlName="endDate" placeholder="{{ 'Transportation.Campaign.EndDate' | translate }}" readonly="true">
+								<mat-datepicker-toggle matSuffix [for]="endDate"></mat-datepicker-toggle>
+								<mat-datepicker #endDate></mat-datepicker>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Campaign.BeginTime' | translate }}" formControlName="beginTime" [textMask]="{mask: timeMask, guide:false}" required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Campaign.EndTime' | translate }}" formControlName="endTime" [textMask]="{mask: timeMask, guide:false}" required>
+							</mat-form-field>
+						</div>
 					</div>
 				</div>
 			</div>

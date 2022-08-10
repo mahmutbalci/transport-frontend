@@ -38,6 +38,7 @@ export class CmpCampaignDefComponent implements OnInit {
 	splitChar: string = ',';
 	weekDays: any[] = [];
 
+	timeMask = [/[0-2]/, /[0-9]/, ':', /[0-5]/, /[0-9]/, ':', /[0-5]/, /[0-9]/,];
 	cmpCodeMask = [/[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/,];
 	numberMask = createNumberMask({
 		prefix: '',

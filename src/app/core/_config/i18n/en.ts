@@ -129,6 +129,8 @@ export const locale = {
 			Campaign: {
 				BeginDate: 'Begin Date',
 				EndDate: 'End Date',
+				BeginTime: 'Begin Time',
+				EndTime: 'End Time',
 				Weekday: 'Campaign Days',
 				CardDigits: 'Card Digits',
 				D042AcqId: 'D042AcqId',
