@@ -53,6 +53,13 @@ export class CmpCampaignDefComponent implements OnInit {
 		integerLimit: 15,
 		decimalLimit: 2,
 	});
+	rateMask = createNumberMask({
+		prefix: '',
+		suffix: '',
+		includeThousandsSeparator: false,
+		integerLimit: 8,
+		decimalLimit: 5,
+	});
 
 	// constructor
 	constructor(private activatedRoute: ActivatedRoute,
