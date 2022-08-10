@@ -89,11 +89,6 @@
 						</div>
 
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
-							<br>
-							<mat-checkbox id="isActive" formControlName="isActive">{{ 'General.IsActive' | translate }}</mat-checkbox>
-						</div>
-
-						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
 								<input matInput placeholder="{{ 'Transportation.Campaign.PassedNumber' | translate }}" formControlName="passedNumber" maxlength="4" [textMask]="{mask: numberMask, guide:false}" required>
 							</mat-form-field>
@@ -127,6 +122,11 @@
 							<mat-form-field class="mat-form-field-fluid">
 								<input matInput placeholder="{{ 'Transportation.Campaign.DiscountRate' | translate }}" formControlName="discountRate" maxlength="8" [textMask]="{mask: rateMask, guide:false}" required>
 							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<br>
+							<mat-checkbox id="isActive" formControlName="isActive">{{ 'General.IsActive' | translate }}</mat-checkbox>
 						</div>
 					</div>
 				</div>
