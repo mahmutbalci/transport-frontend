@@ -58,7 +58,7 @@ export class AppMenuDetailComponent implements OnInit {
 			this.entityForm.controls['iconPath'].disable();
 		}
 
-		const menuId = this.data.menuId;
+		let menuId = this.data.menuId;
 		if (menuId && menuId !== null && menuId !== 0) {
 			this.entityService.get(menuId).subscribe(res => {
 				this.entityModel = res.data;

@@ -50,7 +50,7 @@ export class TxnMccGroupDefComponent implements OnInit {
 		});
 
 		const dynSub = this.activatedRoute.queryParams.subscribe(params => {
-			const prmId = params.prmId;
+			let prmId = params.prmId;
 			this.isDisabled = (params.type == 'show');
 			if (prmId && prmId !== null) {
 				this.isAdd = false;

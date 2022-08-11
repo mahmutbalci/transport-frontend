@@ -261,7 +261,7 @@ export class AppRolesComponent implements OnInit {
 			this.appRoleTypes = res.find(x => x.name === 'AppRoleTypes').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
-				const prmId = params.prmId;
+				let prmId = params.prmId;
 				this.isReadonly = (params.type === 'show');
 
 				if (prmId && prmId > 0) {

@@ -53,7 +53,7 @@ export class AppApisComponent implements OnInit {
 			this.appApplications = res.find(x => x.name === 'AppApplications').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
-				const prmId = params.prmId;
+				let prmId = params.prmId;
 				this.isReadonly = (params.type === 'show');
 				if (prmId && prmId !== null) {
 					this.entityService.get(prmId).subscribe(res2 => {

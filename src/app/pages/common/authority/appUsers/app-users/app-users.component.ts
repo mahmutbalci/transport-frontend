@@ -63,11 +63,12 @@ export class AppUsersComponent implements OnInit {
 			this.appRoles = res.find(x => x.name === 'AppRoles').data;
 
 			const dynSub = this.activatedRoute.queryParams.subscribe(params => {
-				const prmId = params.prmId;
-				const institutionId = sessionStorage.getItem('institutionId');
+				let prmId = params.prmId;
 				this.isReadonly = (params.type === 'show');
-				if (prmId && prmId !== null && institutionId && institutionId !== null) {
-					this.entityService.getUser(prmId, +institutionId).subscribe(res => {
+				let institutionId = +sessionStorage.getItem('institutionId');
+
+				if (prmId && prmId != null && institutionId && institutionId != null) {
+					this.entityService.getUser(prmId, institutionId).subscribe(res => {
 						this.entityModel = res.data;
 						this.entityModel._isNew = false;
 						this.entityModel._isEditMode = !this.isReadonly;
@@ -141,7 +142,7 @@ export class AppUsersComponent implements OnInit {
 		controls['name'].setValue(controls['name'].value ? controls['name'].value.trim() : '');
 		controls['midname'].setValue(controls['midname'].value ? controls['midname'].value.trim() : '');
 		controls['surname'].setValue(controls['surname'].value ? controls['surname'].value.trim() : '');
-		controls['id'].setValue(controls['id'].value ? controls['id'].value.trim() : '');
+		controls['clientId'].setValue(controls['clientId'].value ? controls['clientId'].value.trim() : '');
 		controls['employeeId'].setValue(controls['employeeId'].value ? controls['employeeId'].value.trim() : '');
 		controls['email'].setValue(controls['email'].value ? controls['email'].value.trim() : '');
 
@@ -172,8 +173,8 @@ export class AppUsersComponent implements OnInit {
 
 		let index = this.entityModel.appUserRoleRels.length - 1;
 		while (index >= 0) {
-			let roleGuid = this.entityModel.appUserRoleRels[index].roleId;
-			if (!_.find(userRoleIds, function (o) { return o == roleGuid; })) {
+			let roleId = this.entityModel.appUserRoleRels[index].roleId;
+			if (!_.find(userRoleIds, function (o) { return o === roleId; })) {
 				this.entityModel.appUserRoleRels.splice(index, 1);
 			}
 			index -= 1;
@@ -210,8 +211,8 @@ export class AppUsersComponent implements OnInit {
 			}
 		}, (error) => {
 			this.loading = false;
-			this.layoutUtilsService.showError(error);
 			this.isProcessing = false;
+			this.layoutUtilsService.showError(error);
 		}, () => {
 			this.loading = false;
 		});
@@ -231,8 +232,8 @@ export class AppUsersComponent implements OnInit {
 			}
 		}, (error) => {
 			this.loading = false;
-			this.layoutUtilsService.showError(error);
 			this.isProcessing = false;
+			this.layoutUtilsService.showError(error);
 		}, () => {
 			this.loading = false;
 		});
