@@ -51,6 +51,7 @@ export class CmpCampaignDefComponent implements OnInit {
 		suffix: '',
 		includeThousandsSeparator: false,
 		integerLimit: 15,
+		allowDecimal: true,
 		decimalLimit: 2,
 	});
 	rateMask = createNumberMask({
@@ -58,6 +59,7 @@ export class CmpCampaignDefComponent implements OnInit {
 		suffix: '',
 		includeThousandsSeparator: false,
 		integerLimit: 8,
+		allowDecimal: true,
 		decimalLimit: 5,
 	});
 
