@@ -91,7 +91,7 @@ export class CmpCampaignDefComponent implements OnInit {
 		this.weekDays.push({ code: '0', description: this.translate.instant('General.Sunday') });
 
 		const dynSub = this.activatedRoute.queryParams.subscribe(params => {
-			const prmId = params.prmId;
+			let prmId = params.prmId;
 			this.isReadonly = (params.type === 'show');
 			if (prmId && prmId !== null) {
 				this.entityService.get(prmId).subscribe(res2 => {

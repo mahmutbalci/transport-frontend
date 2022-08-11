@@ -8,8 +8,8 @@ export class AppUserRoleRelModel extends BaseModel {
 
 	clear() {
 		this.guid = 0;
-		this.roleId = '';
-		this.clientId = '';
+		this.roleId = null;
+		this.clientId = null;
 		this.institutionId = 0;
 	}
 }
