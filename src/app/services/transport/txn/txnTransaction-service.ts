@@ -4,8 +4,8 @@ import { BaseService } from '@core/_base/layout/services/base.service';
 import { TransportApi } from '@services/transport.api';
 
 @Injectable()
-export class CmpCampaignDefService extends BaseService {
-	public endpoint = 'cmp/CmpCampaignDef';
+export class TxnTransactionService extends BaseService {
+	public endpoint = 'txn/TxnTransactionService';
 
 	constructor(api: TransportApi,
 		httpUtils: HttpUtilsService) {
