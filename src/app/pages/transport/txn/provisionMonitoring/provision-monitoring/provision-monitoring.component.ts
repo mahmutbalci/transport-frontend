@@ -58,11 +58,12 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f41TerminalId: 'Transportation.Transaction.F41',
 			f42: 'Transportation.Transaction.F42',
 			f43AcceptorLocation: 'Transportation.Transaction.F43AcceptorLocation',
-			f48TransitProgram: 'Transportation.Transaction.F48TransitProgram',
-			f48Cvv2: 'Transportation.Transaction.F48Cvv2',
-			f048CvcResult: 'General.F048CvcResult',
-			f53SecurityInfo: 'Transportation.Transaction.F53SecurityInfo',
+			// f48TransitProgram: 'Transportation.Transaction.F48TransitProgram',
+			// f48Cvv2: 'Transportation.Transaction.F48Cvv2',
+			// f048CvcResult: 'General.F048CvcResult',
+			// f53SecurityInfo: 'Transportation.Transaction.F53SecurityInfo',
 			f54AdditionalAmount: 'Transportation.Transaction.F54AdditionalAmount',
+			// f55EmvData: 'Transportation.Transaction.F55EmvData',
 			f60ReversalCode: 'Transportation.Transaction.F60ReversalCode',
 			f61PosData: 'Transportation.Transaction.F61PosData',
 			// f63NetworkCode: 'Transportation.Transaction.F63NetworkCode',
@@ -119,6 +120,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 			// f048CvcResult: 'General.F048CvcResult',
 			// f53SecurityInfo: 'Transportation.Transaction.F53SecurityInfo',
 			f54AdditionalAmount: 'Transportation.Transaction.F54AdditionalAmount',
+			// f55EmvData: 'Transportation.Transaction.F55EmvData',
 			f60ReversalCode: 'Transportation.Transaction.F60ReversalCode',
 			f61PosData: 'Transportation.Transaction.F61PosData',
 			// f63NetworkCode: 'Transportation.Transaction.F63NetworkCode',
@@ -135,18 +137,18 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f43Country: 'Transportation.Transaction.F43Country',
 			f43PostalCode: 'Transportation.Transaction.F43PostalCode',
 			f43RegionCode: 'Transportation.Transaction.F43RegionCode',
-			fileInfoGuid: 'Transportation.Transaction.FileInfoGuid',
+			fileInfoGuid: 'Transportation.Transaction.FileId',
 			txnSource: 'Transportation.Transaction.TxnSource',
 			txnType: 'Transportation.Transaction.TxnType',
-			offlineOnlineIndicator: 'Transportation.Transaction.F43Country',
+			offlineOnlineIndicator: 'Transportation.Transaction.OfflineOnlineIndicator',
 			f26BusinessCode: 'Transportation.Transaction.F26BusinessCode',
 			f31AcqReference: 'Transportation.Transaction.F31AcqReference',
-			f33FwdId: 'Transportation.Transaction.F33FwdId',
+			// f33FwdId: 'Transportation.Transaction.F33FwdId',
 			F48TerminalType: 'Transportation.Transaction.F48TerminalType',
-			F48TxnFeeCurrency: 'Transportation.Transaction.F48TxnFeeCurrency',
-			F48TxnFeeAmount: 'Transportation.Transaction.F48TxnFeeAmount',
-			TxnFeeSign: 'Transportation.Transaction.TxnFeeSign',
-			TransitProgram: 'Transportation.Transaction.TransitProgram',
+			// F48TxnFeeCurrency: 'Transportation.Transaction.F48TxnFeeCurrency',
+			// F48TxnFeeAmount: 'Transportation.Transaction.F48TxnFeeAmount',
+			// TxnFeeSign: 'Transportation.Transaction.TxnFeeSign',
+			// TransitProgram: 'Transportation.Transaction.TransitProgram',
 			ErrorCode: 'Transportation.Transaction.ErrorCode',
 			BankResponseCode: 'Transportation.Transaction.BankResponseCode',
 		}
@@ -181,13 +183,14 @@ export class ProvisionMonitoringComponent implements OnInit {
 	lookupObjectList: any[] = [];
 	pipeObjectList: any[] = [];
 	cfgYesNoNumeric: any[] = [];
+	offlineOnlineIndicator: any[] = [];
 
 	constructor(
 		private txnService: TxnTransactionService,
 		public dialog: MatDialog,
 		private utilsService: UtilsService,
 		private layoutUtilsService: LayoutUtilsService,
-		private translateService: TranslateService,
+		private translate: TranslateService,
 		private excelService: ExcelExportService,) { }
 
 	ngOnInit() {
@@ -202,6 +205,9 @@ export class ProvisionMonitoringComponent implements OnInit {
 		Object.keys(this.gridColumnsClr[0]).forEach(key => {
 			this.displayedColumnsClr.push(key);
 		});
+
+		this.offlineOnlineIndicator.push({ code: '0', description: 'Offline' });
+		this.offlineOnlineIndicator.push({ code: '1', description: 'Online' });
 
 		this.txnService.api.getLookups(['CfgYesNoNumeric']).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
