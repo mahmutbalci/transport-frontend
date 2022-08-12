@@ -128,14 +128,13 @@ export const locale = {
 				F54AdditionalAmount: 'Additional Amount-F54',
 				F60ReversalCode: 'Reversal Code-F60',
 				F61PosData: 'Pos Data-F61',
-				RequestDate: 'Request Date',
-				RequestTime: 'Request Time',
-				Mcc: 'Mcc',
 				CreateDate: 'Create Date',
+				Mcc: 'Mcc',
 				F4: 'Txn Amount',
 				F6: 'Settle Amount',
 
 				Exception: {
+
 				},
 			},
 			Campaign: {
@@ -152,6 +151,7 @@ export const locale = {
 				DailyTotalAmount: 'Daily Total Amount',
 				Budget: 'Budget',
 				DiscountRate: 'Discount Rate',
+				CampaignId: 'Campaign Id',
 			},
 		},
 

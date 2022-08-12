@@ -72,8 +72,8 @@ export class ProvisionMonitoringComponent implements OnInit {
 			// keyType: 'Transportation.Transaction.KeyType',
 			// keyIndex: 'Transportation.Transaction.KeyIndex',
 			createDate: 'Transportation.Transaction.CreateDate',
-			campaignId: 'Transportation.Transaction.CampaignId',
-			discountRate: 'Transportation.Transaction.DiscountRate',
+			campaignId: 'Transportation.Campaign.CampaignId',
+			discountRate: 'Transportation.Campaign.DiscountRate',
 		}
 	];
 	displayedColumnsOnl = [];
@@ -128,8 +128,8 @@ export class ProvisionMonitoringComponent implements OnInit {
 			// keyType: 'Transportation.Transaction.KeyType',
 			// keyIndex: 'Transportation.Transaction.KeyIndex',
 			createDate: 'Transportation.Transaction.CreateDate',
-			campaignId: 'Transportation.Transaction.CampaignId',
-			discountRate: 'Transportation.Transaction.DiscountRate',
+			campaignId: 'Transportation.Campaign.CampaignId',
+			discountRate: 'Transportation.Campaign.DiscountRate',
 			f43Name: 'Transportation.Transaction.F43Name',
 			f43City: 'Transportation.Transaction.F43City',
 			f43Country: 'Transportation.Transaction.F43Country',
@@ -237,8 +237,8 @@ export class ProvisionMonitoringComponent implements OnInit {
 
 	}
 
-	getDate() { 
-		
+	getDate() {
+
 	}
 
 }

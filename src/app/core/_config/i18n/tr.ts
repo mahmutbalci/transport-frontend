@@ -128,14 +128,13 @@ export const locale = {
 				F54AdditionalAmount: 'Ek Tutar-F54',
 				F60ReversalCode: 'Reversal Code-F60',
 				F61PosData: 'Pos Data-F61',
-				RequestDate: 'İstek Tarihi',
-				RequestTime: 'İstek Zamanı',
+				CreateDate: 'Oluşturma Tarihi',
 				Mcc: 'Mcc',
-				CreateDate: 'Create Date',
 				F4: 'İşlem Tutarı',
 				F6: 'Mutabakat Tutarı',
 
 				Exception: {
+
 				},
 			},
 			Campaign: {
@@ -152,6 +151,7 @@ export const locale = {
 				DailyTotalAmount: 'Günlük Toplam Tutar',
 				Budget: 'Bütçe',
 				DiscountRate: 'İndirim Oranı',
+				CampaignId: 'Kampanya Id',
 			},
 		},
 
