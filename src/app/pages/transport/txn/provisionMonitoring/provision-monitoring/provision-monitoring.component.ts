@@ -46,10 +46,10 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f12: 'Transportation.Transaction.F12',
 			f13: 'Transportation.Transaction.F13',
 			f14ExpiryDate: 'Transportation.Transaction.F14',
-			f16ConversionDate: 'Transportation.Transaction.F16',
+			// f16ConversionDate: 'Transportation.Transaction.F16',
 			f18CategoryCode: 'Transportation.Transaction.F18',
 			f22: 'Transportation.Transaction.F22',
-			f23PanSequenceNo: 'Transportation.Transaction.F23PanSeqNo',
+			// f23PanSequenceNo: 'Transportation.Transaction.F23PanSeqNo',
 			f32: 'Transportation.Transaction.F32',
 			f35TrackData: 'Transportation.Transaction.F35TrackData',
 			f37Rrn: 'Transportation.Transaction.F37',
@@ -65,15 +65,15 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f54AdditionalAmount: 'Transportation.Transaction.F54AdditionalAmount',
 			f60ReversalCode: 'Transportation.Transaction.F60ReversalCode',
 			f61PosData: 'Transportation.Transaction.F61PosData',
-			f63NetworkCode: 'Transportation.Transaction.F63NetworkCode',
-			f63BankRefNo: 'Transportation.Transaction.F63BankRefNo',
-			f90OriginalElement: 'Transportation.Transaction.F90OriginalElement',
-			f95ReplacementAmounts: 'Transportation.Transaction.F95ReplacementAmounts',
-			keyType: 'Transportation.Transaction.KeyType',
-			keyIndex: 'Transportation.Transaction.KeyIndex',
+			// f63NetworkCode: 'Transportation.Transaction.F63NetworkCode',
+			// f63BankRefNo: 'Transportation.Transaction.F63BankRefNo',
+			// f90OriginalElement: 'Transportation.Transaction.F90OriginalElement',
+			// f95ReplacementAmounts: 'Transportation.Transaction.F95ReplacementAmounts',
+			// keyType: 'Transportation.Transaction.KeyType',
+			// keyIndex: 'Transportation.Transaction.KeyIndex',
 			createDate: 'Transportation.Transaction.CreateDate',
-			campaignId: 'Transportation.Transaction.CampaignId',
-			discountRate: 'Transportation.Transaction.DiscountRate',
+			campaignId: 'Transportation.Campaign.CampaignId',
+			discountRate: 'Transportation.Campaign.DiscountRate',
 		}
 	];
 	displayedColumnsOnl = [];
@@ -102,10 +102,10 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f12: 'Transportation.Transaction.F12',
 			f13: 'Transportation.Transaction.F13',
 			f14ExpiryDate: 'Transportation.Transaction.F14',
-			f16ConversionDate: 'Transportation.Transaction.F16',
+			// f16ConversionDate: 'Transportation.Transaction.F16',
 			f18CategoryCode: 'Transportation.Transaction.F18',
 			f22: 'Transportation.Transaction.F22',
-			f23PanSequenceNo: 'Transportation.Transaction.F23PanSeqNo',
+			// f23PanSequenceNo: 'Transportation.Transaction.F23PanSeqNo',
 			f32: 'Transportation.Transaction.F32',
 			f35TrackData: 'Transportation.Transaction.F35TrackData',
 			f37Rrn: 'Transportation.Transaction.F37',
@@ -114,22 +114,22 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f41TerminalId: 'Transportation.Transaction.F41',
 			f42: 'Transportation.Transaction.F42',
 			f43AcceptorLocation: 'Transportation.Transaction.F43AcceptorLocation',
-			f48TransitProgram: 'Transportation.Transaction.F48TransitProgram',
-			f48Cvv2: 'Transportation.Transaction.F48Cvv2',
-			f048CvcResult: 'General.F048CvcResult',
-			f53SecurityInfo: 'Transportation.Transaction.F53SecurityInfo',
+			// f48TransitProgram: 'Transportation.Transaction.F48TransitProgram',
+			// f48Cvv2: 'Transportation.Transaction.F48Cvv2',
+			// f048CvcResult: 'General.F048CvcResult',
+			// f53SecurityInfo: 'Transportation.Transaction.F53SecurityInfo',
 			f54AdditionalAmount: 'Transportation.Transaction.F54AdditionalAmount',
 			f60ReversalCode: 'Transportation.Transaction.F60ReversalCode',
 			f61PosData: 'Transportation.Transaction.F61PosData',
-			f63NetworkCode: 'Transportation.Transaction.F63NetworkCode',
-			f63BankRefNo: 'Transportation.Transaction.F63BankRefNo',
-			f90OriginalElement: 'Transportation.Transaction.F90OriginalElement',
-			f95ReplacementAmounts: 'Transportation.Transaction.F95ReplacementAmounts',
-			keyType: 'Transportation.Transaction.KeyType',
-			keyIndex: 'Transportation.Transaction.KeyIndex',
+			// f63NetworkCode: 'Transportation.Transaction.F63NetworkCode',
+			// f63BankRefNo: 'Transportation.Transaction.F63BankRefNo',
+			// f90OriginalElement: 'Transportation.Transaction.F90OriginalElement',
+			// f95ReplacementAmounts: 'Transportation.Transaction.F95ReplacementAmounts',
+			// keyType: 'Transportation.Transaction.KeyType',
+			// keyIndex: 'Transportation.Transaction.KeyIndex',
 			createDate: 'Transportation.Transaction.CreateDate',
-			campaignId: 'Transportation.Transaction.CampaignId',
-			discountRate: 'Transportation.Transaction.DiscountRate',
+			campaignId: 'Transportation.Campaign.CampaignId',
+			discountRate: 'Transportation.Campaign.DiscountRate',
 			f43Name: 'Transportation.Transaction.F43Name',
 			f43City: 'Transportation.Transaction.F43City',
 			f43Country: 'Transportation.Transaction.F43Country',
@@ -164,15 +164,9 @@ export class ProvisionMonitoringComponent implements OnInit {
 	showIcon: any;
 	hasFormError: boolean = false;
 
-	cardMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ',
-		/[0-9]/, /[0-9]/, /[a-z\dA-Z]/, /[a-z\dA-Z]/, ' ',
-		/[a-z\dA-Z]/, /[a-z\dA-Z]/, /[a-z\dA-Z]/, /[a-z\dA-Z]/, ' ',
-		/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ',
-		/[0-9]/, /[0-9]/, /[0-9]/];
+	cardMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, '**', ' ', '****', ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
 	cardBinMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
 	last4DigitsMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
-	batchNoMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
-	stanNumberMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
 	rrnNumberMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
 	timeMask = [/[0-2]/, /[0-9]/, ':', /[0-5]/, /[0-9]/, ':', /[0-5]/, /[0-9]/];
 
@@ -209,14 +203,11 @@ export class ProvisionMonitoringComponent implements OnInit {
 			this.displayedColumnsClr.push(key);
 		});
 
-		this.txnService.api.getLookups(['TxnEodBatchStatDef', 'TxnBatchClosedByDef', 'TxnCurrencyDef', 'TxnBatchCloseTypeDef',
-			'TxnTerminalTypeDef', 'TxnDef', 'TxnStatDef', 'TxnEodStatDef', 'TxnEntryTypeDef', 'CfgCardBrandDef', 'CfgCardDciDef',
-			'CfgCardSourceDef', 'TxnEffectTypeDef', 'TxnResponseCodeDef', 'TxnCvmTypeDef', 'CrdProduct', 'MrcCommissionPrfDef',
-			'MrcLoyaltyProfileDef', 'MrcPosFeeDef', 'TxnMccDef', 'TxnIrcDef', 'CfgYesNoNumeric']).then(res => {
-				this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
-			}, (error) => {
-				this.layoutUtilsService.showError(error);
-			});
+		this.txnService.api.getLookups(['CfgYesNoNumeric']).then(res => {
+			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
+		}, (error) => {
+			this.layoutUtilsService.showError(error);
+		});
 
 		this.dataSourceOnl = new FilteredDataSource(this.txnService);
 		this.dataSourceClr = new FilteredDataSource(this.txnService);
@@ -224,13 +215,29 @@ export class ProvisionMonitoringComponent implements OnInit {
 		this.paginatorOnl.page
 			.pipe(
 				tap(() => {
-					this.loadDataSource();
+					this.loadDataSourceOnl();
+				})
+			)
+			.subscribe();
+
+		this.paginatorClr.page
+			.pipe(
+				tap(() => {
+					this.loadDataSourceClr();
 				})
 			)
 			.subscribe();
 	}
 
-	loadDataSource() {
+	loadDataSourceOnl() {
+
+	}
+
+	loadDataSourceClr() {
+
+	}
+
+	getDate() {
 
 	}
 
