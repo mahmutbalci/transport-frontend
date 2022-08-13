@@ -117,7 +117,9 @@ export const locale = {
 				F23PanSeqNo: 'Pan Seq No-F23',
 				F26BusinessCode: 'F26BusinessCode',
 				F31AcqReference: 'F31AcqReference',
+				F32: 'Acq Id-F32',
 				F33FwdId: 'F33FwdId',
+				F35TrackData: 'Track Data-F35',
 				F37: 'RRN',
 				F38: 'Auth Code',
 				F39: 'Response Code',
@@ -145,6 +147,12 @@ export const locale = {
 				OfflineOnlineIndicator: 'Offline/Online Indicator',
 				ErrorCode: 'Error Code',
 				BankResponseCode: 'Bank Response Code',
+				HasCampaign: 'Has Campaign?',
+				OnlineProvisions: 'Online',
+				ClearingProvisions: 'Clearing',
+				TxnDateBegin: 'Txn Date Begin',
+				TxnDateEnd: 'Txn Date End',
+				IsFileSuccess: 'Get Success File',
 
 				Exception: {
 

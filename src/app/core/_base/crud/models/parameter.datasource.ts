@@ -1,10 +1,10 @@
-import { of } from "rxjs";
-import { catchError, finalize, tap } from "rxjs/operators";
-import { BaseService } from "@core/_base/layout/services/base.service";
-import { CacheService } from "@core/_base/layout/services/cache.service";
-import { QueryParamsModel } from "./query-params.model";
-import { BaseDataSource } from "./_base.datasource";
-import { QueryResultsModel } from "./query-results.model";
+import { of } from 'rxjs';
+import { catchError, finalize, tap } from 'rxjs/operators';
+import { BaseService } from '@core/_base/layout/services/base.service';
+import { CacheService } from '@core/_base/layout/services/cache.service';
+import { QueryParamsModel } from './query-params.model';
+import { BaseDataSource } from './_base.datasource';
+import { QueryResultsModel } from './query-results.model';
 
 
 export class ParameterDataSource extends BaseDataSource {
@@ -29,6 +29,11 @@ export class ParameterDataSource extends BaseDataSource {
 			.pipe(
 				tap(res => {
 					this.wasQuery = true;
+
+					if (res.error) {
+						return of(new QueryResultsModel([], res.error));
+					}
+
 					// filter returned data from service:
 					let result = this.baseFilter(
 						res.items,
@@ -49,7 +54,7 @@ export class ParameterDataSource extends BaseDataSource {
 			});
 	}
 
-	loadWithEndPointSuffix(queryParams: QueryParamsModel, enpointSuffix: string = "all", _filtrationFields: string[] = []) {
+	loadWithEndPointSuffix(queryParams: QueryParamsModel, enpointSuffix: string = 'all', _filtrationFields: string[] = []) {
 		this.service.lastFilter$.next(queryParams);
 		this.loadingSubject.next(true);
 		this.service

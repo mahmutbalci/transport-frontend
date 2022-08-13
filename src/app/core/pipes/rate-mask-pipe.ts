@@ -18,7 +18,7 @@ export class RateFormatPipe implements PipeTransform {
 })
 export class RateTimes100FormatPipe implements PipeTransform {
 	transform(value: any, fixedLength: number = 16): string {
-		if ((typeof value === 'string' && (!value || isNaN(+value) || +value == 0)) || (typeof value === 'number' && (!value || value == 0))) {
+		if ((typeof value === 'string' && (!value || isNaN(+value) || +value == 0)) || (typeof value === 'number' && (!value || value === 0))) {
 			return '';
 		}
 

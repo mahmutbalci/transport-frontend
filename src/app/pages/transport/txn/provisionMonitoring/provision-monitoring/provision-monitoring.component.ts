@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FilteredDataSource } from '@core/_base/crud/models/filtered.datasource';
 import { MatPaginator, MatSort, MatDialog } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -6,12 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 import { LayoutUtilsService } from '@core/_base/crud/utils/layout-utils.service';
 import * as _ from 'lodash';
 import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
-import { tap } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
 import { ExcelExportService } from '@core/_base/layout/services/excel-export.service';
-import { UtilsService } from '@core/_base/crud/utils/utils.service';
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
-import { Key } from '@core/_config/keys';
 import { GetProvisionRequestDto } from '@models/transport/txn/getProvisionRequestDto.model';
 import { TxnTransactionService } from '@services/transport/txn/txnTransaction-service';
 
@@ -27,13 +23,13 @@ export class ProvisionMonitoringComponent implements OnInit {
 		{
 			txnGuid: 'Transportation.Transaction.TxnGuid',
 			bankCode: 'Transportation.Transaction.BankCode',
-			debtRecoveryReferenceNo: 'Transportation.Transaction.DebtRecoveryReferenceNo',
-			f01MessageType: 'Transportation.Transaction.F01MessageType',
+			// debtRecoveryReferenceNo: 'Transportation.Transaction.DebtRecoveryReferenceNo',
+			// f01MessageType: 'Transportation.Transaction.F01MessageType',
 			ptcn: 'Transportation.Transaction.Ptcn',
 			// cardEncrypted: 'Transportation.Transaction.CardEncrypted',
 			cardMask: 'Transportation.Transaction.CardMask',
 			// f02Pan: 'Transportation.Transaction.F02Pan',
-			f03ProcessingCode: 'Transportation.Transaction.F03ProcessingCode',
+			// f03ProcessingCode: 'Transportation.Transaction.F03ProcessingCode',
 			f04: 'Transportation.Transaction.F04',
 			f04Org: 'Transportation.Transaction.F04Org',
 			f49Currency: 'Transportation.Transaction.F49',
@@ -51,7 +47,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f22: 'Transportation.Transaction.F22',
 			// f23PanSequenceNo: 'Transportation.Transaction.F23PanSeqNo',
 			f32: 'Transportation.Transaction.F32',
-			f35TrackData: 'Transportation.Transaction.F35TrackData',
+			// f35TrackData: 'Transportation.Transaction.F35TrackData',
 			f37Rrn: 'Transportation.Transaction.F37',
 			f38AuthCode: 'Transportation.Transaction.F38',
 			f39ResponseCode: 'Transportation.Transaction.F39',
@@ -84,13 +80,13 @@ export class ProvisionMonitoringComponent implements OnInit {
 		{
 			txnGuid: 'Transportation.Transaction.TxnGuid',
 			bankCode: 'Transportation.Transaction.BankCode',
-			debtRecoveryReferenceNo: 'Transportation.Transaction.DebtRecoveryReferenceNo',
-			f01MessageType: 'Transportation.Transaction.F01MessageType',
+			// debtRecoveryReferenceNo: 'Transportation.Transaction.DebtRecoveryReferenceNo',
+			// f01MessageType: 'Transportation.Transaction.F01MessageType',
 			ptcn: 'Transportation.Transaction.Ptcn',
 			// cardEncrypted: 'Transportation.Transaction.CardEncrypted',
 			cardMask: 'Transportation.Transaction.CardMask',
 			// f02Pan: 'Transportation.Transaction.F02Pan',
-			f03ProcessingCode: 'Transportation.Transaction.F03',
+			// f03ProcessingCode: 'Transportation.Transaction.F03',
 			f04: 'Transportation.Transaction.F04',
 			f04Org: 'Transportation.Transaction.F04Org',
 			f49Currency: 'Transportation.Transaction.F49',
@@ -108,7 +104,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f22: 'Transportation.Transaction.F22',
 			// f23PanSequenceNo: 'Transportation.Transaction.F23PanSeqNo',
 			f32: 'Transportation.Transaction.F32',
-			f35TrackData: 'Transportation.Transaction.F35TrackData',
+			// f35TrackData: 'Transportation.Transaction.F35TrackData',
 			f37Rrn: 'Transportation.Transaction.F37',
 			f38AuthCode: 'Transportation.Transaction.F38',
 			f39ResponseCode: 'Transportation.Transaction.F39',
@@ -144,58 +140,59 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f26BusinessCode: 'Transportation.Transaction.F26BusinessCode',
 			f31AcqReference: 'Transportation.Transaction.F31AcqReference',
 			// f33FwdId: 'Transportation.Transaction.F33FwdId',
-			F48TerminalType: 'Transportation.Transaction.F48TerminalType',
+			f48TerminalType: 'Transportation.Transaction.F48TerminalType',
 			// F48TxnFeeCurrency: 'Transportation.Transaction.F48TxnFeeCurrency',
 			// F48TxnFeeAmount: 'Transportation.Transaction.F48TxnFeeAmount',
 			// TxnFeeSign: 'Transportation.Transaction.TxnFeeSign',
 			// TransitProgram: 'Transportation.Transaction.TransitProgram',
-			ErrorCode: 'Transportation.Transaction.ErrorCode',
-			BankResponseCode: 'Transportation.Transaction.BankResponseCode',
+			errorCode: 'Transportation.Transaction.ErrorCode',
+			bankResponseCode: 'Transportation.Transaction.BankResponseCode',
 		}
 	];
 	displayedColumnsClr = [];
 
 	requestModel: GetProvisionRequestDto = new GetProvisionRequestDto();
-	txnMonitoringForm: FormGroup = new FormGroup({});
+	filterForm: FormGroup = new FormGroup({});
 
 	@ViewChild('paginatorOnl') paginatorOnl: MatPaginator;
 	@ViewChild('sortOnl') sortOnl: MatSort;
 	@ViewChild('paginatorClr') paginatorClr: MatPaginator;
 	@ViewChild('sortClr') sortClr: MatSort;
 
-	showIcon: any;
 	hasFormError: boolean = false;
+	selectedTab: number = 0;
 
 	cardMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, '**', ' ', '****', ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
 	cardBinMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
 	last4DigitsMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
 	rrnNumberMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
+	authCodeMask = [/[0-9,A-Z,a-z]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
+	responseCodeMask = [/[0-9]/, /[0-9]/,];
 	timeMask = [/[0-2]/, /[0-9]/, ':', /[0-5]/, /[0-9]/, ':', /[0-5]/, /[0-9]/];
 
-	amountNumberMask = createNumberMask({
+	guidNumberMask = createNumberMask({
 		prefix: '',
 		suffix: '',
-		allowDecimal: true,
-		integerLimit: 10,
-		decimalLimit: 2,
+		allowDecimal: false,
+		integerLimit: 16,
 	});
 
 	lookupObjectList: any[] = [];
 	pipeObjectList: any[] = [];
 	cfgYesNoNumeric: any[] = [];
-	offlineOnlineIndicator: any[] = [];
+	txnCurrencyDefs: any[] = [];
+	cmpCampaignDefs: any[] = [];
+	offlineOnlineIndicators: any[] = [];
 
 	constructor(
 		private txnService: TxnTransactionService,
 		public dialog: MatDialog,
-		private utilsService: UtilsService,
 		private layoutUtilsService: LayoutUtilsService,
-		private translate: TranslateService,
 		private excelService: ExcelExportService,) { }
 
 	ngOnInit() {
 		Object.keys(this.requestModel).forEach(name => {
-			this.txnMonitoringForm.addControl(name, new FormControl(this.requestModel[name]));
+			this.filterForm.addControl(name, new FormControl(this.requestModel[name]));
 		});
 
 		Object.keys(this.gridColumnsOnl[0]).forEach(key => {
@@ -206,45 +203,165 @@ export class ProvisionMonitoringComponent implements OnInit {
 			this.displayedColumnsClr.push(key);
 		});
 
-		this.offlineOnlineIndicator.push({ code: '0', description: 'Offline' });
-		this.offlineOnlineIndicator.push({ code: '1', description: 'Online' });
+		this.offlineOnlineIndicators.push({ code: '0', description: 'Offline' });
+		this.offlineOnlineIndicators.push({ code: '1', description: 'Online' });
 
-		this.txnService.api.getLookups(['CfgYesNoNumeric']).then(res => {
+		this.txnService.api.getLookups(['CfgYesNoNumeric', 'TxnCurrencyDef', 'CmpCampaignDef',]).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
+			this.txnCurrencyDefs = res.find(x => x.name === 'TxnCurrencyDef').data;
+			this.cmpCampaignDefs = res.find(x => x.name === 'CmpCampaignDef').data;
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
 
 		this.dataSourceOnl = new FilteredDataSource(this.txnService);
 		this.dataSourceClr = new FilteredDataSource(this.txnService);
-
-		this.paginatorOnl.page
-			.pipe(
-				tap(() => {
-					this.loadDataSourceOnl();
-				})
-			)
-			.subscribe();
-
-		this.paginatorClr.page
-			.pipe(
-				tap(() => {
-					this.loadDataSourceClr();
-				})
-			)
-			.subscribe();
 	}
 
-	loadDataSourceOnl() {
+	filterConfiguration(): any {
+		this.requestModel = <GetProvisionRequestDto>this.filterForm.value;
 
+		if (this.requestModel.cardMask) {
+			this.requestModel.cardMask = this.requestModel.cardMask.replace(/\s/g, '');
+		}
+
+		return this.requestModel;
 	}
 
-	loadDataSourceClr() {
+	loadDataSource() {
+		switch (this.selectedTab) {
+			case 0:
+				const queryParamsOnl = new QueryParamsModel(
+					this.filterConfiguration(),
+					this.sortOnl.direction,
+					this.sortOnl.active,
+					this.paginatorOnl.pageIndex,
+					this.paginatorOnl.pageSize
+				);
 
+				this.dataSourceOnl.load(queryParamsOnl, 'GetOnlineProvisions');
+				break;
+			case 1:
+				const queryParamsClr = new QueryParamsModel(
+					this.filterConfiguration(),
+					this.sortClr.direction,
+					this.sortClr.active,
+					this.paginatorClr.pageIndex,
+					this.paginatorClr.pageSize
+				);
+
+				this.dataSourceClr.load(queryParamsClr, 'GetClearingTransactions');
+				break;
+		}
 	}
 
-	getDate() {
-
+	getData() {
+		this.paginatorOnl.pageIndex = 0;
+		this.paginatorClr.pageIndex = 0;
+		this.loadDataSource();
 	}
 
+	changePaginator() {
+		this.loadDataSource();
+	}
+
+	changeSortOnl() {
+		const queryParams = new QueryParamsModel(
+			this.filterConfiguration(),
+			this.sortOnl.direction,
+			this.sortOnl.active,
+			this.paginatorOnl.pageIndex,
+			this.paginatorOnl.pageSize
+		);
+
+		this.dataSourceOnl.sort(queryParams);
+		this.dataSourceOnl.loadingSubject.next(false);
+	}
+
+	changeSortClr() {
+		const queryParams = new QueryParamsModel(
+			this.filterConfiguration(),
+			this.sortClr.direction,
+			this.sortClr.active,
+			this.paginatorClr.pageIndex,
+			this.paginatorClr.pageSize
+		);
+
+		this.dataSourceClr.sort(queryParams);
+		this.dataSourceClr.loadingSubject.next(false);
+	}
+
+	addLookupObject() {
+		this.lookupObjectList.push({ key: 'offlineOnlineIndicator', value: this.offlineOnlineIndicators });
+	}
+
+	addPipeObject() {
+		this.pipeObjectList.push({ key: 'f13', value: 'date', format: 'dd.MM.yyyy' });
+		this.pipeObjectList.push({ key: 'f12', value: 'timeFormat' });
+		this.pipeObjectList.push({ key: 'f04', value: 'currency' });
+		this.pipeObjectList.push({ key: 'f04Org', value: 'currency' });
+		this.pipeObjectList.push({ key: 'f06', value: 'currency' });
+		this.pipeObjectList.push({ key: 'f06Org', value: 'currency' });
+	}
+
+	exportAsXLSX(exportAll: boolean): void {
+		if (this.lookupObjectList.length === 0) {
+			this.addLookupObject();
+		}
+
+		if (this.pipeObjectList.length === 0) {
+			this.addPipeObject();
+		}
+
+		let queryParams;
+		let fileName: string = '';
+		let funcName: string = '';
+		switch (this.selectedTab) {
+			case 0:
+				queryParams = new QueryParamsModel(this.filterConfiguration(),
+					this.sortOnl.direction,
+					this.sortOnl.active,
+					(exportAll ? 0 : this.paginatorOnl.pageIndex),
+					(exportAll ? -1 : this.paginatorOnl.pageSize));
+
+				fileName = 'OnlineProvisions';
+				funcName = 'GetOnlineProvisions';
+				break;
+			case 1:
+				queryParams = new QueryParamsModel(this.filterConfiguration(),
+					this.sortClr.direction,
+					this.sortClr.active,
+					(exportAll ? 0 : this.paginatorClr.pageIndex),
+					(exportAll ? -1 : this.paginatorClr.pageSize));
+
+				fileName = 'ClearingTransactions';
+				funcName = 'GetClearingTransactions';
+				break;
+		}
+
+		this.excelService.exportAsExcelFileRouting(this.txnService,
+			queryParams,
+			fileName,
+			fileName,
+			this.gridColumnsOnl,
+			this.lookupObjectList,
+			this.pipeObjectList);
+
+		this.loadDataSource();
+	}
+
+	clearScreen() {
+		this.filterForm.reset();
+		this.requestModel = new GetProvisionRequestDto();
+
+		const controls = this.filterForm.controls;
+		Object.keys(this.requestModel).forEach(name => {
+			if (controls[name]) {
+				controls[name].setValue(this.requestModel[name]);
+			}
+		});
+
+		this.dataSourceOnl = new FilteredDataSource(this.txnService);
+		this.dataSourceClr = new FilteredDataSource(this.txnService);
+	}
 }

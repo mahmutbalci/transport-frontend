@@ -43,20 +43,24 @@ export class BaseService {
 
 	findAll(): Observable<QueryResultsModel> {
 		return this.getAll<any>().pipe(
-			mergeMap(res => of(new QueryResultsModel(res.data)))
+			mergeMap(res => of(new QueryResultsModel(res.data, res.exception)))
 		);
 	}
 
 	findAllWithEndPointSuffix(enpointSuffix: string = 'all'): Observable<QueryResultsModel> {
 		return this.getAllWithEndPointSuffix<any>(enpointSuffix).pipe(
-			mergeMap(res => of(new QueryResultsModel(res.data)))
+			mergeMap(res => {
+				return of(new QueryResultsModel(res.data, res.exception));
+			})
 		);
 	}
 
 	findFiltered(queryParams: QueryParamsModel, enpointSuffix: string = 'filter'): Observable<FilteredQueryResultsModel> {
 		var params = this.httpUtils.setParameters(queryParams);
 		return this.api.get<any>(this.endpoint + '/' + enpointSuffix, params).pipe(
-			mergeMap(res => of(new FilteredQueryResultsModel(res.data, queryParams.useSubData)))
+			mergeMap(res => {
+				return of(new FilteredQueryResultsModel(res.data, queryParams.useSubData, res.exception));
+			})
 		);
 	}
 
@@ -67,7 +71,9 @@ export class BaseService {
 
 	findOData(queryParams: ODataParamsModel): Observable<ODataResultsModel> {
 		return this.getOData<any>(queryParams).pipe(
-			mergeMap(res => of(new ODataResultsModel(res)))
+			mergeMap(res => {
+				return of(new ODataResultsModel(res));
+			})
 		);
 	}
 
@@ -78,7 +84,9 @@ export class BaseService {
 
 	findODataWithEndPointSuffix(queryParams: ODataParamsModel, enpointSuffix: string = 'sll'): Observable<ODataResultsModel> {
 		return this.getODataWithEndPointSuffix<any>(queryParams, enpointSuffix).pipe(
-			mergeMap(res => of(new ODataResultsModel(res)))
+			mergeMap(res => {
+				return of(new ODataResultsModel(res));
+			})
 		);
 	}
 

@@ -5,7 +5,6 @@ import { FilterByPropertyPipe } from './filterByProperty.pipe';
 @Pipe({
 	name: 'sortByChecked'
 })
-
 export class SortByCheckedPipe implements PipeTransform {
 	filterPipe: FilterByPropertyPipe = new FilterByPropertyPipe();
 	transform(list: any[], selectedList: any[], args?: any): any {

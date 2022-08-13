@@ -7,7 +7,7 @@ export class GetProvisionRequestDto extends BaseModel {
 	f38AuthCode: string = null;
 	f39ResponseCode: string = null;
 	hasCampaign: number = null;
-	txnDateBegin: Date = new Date();
+	txnDateBegin: Date = null;
 	txnDateEnd: Date = new Date();
 	fileInfoGuid: number = null;
 	isFileSuccess: boolean = true;

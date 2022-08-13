@@ -26,6 +26,10 @@ export class RolesDataSource extends BaseDataSource {
 		this.store.pipe(
 			select(selectQueryResult)
 		).subscribe((response: QueryResultsModel) => {
+			if (response.error) {
+				return of(new QueryResultsModel([], response.error));
+			}
+
 			this.paginatorTotalSubject.next(response.totalCount);
 			this.entitySubject.next(response.items);
 		});
