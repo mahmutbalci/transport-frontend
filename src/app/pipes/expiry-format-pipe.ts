@@ -3,7 +3,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
 	name: 'expiryFormat'
 })
-
 export class DateMmyyyyFormatPipe implements PipeTransform {
 	transform(value: any): string {
 		if (!value || value === '0' || value === 0) {
@@ -17,7 +16,6 @@ export class DateMmyyyyFormatPipe implements PipeTransform {
 @Pipe({
 	name: 'expiryFormatTxn'
 })
-
 export class DateMmyyyyFormatTxnPipe implements PipeTransform {
 	transform(value): string {
 		if (!value || value === '0' || value === 0) {

@@ -1,9 +1,9 @@
-import { tap, catchError, finalize } from "rxjs/operators";
-import { of } from "rxjs";
-import { QueryParamsModel } from "@core/_base/crud/models/query-params.model";
-import { BaseDataSource } from "@core/_base/crud/models/_base.datasource";
-import { QueryResultsModel } from "@core/_base/crud/models/query-results.model";
-import { BaseService } from "@core/_base/layout/services/base.service";
+import { tap, catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
+import { BaseDataSource } from '@core/_base/crud/models/_base.datasource';
+import { QueryResultsModel } from '@core/_base/crud/models/query-results.model';
+import { BaseService } from '@core/_base/layout/services/base.service';
 
 export class FilteredDataSource extends BaseDataSource {
 
@@ -11,13 +11,18 @@ export class FilteredDataSource extends BaseDataSource {
 		super();
 	}
 
-	load(queryParams: QueryParamsModel, enpointSuffix: string = "filter") {
+	load(queryParams: QueryParamsModel, enpointSuffix: string = 'filter') {
 		this.service.lastFilter$.next(queryParams);
 		this.loadingSubject.next(true);
 		this.service.findFiltered(queryParams, enpointSuffix)
 			.pipe(
 				tap(result => {
 					this.wasQuery = true;
+
+					if (result.error) {
+						return of(new QueryResultsModel([], result.error));
+					}
+
 					let entitiesResult = result.items;
 					if (queryParams.sortField) {
 						entitiesResult = this.sortArray(entitiesResult, queryParams.sortField, queryParams.sortOrder);

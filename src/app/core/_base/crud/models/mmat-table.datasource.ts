@@ -1,4 +1,4 @@
-import { MatTableDataSource } from "@angular/material";
+import { MatTableDataSource } from '@angular/material';
 
 export class MMatTableDataSource<T> extends MatTableDataSource<T> {
 	wasQuery: boolean = false;

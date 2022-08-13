@@ -5,7 +5,7 @@ import { TransportApi } from '@services/transport.api';
 
 @Injectable()
 export class TxnTransactionService extends BaseService {
-	public endpoint = 'txn/TxnTransactionService';
+	public endpoint = 'txn/TxnTransaction';
 
 	constructor(api: TransportApi,
 		httpUtils: HttpUtilsService) {

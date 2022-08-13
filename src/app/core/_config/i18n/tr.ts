@@ -117,7 +117,9 @@ export const locale = {
 				F23PanSeqNo: 'Pan Sıra No-F23',
 				F26BusinessCode: 'F26BusinessCode',
 				F31AcqReference: 'F31AcqReference',
+				F32: 'Acq Id-F32',
 				F33FwdId: 'F33FwdId',
+				F35TrackData: 'Track Data-F35',
 				F37: 'RRN',
 				F38: 'Onay Kodu',
 				F39: 'Cevap Kodu',
@@ -145,6 +147,12 @@ export const locale = {
 				OfflineOnlineIndicator: 'Offline/Online Gösterge',
 				ErrorCode: 'Hata Kodu',
 				BankResponseCode: 'Banka Cevap Kodu',
+				HasCampaign: 'Kampanyalı Mı?',
+				OnlineProvisions: 'Online',
+				ClearingProvisions: 'Takas',
+				TxnDateBegin: 'İşlem Tarihi Başlangıç',
+				TxnDateEnd: 'İşlem Tarihi Bitiş',
+				IsFileSuccess: 'Başarılı Dosya Getir',
 
 				Exception: {
 

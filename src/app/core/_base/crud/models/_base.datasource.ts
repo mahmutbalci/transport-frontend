@@ -54,28 +54,28 @@ export class BaseDataSource implements DataSource<BaseModel> {
 
 	hasError() {
 		let _hasError = false;
-		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined')
+		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined') {
 			_hasError = true;
+		}
 		return _hasError;
 	}
 
 	getErrorMessage() {
-		var errorMessage = "";
+		var errorMessage = '';
 		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined') {
-			if (typeof this.errorSubject.value.error.error !== 'undefined' && typeof this.errorSubject.value.error.error.exception !== 'undefined') {
-				errorMessage = this.errorSubject.value.error.error.exception.message;
-				if (this.errorSubject.value.error.error.referenceId) {
+			if (typeof this.errorSubject.value.error.errorCode !== 'undefined' && typeof this.errorSubject.value.error.errorMessage !== 'undefined') {
+				errorMessage = this.errorSubject.value.error.errorMessage;
+				if (this.errorSubject.value.error.referenceId) {
 					errorMessage += ' ReferenceId : ' + this.errorSubject.value.error.error.referenceId;
 				}
 
-				if (this.errorSubject.value.error.error.exception.validationErrors) {
+				if (this.errorSubject.value.error.validationErrors) {
 					errorMessage += '\n'
-					this.errorSubject.value.error.error.exception.validationErrors.forEach(element => {
-						errorMessage += element.message + '\n';
+					this.errorSubject.value.error.validationErrors.forEach(element => {
+						errorMessage += element.validationMessage + '\n';
 					});
 				}
-			}
-			else {
+			} else {
 				errorMessage = this.errorSubject.value.error.message;
 				if (this.errorSubject.value.error.referenceId) {
 					errorMessage += ' ReferenceId : ' + this.errorSubject.value.error.referenceId;
@@ -87,12 +87,11 @@ export class BaseDataSource implements DataSource<BaseModel> {
 	}
 
 	getErrorValidationMessage() {
-		var errorValidationMessage = "";
+		var errorValidationMessage = '';
 		if (typeof this.errorSubject.value !== 'undefined' && typeof this.errorSubject.value.error !== 'undefined') {
-			if (typeof this.errorSubject.value.error.error !== 'undefined' && typeof this.errorSubject.value.error.error.exception !== 'undefined') {
-				errorValidationMessage = this.errorSubject.value.error.error.exception.validationErrors[0].message;
-			}
-			else {
+			if (typeof this.errorSubject.value.error.errorCode !== 'undefined' && typeof this.errorSubject.value.error.errorMessage !== 'undefined') {
+				errorValidationMessage = this.errorSubject.value.error.validationErrors[0].validationMessage;
+			} else {
 				errorValidationMessage = this.errorSubject.value.error.message;
 			}
 		}
@@ -183,10 +182,10 @@ export class BaseDataSource implements DataSource<BaseModel> {
 
 	lowerCaseTurkish(value) {
 		if (value && value != null) {
-			value = value.replace("İ", "I").replace("Ş", "S").replace("Ç", "C").replace("Ğ", "G").replace("Ü", "U")
-				.replace("Ö", "O").toLowerCase();
+			value = value.replace('İ', 'I').replace('Ş', 'S').replace('Ç', 'C').replace('Ğ', 'G').replace('Ü', 'U')
+				.replace('Ö', 'O').toLowerCase();
 		}
-		
+
 		return value;
 	}
 
@@ -206,7 +205,7 @@ export class BaseDataSource implements DataSource<BaseModel> {
 				}
 
 				_incomingArray.forEach((element, index) => {
-					if (typeof _queryObj[item] === 'string' && element[item] && element[item].toString().toLowerCase().search(_queryObj[item].toString().toLowerCase()) != -1) {
+					if (typeof _queryObj[item] === 'string' && element[item] && element[item].toString().toLowerCase().search(_queryObj[item].toString().toLowerCase()) !== -1) {
 						firstIndexes.push(index);
 					}
 
@@ -243,7 +242,7 @@ export class BaseDataSource implements DataSource<BaseModel> {
 		Object.keys(_queryObj).forEach(key => {
 			if (_queryObj[key] !== null) {
 				const searchText = StringHelper.normalizeString(_queryObj[key].toString().trim());
-				let searchTextSplitted = searchText.split(",");
+				let searchTextSplitted = searchText.split(',');
 				if (key && !_.includes(_filtrationFields, key) && searchText) {
 					doSearch = true;
 					try {
@@ -259,11 +258,10 @@ export class BaseDataSource implements DataSource<BaseModel> {
 										&& indexes.indexOf(index) === -1)
 										indexes.push(index);
 								});
-							}
-							else {
-								if (_val.indexOf(searchText) > -1
-									&& indexes.indexOf(index) === -1)
+							} else {
+								if (_val.indexOf(searchText) > -1 && indexes.indexOf(index) === -1) {
 									indexes.push(index);
+								}
 							}
 
 						});
