@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -121,8 +121,12 @@ export class AppUsersComponent implements OnInit {
 		this.entityModel.appUserRoleRels.forEach(element => {
 			selectedItems.push(element.roleId);
 		});
-
 		controls['userRoleIds'].setValue(selectedItems);
+
+		if (this.entityModel._isNew) {
+			controls['enteredPassword'].setValidators([Validators.required]);
+			controls['enteredPassword'].updateValueAndValidity();
+		}
 	}
 
 	goBack() {
