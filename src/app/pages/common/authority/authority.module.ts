@@ -23,6 +23,7 @@ import { AppUsersComponent } from './appUsers/app-users/app-users.component';
 import { AppUserRoleRelsPopupComponent } from './appUsers/app-user-role-rels-popup/app-user-role-rels-popup.component';
 import { AppMenusComponent } from './appMenus/app-menus/app-menus.component';
 import { AppMenuDetailComponent } from './appMenus/app-menu-detail/app-menu-detail.component';
+import { ChangePasswordComponent } from './appUsers/change-password/change-password.component';
 
 const routes: Routes = [
 	{ path: 'appApis', component: AppApisListComponent },
@@ -38,6 +39,7 @@ const routes: Routes = [
 	{ path: 'appUsers', component: AppUsersListComponent },
 	{ path: 'appUsers/add', component: AppUsersComponent },
 	{ path: 'appUsers/edit', component: AppUsersComponent },
+	{ path: 'changePassword', component: ChangePasswordComponent },
 ];
 
 @NgModule({
@@ -68,6 +70,7 @@ const routes: Routes = [
 		AppUsersListComponent,
 		AppUsersComponent,
 		AppUserRoleRelsPopupComponent,
+		ChangePasswordComponent,
 	],
 	exports: [RouterModule],
 	entryComponents: [
