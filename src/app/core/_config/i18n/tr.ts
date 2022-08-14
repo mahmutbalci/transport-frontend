@@ -54,6 +54,7 @@ export const locale = {
 					MenuTree: 'Menü Ağacı',
 					UserRoleDefinition: 'Kullanıcı Rol Tanımlama',
 					UserDefinition: 'Kullanıcı Tanımlama',
+					ChangePassword: 'Parola Değiştir',
 				},
 				Workflow: {
 					Title: 'İş Akışı',
@@ -274,6 +275,8 @@ export const locale = {
 				Menus: 'Menüler',
 				Apis: 'API-Servisler',
 				AuthenticationLevel: 'Yetki Seviyesi',
+				OldPassword: 'Mevcut Parola',
+				NewPassword: 'Yeni Parola',
 
 				Exception: {
 

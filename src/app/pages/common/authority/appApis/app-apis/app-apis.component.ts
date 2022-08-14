@@ -111,9 +111,9 @@ export class AppApisComponent implements OnInit {
 
 	save() {
 		this.isProcessing = true;
-		const controls = this.entityForm.controls;
 
 		if (this.entityForm.invalid) {
+			const controls = this.entityForm.controls;
 			Object.keys(this.entityModel).forEach(name =>
 				controls[name].markAsTouched()
 			);
