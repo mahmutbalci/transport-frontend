@@ -326,6 +326,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 		let queryParams;
 		let fileName: string = '';
 		let funcName: string = '';
+		let gridColumns;
 		switch (this.selectedTab) {
 			case 0:
 				queryParams = new QueryParamsModel(this.filterConfiguration(),
@@ -336,6 +337,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 
 				fileName = 'OnlineProvisions';
 				funcName = 'GetOnlineProvisions';
+				gridColumns = this.gridColumnsOnl;
 				break;
 			case 1:
 				queryParams = new QueryParamsModel(this.filterConfiguration(),
@@ -346,6 +348,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 
 				fileName = 'ClearingTransactions';
 				funcName = 'GetClearingTransactions';
+				gridColumns = this.gridColumnsClr;
 				break;
 		}
 
@@ -353,7 +356,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 			queryParams,
 			funcName,
 			fileName,
-			this.gridColumnsOnl,
+			gridColumns,
 			this.lookupObjectList,
 			this.pipeObjectList);
 
