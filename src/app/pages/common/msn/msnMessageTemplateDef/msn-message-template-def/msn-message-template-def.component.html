@@ -164,10 +164,10 @@
 												<mat-icon>more_vert</mat-icon>
 											</button>
 											<mat-menu #menu="matMenu">
-												<a mat-menu-item id="edit" *ngIf="'edit'|checkauth" [disabled]="isDisabled" (click)="editMsnMessageTextButtonOnClick(row)" class="btn">
+												<a mat-menu-item id="edit" *ngIf="'edit'|checkAuth" [disabled]="isDisabled" (click)="editMsnMessageTextButtonOnClick(row)" class="btn">
 													<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
 												</a>
-												<a mat-menu-item id="delete" *ngIf="'delete'|checkauth" [disabled]="isDisabled" (click)="deleteMsnMessageTexttButtonOnClick(row)" class="btn">
+												<a mat-menu-item id="delete" *ngIf="'delete'|checkAuth" [disabled]="isDisabled" (click)="deleteMsnMessageTexttButtonOnClick(row)" class="btn">
 													<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
 												</a>
 											</mat-menu>

@@ -9,7 +9,7 @@
 			</div>
 		</ng-container>
 
-		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
+		<ng-container *ngIf="'add'|checkAuth" ktPortletTools>
 			<a id="btnNew" [routerLink]="[menuUrl + '/add']" class="kt-margin-l-5 btn btn-brand">
 				<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i>{{ 'General.CreateNew' | translate }}</span>
 			</a>
@@ -43,7 +43,7 @@
 						</button>
 
 						<mat-menu #menu="matMenu">
-							<a mat-menu-item id="edit" *ngIf="'edit'|checkauth" [routerLink]="[menuUrl + '/edit']" [queryParams]="{prmId: row.apiId}" class="btn">
+							<a mat-menu-item id="edit" *ngIf="'edit'|checkAuth" [routerLink]="[menuUrl + '/edit']" [queryParams]="{prmId: row.apiId}" class="btn">
 								<mat-icon>create</mat-icon><span> {{ 'General.Edit' | translate }}</span>
 							</a>
 
@@ -51,7 +51,7 @@
 								<mat-icon>search</mat-icon><span> {{ 'General.ShowRecord' | translate }}</span>
 							</a>
 
-							<a mat-menu-item id="delete" *ngIf="'delete'|checkauth" (click)="delete(row)" class="btn">
+							<a mat-menu-item id="delete" *ngIf="'delete'|checkAuth" (click)="delete(row)" class="btn">
 								<mat-icon>delete</mat-icon><span> {{ 'General.Delete' | translate }}</span>
 							</a>
 

@@ -14,7 +14,7 @@
 			<button type="button" (click)="goBack()" mat-raised-button matTooltip="{{'General.BackToList' | translate}}">{{'General.BackToList' | translate}}</button>
 			<button mat-raised-button [disabled]="true" matTooltip="{{'General.Clear' | translate}}">{{'General.Clear' | translate}}</button>
 
-			<div *ngIf="'add'|checkauth" class="m-buttons--wrapper">
+			<div *ngIf="'add'|checkAuth" class="m-buttons--wrapper">
 				<button type="button" [disabled]="isDisabled" (click)="save()" mat-raised-button color="primary" matTooltip="{{'General.Save' | translate}}">{{'General.Save' | translate}}</button>
 			</div>
 		</ng-container>

@@ -10,7 +10,7 @@
 		</ng-container>
 
 		<ng-container ktPortletTools>
-			<div *ngIf="'add'|checkauth">
+			<div *ngIf="'add'|checkAuth">
 				<a id="btnSaveMenu" *ngIf="!this.data.guid" class="btn-icon" (click)="save()" [class.disabled]="processing">
 					<i class="la la-save mt-icon-resizeable" matTooltip="{{'General.Save' | translate}}"></i>
 				</a>

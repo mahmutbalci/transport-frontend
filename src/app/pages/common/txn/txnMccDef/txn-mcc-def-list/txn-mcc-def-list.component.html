@@ -10,7 +10,7 @@
 			</div>
 		</ng-container>
 
-		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
+		<ng-container *ngIf="'add'|checkAuth" ktPortletTools>
 			<a id="btnNew" [routerLink]="['/common/txn/txnMccDef/add']" mat-raised-button color="primary">
 				<span> <i class="la flaticon-plus"></i> <span>&nbsp;&nbsp;{{'General.CreateNew' | translate}}</span> </span>
 			</a>
@@ -108,13 +108,13 @@
 							<mat-icon>more_vert</mat-icon>
 						</button>
 						<mat-menu #menu="matMenu">
-							<a mat-menu-item *ngIf="'edit'|checkauth" [routerLink]="['/common/txn/txnMccDef/edit']" [queryParams]="{prmId: row.code}" class="btn">
+							<a mat-menu-item *ngIf="'edit'|checkAuth" [routerLink]="['/common/txn/txnMccDef/edit']" [queryParams]="{prmId: row.code}" class="btn">
 								<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
 							</a>
 							<a mat-menu-item [routerLink]="['/common/txn/txnMccDef/edit']" [queryParams]="{prmId: row.code, type:'show'}" class="btn">
 								<mat-icon>search</mat-icon><span> {{'General.ShowRecord' | translate }}</span>
 							</a>
-							<a mat-menu-item *ngIf="'delete'|checkauth" color="warn" (click)="delete(row)" class="btn">
+							<a mat-menu-item *ngIf="'delete'|checkAuth" color="warn" (click)="delete(row)" class="btn">
 								<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
 							</a>
 							<a mat-menu-item id="history" (click)="openHistory(row.code)" class="btn">

@@ -18,7 +18,7 @@
 				<span><i class="la la-recycle"></i><span>{{'General.Clear' | translate}}</span></span>
 			</button>
 
-			<div *ngIf="'add'|checkauth" class="m-buttons--wrapper">
+			<div *ngIf="'add'|checkAuth" class="m-buttons--wrapper">
 				<button id="btnSave" type="button" *ngIf="isAdd" [disabled]="isDisabled" (click)="save()" class="kt-margin-l-5 btn btn-brand">
 					<span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span>
 				</button>

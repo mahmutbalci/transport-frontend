@@ -17,7 +17,7 @@
 				<span><i class="la la-recycle"></i><span>{{ 'General.Clear' | translate }}</span></span>
 			</a>
 
-			<div *ngIf="'add'|checkauth">
+			<div *ngIf="'add'|checkAuth">
 				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span><i class="la la-save"></i><span>{{ 'General.Save' | translate }}</span></span>
 				</a>
@@ -154,7 +154,7 @@
 							<mat-table class="lmat-elevation-z8" [dataSource]="dataSourceDetail" matSort matSortActive="add-cardDigits" matSortDirection="asc" matSortDisableClear>
 								<ng-container matColumnDef="add-actions">
 									<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
-										<span class="mat-column-actions-wrapper" *ngIf="detailModel._isNew">
+										<span class="mat-column-actions-wrapper" *ngIf="detailModel._isNew && 'edit'|checkAuth">
 											<button mat-icon-button color="{{ checkDetailForm() ? 'primary' : 'warn' }}" type="button" (click)="addDetail()" matTooltip="{{ 'General.Add' | translate }}">
 												<mat-icon>done</mat-icon>
 											</button>
@@ -186,22 +186,25 @@
 									<mat-header-cell *matHeaderCellDef class="mat-column mat-column-actions">
 										{{ 'General.Actions' | translate }}
 									</mat-header-cell>
+
 									<mat-cell *matCellDef="let row" class="mat-column mat-column-actions">
-										<button *ngIf="!row._isEditMode" [disabled]="isProcessing || isEditModeDetail" type="button" mat-icon-button color="primary" (click)="editDetailButtonOnClick(row)" matTooltip="{{ 'General.Edit' | translate }}">
-											<mat-icon>create</mat-icon>
-										</button>
+										<span class="mat-column-actions-wrapper" *ngIf="'edit'|checkAuth">
+											<button *ngIf="!row._isEditMode" [disabled]="isProcessing || isEditModeDetail" type="button" mat-icon-button color="primary" (click)="editDetailButtonOnClick(row)" matTooltip="{{ 'General.Edit' | translate }}">
+												<mat-icon>create</mat-icon>
+											</button>
 
-										<button *ngIf="row._isEditMode" mat-icon-button color="{{ checkDetailForm() ? 'primary' : 'accent' }}" type="button" (click)="updateDetail(row)" matTooltip="{{ 'General.Save' | translate }}">
-											<mat-icon>done</mat-icon>
-										</button>
+											<button *ngIf="row._isEditMode" mat-icon-button color="{{ checkDetailForm() ? 'primary' : 'accent' }}" type="button" (click)="updateDetail(row)" matTooltip="{{ 'General.Save' | translate }}">
+												<mat-icon>done</mat-icon>
+											</button>
 
-										<button *ngIf="!row._isEditMode" [disabled]="isProcessing || isEditModeDetail" mat-icon-button color="warn" type="button" (click)="deleteDetail(row)" matTooltip="{{ 'General.Delete' | translate }}">
-											<mat-icon>delete</mat-icon>
-										</button>
+											<button *ngIf="!row._isEditMode" [disabled]="isProcessing || isEditModeDetail" mat-icon-button color="warn" type="button" (click)="deleteDetail(row)" matTooltip="{{ 'General.Delete' | translate }}">
+												<mat-icon>delete</mat-icon>
+											</button>
 
-										<button *ngIf="row._isEditMode" type="button" mat-icon-button color="warn" (click)="cancelDetailEditButtonOnClick(row)" matTooltip="{{ 'General.Cancel' | translate }}">
-											<mat-icon>clear</mat-icon>
-										</button>
+											<button *ngIf="row._isEditMode" type="button" mat-icon-button color="warn" (click)="cancelDetailEditButtonOnClick(row)" matTooltip="{{ 'General.Cancel' | translate }}">
+												<mat-icon>clear</mat-icon>
+											</button>
+										</span>
 									</mat-cell>
 								</ng-container>
 

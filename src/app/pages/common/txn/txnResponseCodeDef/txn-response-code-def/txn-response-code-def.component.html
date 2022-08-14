@@ -11,7 +11,7 @@
 	<ng-container ktPortletTools>
 		<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()"><span> <i class="la la-mail-reply"></i> <span>{{'General.Back' | translate}}</span> </span></a>
 		<a id="btnClear" *ngIf="isAdd" class="kt-margin-l-5 btn btn-secondary" (click)="clear()"><span> <i class="la la-recycle"></i> <span>{{'General.Clear' | translate}}</span> </span></a>
-		<div *ngIf="'add'|checkauth">
+		<div *ngIf="'add'|checkAuth">
 			<a id="btnSave" *ngIf="isAdd" class="kt-margin-l-5 btn btn-brand" (click)="save()"><span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span></a>
 			<a id="btnUpdate" *ngIf="txnResponseCodeDefModel._isEditMode" class="kt-margin-l-5 btn btn-brand" (click)="save()"><span> <i class="la la-edit"></i> <span>{{'General.Update' | translate}}</span> </span></a>
 		</div>

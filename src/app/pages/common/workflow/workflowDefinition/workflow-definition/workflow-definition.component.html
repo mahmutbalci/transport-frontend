@@ -18,7 +18,7 @@
 				<span><i class="la la-recycle"></i><span>{{'General.Clear' | translate}}</span></span>
 			</a>
 
-			<div *ngIf="'add'|checkauth">
+			<div *ngIf="'add'|checkAuth">
 				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span><i class="la la-save"></i><span>{{'General.Save' | translate}}</span></span>
 				</a>
@@ -102,7 +102,7 @@
 						<div class="kt-form__filtration">
 							<div class="row align-items-center">
 								<div class="col-md-12 kt-margin-b-10 kt-margin-b-10-mobile text-right" [class.disabled]="isDisabled">
-									<a id="btnStateAdd" *ngIf="'add'|checkauth" (click)="addStateExpressionButtonOnClick()" class="kt-margin-l-5 btn btn-brand btn">
+									<a id="btnStateAdd" *ngIf="'add'|checkAuth" (click)="addStateExpressionButtonOnClick()" class="kt-margin-l-5 btn btn-brand btn">
 										<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i></span>
 									</a>
 								</div>
@@ -135,11 +135,11 @@
 								</mat-header-cell>
 
 								<mat-cell *matCellDef="let entityModelState" class="mat-column mat-column-actions">
-									<button id="btnEdit" *ngIf="'edit'|checkauth" [disabled]="isDisabled" type="button" mat-icon-button color="primary" (click)="editStateExpressionButtonOnClick(entityModelState)" matTooltip="{{'General.Edit' | translate}}">
+									<button id="btnEdit" *ngIf="'edit'|checkAuth" [disabled]="isDisabled" type="button" mat-icon-button color="primary" (click)="editStateExpressionButtonOnClick(entityModelState)" matTooltip="{{'General.Edit' | translate}}">
 										<mat-icon>create</mat-icon>
 									</button>
 
-									<button id="btnDelete" *ngIf="'delete'|checkauth" [disabled]="isDisabled" mat-icon-button color="warn" type="button" (click)="deleteStateExpressionButtonOnClick(entityModelState)" matTooltip="{{'General.Delete' | translate}}">
+									<button id="btnDelete" *ngIf="'delete'|checkAuth" [disabled]="isDisabled" mat-icon-button color="warn" type="button" (click)="deleteStateExpressionButtonOnClick(entityModelState)" matTooltip="{{'General.Delete' | translate}}">
 										<mat-icon>delete</mat-icon>
 									</button>
 								</mat-cell>

@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { AuthService } from '@core/auth/_services/auth.service';
 
 @Pipe({
-	name: 'checkauth'
+	name: 'checkAuth'
 })
 export class CheckAuthPipe implements PipeTransform {
 	constructor(private authentication: AuthService,) {
@@ -24,7 +24,7 @@ export class CheckAuthPipe implements PipeTransform {
 
 
 @Pipe({
-	name: 'checkauthUrl'
+	name: 'checkAuthUrl'
 })
 export class CheckAuthUrlPipe implements PipeTransform {
 	constructor(private authentication: AuthService,) {
