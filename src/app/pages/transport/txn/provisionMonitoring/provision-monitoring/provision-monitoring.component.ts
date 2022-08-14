@@ -79,6 +79,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 	gridColumnsClr = [
 		{
 			txnGuid: 'Transportation.Transaction.TxnGuid',
+			fileInfoGuid: 'Transportation.Transaction.FileId',
 			bankCode: 'Transportation.Transaction.BankCode',
 			// debtRecoveryReferenceNo: 'Transportation.Transaction.DebtRecoveryReferenceNo',
 			// f01MessageType: 'Transportation.Transaction.F01MessageType',
@@ -133,7 +134,6 @@ export class ProvisionMonitoringComponent implements OnInit {
 			f43Country: 'Transportation.Transaction.F43Country',
 			f43PostalCode: 'Transportation.Transaction.F43PostalCode',
 			f43RegionCode: 'Transportation.Transaction.F43RegionCode',
-			fileInfoGuid: 'Transportation.Transaction.FileId',
 			txnSource: 'Transportation.Transaction.TxnSource',
 			txnType: 'Transportation.Transaction.TxnType',
 			offlineOnlineIndicator: 'Transportation.Transaction.OfflineOnlineIndicator',
@@ -293,16 +293,25 @@ export class ProvisionMonitoringComponent implements OnInit {
 	}
 
 	addLookupObject() {
+		this.lookupObjectList.push({ key: 'f49Currency', value: this.txnCurrencyDefs });
+		this.lookupObjectList.push({ key: 'f51BillingCurrency', value: this.txnCurrencyDefs });
+		this.lookupObjectList.push({ key: 'campaignId', value: this.cmpCampaignDefs });
 		this.lookupObjectList.push({ key: 'offlineOnlineIndicator', value: this.offlineOnlineIndicators });
 	}
 
 	addPipeObject() {
-		this.pipeObjectList.push({ key: 'f13', value: 'date', format: 'dd.MM.yyyy' });
-		this.pipeObjectList.push({ key: 'f12', value: 'timeFormat' });
+		this.pipeObjectList.push({ key: 'txnGuid', value: 'toString' });
+		this.pipeObjectList.push({ key: 'fileInfoGuid', value: 'toString' });
 		this.pipeObjectList.push({ key: 'f04', value: 'currency' });
 		this.pipeObjectList.push({ key: 'f04Org', value: 'currency' });
 		this.pipeObjectList.push({ key: 'f06', value: 'currency' });
 		this.pipeObjectList.push({ key: 'f06Org', value: 'currency' });
+		this.pipeObjectList.push({ key: 'f07', value: 'date', format: 'dd.MM.yyyy HH:mm:ss' });
+		this.pipeObjectList.push({ key: 'f13', value: 'date', format: 'dd.MM.yyyy' });
+		this.pipeObjectList.push({ key: 'f12', value: 'slice', format: '0:8' });
+		this.pipeObjectList.push({ key: 'f14ExpiryDate', value: 'expiryFormatTxn' });
+		this.pipeObjectList.push({ key: 'createDate', value: 'date', format: 'dd.MM.yyyy' });
+		this.pipeObjectList.push({ key: 'discountRate', value: 'rateTimes100', fixedLength: 5 });
 	}
 
 	exportAsXLSX(exportAll: boolean): void {
@@ -342,7 +351,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 
 		this.excelService.exportAsExcelFileRouting(this.txnService,
 			queryParams,
-			fileName,
+			funcName,
 			fileName,
 			this.gridColumnsOnl,
 			this.lookupObjectList,

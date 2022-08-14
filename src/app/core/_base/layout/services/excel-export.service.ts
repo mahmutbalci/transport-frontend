@@ -85,7 +85,7 @@ export class ExcelExportService extends BaseDataSource {
 		}
 	}
 
-	public exportAsExcelFileEndPointSuffix(service: BaseService, enpointSuffix: string = "all", queryParams: QueryParamsModel, _filtrationFields: string[] = [], excelFileName: string, columns?: any[], lookupObjectList?: any, pipeObjectList?: any): void {
+	public exportAsExcelFileEndPointSuffix(service: BaseService, enpointSuffix: string = 'all', queryParams: QueryParamsModel, _filtrationFields: string[] = [], excelFileName: string, columns?: any[], lookupObjectList?: any, pipeObjectList?: any): void {
 		this.openLoadDialog();
 		try {
 			service.lastFilter$.next(queryParams);
@@ -155,67 +155,67 @@ export class ExcelExportService extends BaseDataSource {
 				Object.keys(resultElement).forEach(resultKey => {
 					pipeObjectList.forEach(pipeElement => {
 						if (resultKey == pipeElement.key) {
-							let resultElemntKey = resultElement[resultKey];
+							let resultElemntVal = resultElement[resultKey];
 
 							switch (pipeElement.value) {
 								case 'date':
-									let datePipeVal = new DatePipe(lang).transform(resultElemntKey, pipeElement.format);
+									let datePipeVal = new DatePipe(lang).transform(resultElemntVal, pipeElement.format);
 									resultElement[resultKey] = datePipeVal;
 									break;
 								case 'timeFormat':
-									let timeFormatPipeVal = new TimeFormatPipe().transform(resultElemntKey);
+									let timeFormatPipeVal = new TimeFormatPipe().transform(resultElemntVal);
 									resultElement[resultKey] = timeFormatPipeVal;
 									break;
 								case 'expiryFormatTxn':
-									let datePipeTxnVal = new DateMmyyyyFormatTxnPipe().transform(resultElemntKey);
+									let datePipeTxnVal = new DateMmyyyyFormatTxnPipe().transform(resultElemntVal);
 									resultElement[resultKey] = datePipeTxnVal;
 									break;
 								case 'currency':
-									let currencyPipeVal = new CurrencyPipe(lang).transform(resultElemntKey, " ", "symbol-narrow");
-									resultElement[resultKey] = currencyPipeVal ? currencyPipeVal.trim() : "";
+									let currencyPipeVal = new CurrencyPipe(lang).transform(resultElemntVal, ' ', 'symbol-narrow');
+									resultElement[resultKey] = currencyPipeVal ? currencyPipeVal.trim() : '';
 									break;
 								case 'rateMask':
-									let rateFormatPipeVal = new RateFormatPipe().transform(resultElemntKey);
+									let rateFormatPipeVal = new RateFormatPipe().transform(resultElemntVal);
 									resultElement[resultKey] = rateFormatPipeVal;
 									break;
 								case 'slice':
 									let sliceStart = pipeElement.format.split(':')[0];
 									let sliceEnd = pipeElement.format.split(':')[1];
-									let slicePipVal = new SlicePipe().transform(resultElemntKey, sliceStart, sliceEnd);
+									let slicePipVal = new SlicePipe().transform(resultElemntVal, sliceStart, sliceEnd);
 									resultElement[resultKey] = slicePipVal;
 									break;
 								case 'cardNoMask':
-									let cardNoMaskPipeVal = new CardNumberFormatPipe().transform(resultElemntKey);
+									let cardNoMaskPipeVal = new CardNumberFormatPipe().transform(resultElemntVal);
 									resultElement[resultKey] = cardNoMaskPipeVal;
 									break;
 								case 'mFirstLetter':
-									let mFirstLetterPipeVal = new FirstLetterPipe().transform(resultElemntKey);
+									let mFirstLetterPipeVal = new FirstLetterPipe().transform(resultElemntVal);
 									resultElement[resultKey] = mFirstLetterPipeVal;
 									break;
 								case 'mJoin':
-									let mJoinPipeVal = new JoinPipe().transform(resultElemntKey);
+									let mJoinPipeVal = new JoinPipe().transform(resultElemntVal);
 									resultElement[resultKey] = mJoinPipeVal;
 									break;
 								case 'arnMask':
-									let arnMaskPipeVal = new ArnFormatPipe().transform(resultElemntKey);
+									let arnMaskPipeVal = new ArnFormatPipe().transform(resultElemntVal);
 									resultElement[resultKey] = arnMaskPipeVal;
 									break;
 								case 'string':
-									resultElement[resultKey] = !resultElemntKey || resultElemntKey == "" ? "" : resultElemntKey + " ";
+									resultElement[resultKey] = !resultElemntVal || resultElemntVal === '' ? '' : resultElemntVal + ' ';
 									break;
 								case 'toString':
-									resultElement[resultKey] = !resultElemntKey || resultElemntKey == "" ? "" : "'" + resultElemntKey;
+									resultElement[resultKey] = !resultElemntVal || resultElemntVal === '' ? '' : "'" + resultElemntVal;
 									break;
 								case 'lastUpdated':
-									let lastUpdatedPipeVal = new LastUpdatedPipe().transform(resultElemntKey);
+									let lastUpdatedPipeVal = new LastUpdatedPipe().transform(resultElemntVal);
 									resultElement[resultKey] = lastUpdatedPipeVal;
 									break;
 								case 'rateTimes100':
-									let rateTimes100Val = new RateTimes100FormatPipe().transform(resultElemntKey, pipeElement.fixedLength);
+									let rateTimes100Val = new RateTimes100FormatPipe().transform(resultElemntVal, pipeElement.fixedLength);
 									resultElement[resultKey] = rateTimes100Val;
 									break;
 								case 'divideTo100':
-									let divideTo100Val = new DivideTo100Pipe().transform(resultElemntKey, pipeElement.fixedLength);
+									let divideTo100Val = new DivideTo100Pipe().transform(resultElemntVal, pipeElement.fixedLength);
 									resultElement[resultKey] = divideTo100Val;
 									break;
 							}
