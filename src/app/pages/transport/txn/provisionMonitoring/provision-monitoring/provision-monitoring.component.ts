@@ -323,10 +323,10 @@ export class ProvisionMonitoringComponent implements OnInit {
 			this.addPipeObject();
 		}
 
-		let queryParams;
+		let queryParams: QueryParamsModel;
 		let fileName: string = '';
 		let funcName: string = '';
-		let gridColumns;
+		let gridColumns: any[];
 		switch (this.selectedTab) {
 			case 0:
 				queryParams = new QueryParamsModel(this.filterConfiguration(),
