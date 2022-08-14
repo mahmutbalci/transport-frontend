@@ -26,7 +26,7 @@
 		</ng-container>
 
 		<ng-container ktPortletTools>
-			<div *ngIf="('/common/workflow/workflowProcessList' | checkauthUrl) && isDisabled && isAuthorizedUser">
+			<div *ngIf="('/common/workflow/workflowProcessList' | checkAuthUrl) && isDisabled && isAuthorizedUser">
 				<a id="btnApprove" class="btn-icon" (click)="approve()">
 					<i class="la la-check-circle mt-icon-resizeable approve_color" [class.disabled]="isProcessing" matTooltip="{{ 'General.Approve' | translate }}"></i>
 				</a>

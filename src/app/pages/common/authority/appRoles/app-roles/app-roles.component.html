@@ -13,7 +13,7 @@
 				<i class="la la-mail-reply"></i>{{ 'General.Back' | translate }}
 			</a>
 
-			<div *ngIf="'add'|checkauth">
+			<div *ngIf="'add'|checkAuth">
 				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<i class="la la-save"></i>{{ 'General.Save' | translate }}
 				</a>

@@ -17,7 +17,7 @@
 				<span><i class="la la-recycle"></i><span>{{ 'General.Clear' | translate }}</span></span>
 			</a>
 
-			<div *ngIf="'add'|checkauth">
+			<div *ngIf="'add'|checkAuth">
 				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing" class="kt-margin-l-5 btn btn-brand" (click)="save()">
 					<span><i class="la la-save"></i><span>{{ 'General.Save' | translate }}</span></span>
 				</a>

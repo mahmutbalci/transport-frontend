@@ -12,7 +12,7 @@
 		<ng-container ktPortletTools>
 			<a id="btnCancel" class="kt-margin-l-5 btn btn-brand" (click)="cancel()"><span> <i class="la la-reply"></i> <span>{{'General.Back' | translate}}</span> </span></a>
 
-			<div *ngIf="'add'|checkauth">
+			<div *ngIf="'add'|checkAuth">
 				<a id="btnSave" class="kt-margin-l-5 btn btn-brand" (click)="onSubmit()"><span> <i class="la la-save"></i> <span>{{'General.Save' | translate}}</span> </span></a>
 			</div>
 		</ng-container>

@@ -11,7 +11,7 @@
 			</div>
 		</ng-container>
 
-		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
+		<ng-container *ngIf="'add'|checkAuth" ktPortletTools>
 			<a [routerLink]="['/common/txn/cfgPinEntryDef/add']" mat-raised-button color="primary" matTooltip="{{'General.CreateNew' | translate}}">{{'General.CreateNew' | translate}}</a>
 		</ng-container>
 		<!-- end::Header -->
@@ -92,13 +92,13 @@
 						{{'General.Actions' | translate }}
 					</mat-header-cell>
 					<mat-cell *matCellDef="let row">
-						<a *ngIf="'edit'|checkauth" [routerLink]="['/common/txn/cfgPinEntryDef/edit']" [queryParams]="{code: row.code}" mat-icon-button color="primary" matTooltip="{{'General.Edit' | translate }}">
+						<a *ngIf="'edit'|checkAuth" [routerLink]="['/common/txn/cfgPinEntryDef/edit']" [queryParams]="{code: row.code}" mat-icon-button color="primary" matTooltip="{{'General.Edit' | translate }}">
 							<mat-icon>create</mat-icon>
 						</a>
 						<a [routerLink]="['/common/txn/cfgPinEntryDef/edit']" [queryParams]="{code: row.code, type:'show'}" mat-icon-button color="primary" matTooltip="{{'General.ShowRecord' | translate }}">
 							<mat-icon>search</mat-icon>
 						</a>
-						<button *ngIf="'delete'|checkauth" mat-icon-button color="warn" type="button" (click)="deleteEntity(row)" matTooltip="{{'General.Delete' | translate }}">
+						<button *ngIf="'delete'|checkAuth" mat-icon-button color="warn" type="button" (click)="deleteEntity(row)" matTooltip="{{'General.Delete' | translate }}">
 							<mat-icon>delete</mat-icon>
 						</button>
 						<button mat-icon-button id="history" (click)="openHistory(row.code)" type="button" color="primary" matTooltip="{{'General.History' | translate }}">

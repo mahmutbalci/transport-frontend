@@ -9,7 +9,7 @@
 				</h3>
 			</div>
 		</ng-container>
-		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
+		<ng-container *ngIf="'add'|checkAuth" ktPortletTools>
 			<div *ngIf="page.addLink">
 				<a [routerLink]="page.addLink" class="kt-margin-l-5 btn btn-brand dropdown-toggle" matTooltip="{{'General.CreateNew' | translate}}">
 					<span><i class="la la-plus-circle mt-icon-resizeable-xs"></i><span>{{'General.CreateNew' | translate}}</span></span>
@@ -122,7 +122,7 @@
 						</button>
 						<mat-menu #menu="matMenu">
 							<div *ngIf="page.editLink">
-								<a mat-menu-item *ngIf="'edit'|checkauth" [routerLink]="page.editLink" [queryParams]="{key: row[page.editKey]}" color="primary" matTooltip="{{'General.Edit' | translate }}">
+								<a mat-menu-item *ngIf="'edit'|checkAuth" [routerLink]="page.editLink" [queryParams]="{key: row[page.editKey]}" color="primary" matTooltip="{{'General.Edit' | translate }}">
 									<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
 								</a>
 							</div>
@@ -130,7 +130,7 @@
 								<mat-icon>search</mat-icon><span> {{'General.ShowRecord' | translate }}</span>
 							</a>
 							<div *ngIf="page.deleteTitle">
-								<a mat-menu-item *ngIf="'delete'|checkauth" color="warn" (click)="delete(row)" matTooltip="{{'General.Delete' | translate }}">
+								<a mat-menu-item *ngIf="'delete'|checkAuth" color="warn" (click)="delete(row)" matTooltip="{{'General.Delete' | translate }}">
 									<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
 								</a>
 							</div>

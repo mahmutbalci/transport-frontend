@@ -10,8 +10,8 @@
 			</div>
 		</ng-container>
 
-		<ng-container *ngIf="'add'|checkauth" ktPortletTools>
-			<a id="btnNew" *ngIf="'add'|checkauth" [routerLink]="['/common/dynamicQueryBuilder/configDef/add']" class="kt-margin-l-5 btn btn-brand dropdown-toggle"><span> <i class="la la-plus-circle mt-icon-resizeable-xs"></i> <span>{{'General.CreateNew' | translate}}</span> </span></a>
+		<ng-container *ngIf="'add'|checkAuth" ktPortletTools>
+			<a id="btnNew" *ngIf="'add'|checkAuth" [routerLink]="['/common/dynamicQueryBuilder/configDef/add']" class="kt-margin-l-5 btn btn-brand dropdown-toggle"><span> <i class="la la-plus-circle mt-icon-resizeable-xs"></i> <span>{{'General.CreateNew' | translate}}</span> </span></a>
 		</ng-container>
 	</kt-portlet-header>
 
@@ -65,13 +65,13 @@
 							<mat-icon>more_vert</mat-icon>
 						</button>
 						<mat-menu #menu="matMenu">
-							<a mat-menu-item id="edit" *ngIf="'edit'|checkauth" [routerLink]="['/common/dynamicQueryBuilder/configDef/edit']" [queryParams]="{guid: row.guid}" class="btn">
+							<a mat-menu-item id="edit" *ngIf="'edit'|checkAuth" [routerLink]="['/common/dynamicQueryBuilder/configDef/edit']" [queryParams]="{guid: row.guid}" class="btn">
 								<mat-icon>create</mat-icon><span> {{'General.Edit' | translate }}</span>
 							</a>
 							<a mat-menu-item id="view" [routerLink]="['/common/dynamicQueryBuilder/configDef/edit']" [queryParams]="{guid: row.guid, type:'show'}" class="btn">
 								<mat-icon>search</mat-icon><span> {{'General.ShowRecord' | translate }}</span>
 							</a>
-							<a mat-menu-item id="delete" *ngIf="'delete'|checkauth" (click)="delete(row)" class="btn">
+							<a mat-menu-item id="delete" *ngIf="'delete'|checkAuth" (click)="delete(row)" class="btn">
 								<mat-icon>delete</mat-icon><span> {{'General.Delete' | translate }}</span>
 							</a>
 							<a mat-menu-item id="history" (click)="openHistory(row.guid)" class="btn">
