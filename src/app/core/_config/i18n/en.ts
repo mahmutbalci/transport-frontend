@@ -54,6 +54,7 @@ export const locale = {
 					MenuTree: 'Menu Tree',
 					UserRoleDefinition: 'User Role Definition',
 					UserDefinition: 'User Definition',
+					ChangePassword: 'Change Password',
 				},
 				Workflow: {
 					Title: 'Workflow',
@@ -274,6 +275,8 @@ export const locale = {
 				Menus: 'Menus',
 				Apis: 'APIs-Services',
 				AuthenticationLevel: 'Authentication Level',
+				OldPassword: 'Old Password',
+				NewPassword: 'New Password',
 
 				Exception: {
 

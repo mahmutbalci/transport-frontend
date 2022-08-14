@@ -21,4 +21,9 @@ export class AppUsersService extends BaseService {
 	getUser(id: string, institutionId: number) {
 		return this.api.get(this.endpoint + '?clientId=' + id + '&institutionId=' + institutionId);
 	}
+
+	changePassword(changePasswordRequestDto) {
+		let url = `${this.endpoint}/changePassword`;
+		return this.api.post(url, changePasswordRequestDto);
+	}
 }

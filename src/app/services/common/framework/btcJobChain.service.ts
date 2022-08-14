@@ -14,8 +14,7 @@ export class BtcJobChainService extends BaseService {
 	scheduleTrigger(triggerGuid, parameters = null) {
 		if (parameters == null) {
 			return this.api.post<any>(this.endpoint + '/ScheduleJob?triggerGuid=' + triggerGuid, null);
-		}
-		else {
+		} else {
 			return this.api.post<any>(this.endpoint + '/ScheduleJob?triggerGuid=' + triggerGuid + '&parameters=' + parameters, null);
 		}
 	}

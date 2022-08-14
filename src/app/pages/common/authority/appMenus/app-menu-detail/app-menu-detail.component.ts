@@ -119,7 +119,7 @@ export class AppMenuDetailComponent implements OnInit {
 			let selectApiList: AppMenuApiRelModel[] = [];
 
 			this.entityForm.controls['menuApis'].value.forEach(element => {
-				let entApi = { apiId: element };
+				let entApi = { menuId: this.entityModel.menuId, apiId: element };
 
 				let existsApi = _.find(this.entityModel.menuApiRels, function (o) {
 					return o.apiId === entApi.apiId;

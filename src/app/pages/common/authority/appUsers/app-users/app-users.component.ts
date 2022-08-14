@@ -158,8 +158,6 @@ export class AppUsersComponent implements OnInit {
 		controls['email'].setValue(controls['email'].value ? controls['email'].value.trim() : '');
 
 		if (this.entityForm.invalid) {
-			this.isProcessing = false;
-
 			Object.keys(this.entityModel).forEach(name =>
 				controls[name].markAsTouched()
 			);
@@ -167,6 +165,8 @@ export class AppUsersComponent implements OnInit {
 			Object.keys(this.entityModel.key).forEach(name =>
 				controls[name].markAsTouched()
 			);
+
+			this.isProcessing = false;
 			return;
 		}
 
