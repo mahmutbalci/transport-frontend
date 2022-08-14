@@ -597,7 +597,7 @@ export const locale = {
 			TicketType: 'Yetki Tipi',
 			AuthType: 'Giriş Tipi',
 			IsBuiltInUser: 'Sistem Kullanıcısı',
-			SessionDuration: 'Oturum Süresi',
+			SessionDuration: 'Oturum Süresi (dakika)',
 			ValidPasswordRegex: 'Parola Deseni',
 			BlockWrongPasswordCount: 'Yanlış Şifre Sayısı',
 			MobileNumber: 'Cep Telefon No',

@@ -597,7 +597,7 @@ export const locale = {
 			TicketType: 'Auth Type',
 			AuthType: 'Entry Type',
 			IsBuiltInUser: 'System User',
-			SessionDuration: 'Session Duration',
+			SessionDuration: 'Session Duration (minute)',
 			ValidPasswordRegex: 'Password Regex',
 			BlockWrongPasswordCount: 'Block Wrong Password Count',
 			MobileNumber: 'Mobile Phone',

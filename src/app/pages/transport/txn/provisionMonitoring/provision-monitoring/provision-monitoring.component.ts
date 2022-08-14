@@ -174,6 +174,7 @@ export class ProvisionMonitoringComponent implements OnInit {
 		prefix: '',
 		suffix: '',
 		allowDecimal: false,
+		includeThousandsSeparator: false,
 		integerLimit: 16,
 	});
 

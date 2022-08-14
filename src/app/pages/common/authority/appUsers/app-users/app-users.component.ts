@@ -10,6 +10,7 @@ import { AppUsersService } from '@common/authority/appUsers.service';
 import emailMask from 'text-mask-addons/dist/emailMask';
 import { AppUserRoleRelModel } from '@common/authority/appUserRoleRel.model';
 import _ from 'lodash';
+import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 
 @Component({
 	selector: 'kt-app-users',
@@ -33,6 +34,12 @@ export class AppUsersComponent implements OnInit {
 
 	emailMask = emailMask;
 	phoneMask = [/[1-9]/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/];
+	numericMask = createNumberMask({
+		prefix: '',
+		suffix: '',
+		allowDecimal: false,
+		includeThousandsSeparator: false,
+	});
 
 	cfgYesNoNumeric: any = [];
 	appChannelCodes: any = [];
