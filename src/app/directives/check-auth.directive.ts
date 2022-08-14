@@ -9,18 +9,16 @@ import { AuthService } from '@core/auth';
 	inputs: ['value: checkauth'],
 })
 export class CheckAuthDirective implements OnDestroy {
-
 	public value: any;
 
 	constructor(
 		private authentication: AuthService,
 		private _fg: ControlContainer,
-	) {
+	) { }
 
-	}
-	ngOnInit() { 
+	ngOnInit() {
 		let authenticationLevel = this.authentication.getCurrentMenuAuthenticationLevel();
-		if (authenticationLevel != 2 || (typeof this.value !== 'undefined' && this.value.toString() == 'true')) {
+		if (authenticationLevel != 2 || (typeof this.value !== 'undefined' && this.value.toString() === 'true')) {
 			(<FormGroupDirective>this._fg).control.disable();
 		}
 	}
