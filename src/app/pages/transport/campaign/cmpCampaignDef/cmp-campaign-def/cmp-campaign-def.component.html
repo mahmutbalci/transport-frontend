@@ -177,7 +177,7 @@
 								<ng-container matColumnDef="add-d042AcqId">
 									<mat-header-cell *matHeaderCellDef class="mat-column">
 										<mat-form-field *ngIf="detailModel._isNew" class="mat-form-field-fluid">
-											<input matInput placeholder="{{ 'Transportation.Campaign.D042AcqId' | translate }}" formControlName="d042AcqId" maxlength="15" [textMask]="{mask: numberMask, guide:false}">
+											<input matInput placeholder="{{ 'Transportation.Campaign.D042AcqId' | translate }}" formControlName="d042AcqId" maxlength="15" [textMask]="{mask: acqIdMask, guide:false}">
 										</mat-form-field>
 									</mat-header-cell>
 								</ng-container>
@@ -223,7 +223,7 @@
 									<mat-header-cell *matHeaderCellDef mat-sort-header class="mat-column">{{ 'Transportation.Campaign.D042AcqId' | translate }}</mat-header-cell>
 									<mat-cell *matCellDef="let row" class="mat-column">
 										<mat-form-field class="mat-form-field-fluid" *ngIf="row._isEditMode">
-											<input matInput [(ngModel)]="row.d042AcqId" [ngModelOptions]="{standalone: true}" maxlength="15" [textMask]="{mask: numberMask, guide:false}">
+											<input matInput [(ngModel)]="row.d042AcqId" [ngModelOptions]="{standalone: true}" maxlength="15" [textMask]="{mask: acqIdMask, guide:false}">
 										</mat-form-field>
 
 										<span *ngIf="!row._isEditMode">{{ row.d042AcqId }}</span>

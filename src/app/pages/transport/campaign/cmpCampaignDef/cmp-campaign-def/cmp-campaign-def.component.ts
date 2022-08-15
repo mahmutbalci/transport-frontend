@@ -40,11 +40,12 @@ export class CmpCampaignDefComponent implements OnInit {
 
 	timeMask = [/[0-2]/, /[0-9]/, ':', /[0-5]/, /[0-9]/, ':', /[0-5]/, /[0-9]/,];
 	cmpCodeMask = [/[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/,];
+	acqIdMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
 	numberMask = createNumberMask({
 		prefix: '',
 		suffix: '',
 		includeThousandsSeparator: false,
-		decimalLimit: 0,
+		integerLimit: 10,
 	});
 	amountMask = createNumberMask({
 		prefix: '',
@@ -335,13 +336,8 @@ export class CmpCampaignDefComponent implements OnInit {
 	}
 
 	updateDetail(item: CmpCampaignDetModel) {
-		Object.keys(this.detailModel).forEach(name => {
-			this.detailEntityForm.controls[name].markAsPristine();
-			this.detailEntityForm.controls[name].markAsUntouched();
-			this.detailEntityForm.controls[name].setValue(item[name]);
-		});
-
-		if (!this.checkDetailForm()) {
+		if (!item.cardDigits || item.cardDigits === '' || item.cardDigits == null) {
+			this.detailEntityForm.controls['cardDigits'].markAsUntouched();
 			return;
 		}
 
