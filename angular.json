@@ -3,7 +3,7 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"default": {
+		"deploy-v1": {
 			"root": "",
 			"sourceRoot": "src",
 			"projectType": "application",
@@ -21,7 +21,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
-						"outputPath": "dist",
+						"outputPath": "dist/deploy-v1",
 						"index": "src/index.html",
 						"main": "src/main.ts",
 						"tsConfig": "src/tsconfig.app.json",
@@ -37,7 +37,8 @@
 								"glob": "**/*",
 								"input": "./node_modules/@covalent/code-editor/assets/monaco",
 								"output": "/assets/monaco"
-							}
+							},
+							"src/web.config"
 						],
 						"styles": [
 							"src/styles.scss",
@@ -137,30 +138,30 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "default:build"
+						"browserTarget": "deploy-v1:build"
 					},
 					"configurations": {
 						"production": {
-							"browserTarget": "default:build:production"
+							"browserTarget": "deploy-v1:build:production"
 						},
 						"dev": {
-							"browserTarget": "default:build:production"
+							"browserTarget": "deploy-v1:build:production"
 						},
 						"tst": {
-							"browserTarget": "default:build:production"
+							"browserTarget": "deploy-v1:build:production"
 						},
 						"uat": {
-							"browserTarget": "default:build:production"
+							"browserTarget": "deploy-v1:build:production"
 						},
 						"preprod": {
-							"browserTarget": "default:build:production"
+							"browserTarget": "deploy-v1:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
 					"options": {
-						"browserTarget": "default:build"
+						"browserTarget": "deploy-v1:build"
 					}
 				},
 				"test": {
@@ -182,7 +183,8 @@
 							"src/assets/mxgraph/css/common.css"
 						],
 						"assets": [
-							"src/assets"
+							"src/assets",
+							"src/web.config"
 						]
 					}
 				},
@@ -200,7 +202,7 @@
 				}
 			}
 		},
-		"default-e2e": {
+		"deploy-v1-e2e": {
 			"root": "e2e",
 			"sourceRoot": "",
 			"projectType": "application",
@@ -209,7 +211,7 @@
 					"builder": "@angular-devkit/build-angular:protractor",
 					"options": {
 						"protractorConfig": "./protractor.conf.js",
-						"devServerTarget": "default:serve"
+						"devServerTarget": "deploy-v1:serve"
 					}
 				},
 				"lint": {
