@@ -45,7 +45,7 @@ export class Widget4Component implements OnInit {
 			this.data = shuffle([
 				{
 					pic: './assets/media/files/doc.svg',
-					title: 'Trasport Payment Systems Documentation',
+					title: 'Transport Payment Systems Documentation',
 					url: '',
 				}, {
 					pic: './assets/media/files/jpg.svg',
