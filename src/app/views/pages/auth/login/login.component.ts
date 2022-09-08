@@ -22,9 +22,9 @@ import { LayoutUtilsService, MessageType } from '@core/_base/crud';
  * ! Just example => Should be removed in development
  */
 const DEMO_PARAMS = {
-	CLIENT_ID: '',
-	CLIENT_SECRET: '',
-	INSTITUTION_ID: 1,
+	CLIENT_ID: null,
+	CLIENT_SECRET: null,
+	INSTITUTION_ID: null,
 };
 
 @Component({
@@ -140,17 +140,17 @@ export class LoginComponent implements OnInit, OnDestroy {
 			clientId: [DEMO_PARAMS.CLIENT_ID, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
-				Validators.maxLength(320) // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
+				Validators.maxLength(50) // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
 			])],
 			clientSecret: [DEMO_PARAMS.CLIENT_SECRET, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
-				Validators.maxLength(100)
+				Validators.maxLength(16)
 			])],
 			institutionId: [DEMO_PARAMS.INSTITUTION_ID, Validators.compose([
 				Validators.required,
 				Validators.minLength(1),
-				Validators.maxLength(20)
+				Validators.maxLength(4)
 			])],
 		});
 	}
@@ -301,21 +301,5 @@ export class LoginComponent implements OnInit, OnDestroy {
 	}
 
 	onLanguageChange(lang: any): void {
-	}
-
-	/**
-	 * Checking control validation
-	 *
-	 * @param controlName: string => Equals to formControlName
-	 * @param validationType: string => Equals to valitors name
-	 */
-	isControlHasError(controlName: string, validationType: string): boolean {
-		const control = this.loginForm.controls[controlName];
-		if (!control) {
-			return false;
-		}
-
-		const result = control.hasError(validationType) && (control.dirty || control.touched);
-		return result;
 	}
 }
