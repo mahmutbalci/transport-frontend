@@ -84,6 +84,9 @@ export const locale = {
 		},
 
 		Transportation: {
+			Card: {
+				PtcnSearch: 'Ptcn Arama',
+			},
 			Transaction: {
 				StartDate: 'Başlangıç Tarihi',
 				EndDate: 'Bitiş Tarihi',
@@ -460,7 +463,7 @@ export const locale = {
 			SessionTimeout: 'Oturum zaman aşımına uğradı',
 			YourSessionIsAboutToExpire: 'Oturumunuzun süresi dolmak üzere.',
 			LogoutIn: 'Çıkış yapılacak',
-			Seconds: 'saniye',
+			Seconds: 'Saniye',
 			Logout: 'Çıkış Yap',
 			StayConnected: 'Devam et',
 			MoreActions: 'Aksiyonlar',

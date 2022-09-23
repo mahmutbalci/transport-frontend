@@ -84,6 +84,9 @@ export const locale = {
 		},
 
 		Transportation: {
+			Card: {
+				PtcnSearch: 'Ptcn Search',
+			},
 			Transaction: {
 				StartDate: 'Start Date',
 				EndDate: 'End Date',
@@ -460,7 +463,7 @@ export const locale = {
 			SessionTimeout: 'Session Timeout',
 			YourSessionIsAboutToExpire: 'Your session is about to expire.',
 			LogoutIn: 'Logout in',
-			Seconds: 'seconds',
+			Seconds: 'Seconds',
 			Logout: 'Logout',
 			StayConnected: 'Stay Connected',
 			MoreActions: 'More Actions',

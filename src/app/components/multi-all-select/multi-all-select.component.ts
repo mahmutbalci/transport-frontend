@@ -7,12 +7,13 @@ import { NgModel } from '@angular/forms';
 	styleUrls: ['./multi-all-select.component.scss']
 })
 export class MultiAllSelectComponent {
-
-	constructor() { }
 	@Input() selected: any[];
 	@Input() selectPlaceHolder: string;
 	@Input() items: any[] = [];
 	@Output() selectedValue: EventEmitter<any> = new EventEmitter<any>();
+
+	constructor() { }
+
 	equals(objOne, objTwo) {
 		if (typeof objOne !== 'undefined' && typeof objTwo !== 'undefined') {
 			return objOne.code === objTwo.code;
@@ -31,5 +32,5 @@ export class MultiAllSelectComponent {
 
 	change() {
 		this.selectedValue.emit(this.selected);
-	} 
+	}
 }

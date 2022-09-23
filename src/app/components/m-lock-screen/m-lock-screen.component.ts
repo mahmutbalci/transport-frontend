@@ -9,7 +9,6 @@ import { UserIdleService } from 'angular-user-idle';
 	selector: 'm-lock-screen',
 	templateUrl: './m-lock-screen.component.html'
 })
-
 export class MLockScreenComponent implements OnInit {
 	totalSecond: number = 60;
 	timeLeft: number = 60;
