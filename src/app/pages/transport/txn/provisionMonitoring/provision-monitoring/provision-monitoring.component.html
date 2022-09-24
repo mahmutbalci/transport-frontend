@@ -30,7 +30,7 @@
 					<div class="row">
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<input matInput [matDatepicker]="txnDateBegin" formControlName="txnDateBegin" placeholder="{{ 'Transportation.Transaction.TxnDateBegin' | translate }}" readonly="true" required>
+								<input matInput [matDatepicker]="txnDateBegin" formControlName="txnDateBegin" placeholder="{{ 'Transportation.Transaction.TxnDateBegin' | translate }}" readonly="true">
 								<mat-datepicker-toggle matSuffix [for]="txnDateBegin"></mat-datepicker-toggle>
 								<mat-datepicker #txnDateBegin></mat-datepicker>
 							</mat-form-field>
@@ -38,15 +38,15 @@
 
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<input matInput [matDatepicker]="txnDateEnd" formControlName="txnDateEnd" placeholder="{{ 'Transportation.Transaction.TxnDateEnd' | translate }}" readonly="true" required>
+								<input matInput [matDatepicker]="txnDateEnd" formControlName="txnDateEnd" placeholder="{{ 'Transportation.Transaction.TxnDateEnd' | translate }}" readonly="true">
 								<mat-datepicker-toggle matSuffix [for]="txnDateEnd"></mat-datepicker-toggle>
 								<mat-datepicker #txnDateEnd></mat-datepicker>
 							</mat-form-field>
 						</div>
 
-						<div class="col-md-2 kt-margin-b-10 kt-margin-b-10-mobile">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<mat-select id="hasCampaign" placeholder="{{ 'Transportation.Transaction.HasCampaign' | translate }}" formControlName="hasCampaign">
+								<mat-select placeholder="{{ 'Transportation.Transaction.HasCampaign' | translate }}" formControlName="hasCampaign">
 									<mat-option id="hasCampaignNull" [value]=null></mat-option>
 									<mat-option id="optHasCampaign" [value]="item.code" *ngFor="let item of cfgYesNoNumeric;">{{ item.description }}</mat-option>
 								</mat-select>
@@ -55,7 +55,13 @@
 
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<input matInput placeholder="{{ 'Transportation.Transaction.CardMask' | translate }}" formControlName="cardMask" [textMask]="{mask: cardMask, guide:false}">
+								<input matInput placeholder="{{ 'Transportation.Transaction.F37' | translate }}" formControlName="f37Rrn" [textMask]="{mask: rrnNumberMask, guide:false}">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Transaction.CardMask' | translate }}" formControlName="cardMask" [textMask]="{mask: cardNumberMask, guide:false}">
 							</mat-form-field>
 						</div>
 
@@ -67,7 +73,16 @@
 
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<input matInput placeholder="{{ 'Transportation.Transaction.F37' | translate }}" formControlName="f37Rrn" [textMask]="{mask: rrnNumberMask, guide:false}">
+								<input matInput placeholder="{{ 'Transportation.Transaction.ClearCard' | translate }}" formControlName="clearCard" [textMask]="{mask: clearCardMask, guide:false}">
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<mat-select placeholder="{{ 'Transportation.Transaction.KeyType' | translate }}" formControlName="keyType">
+									<mat-option [value]=null></mat-option>
+									<mat-option [value]="item.code" *ngFor="let item of keyTypeDefs;">{{ item.code + ' - ' + item.description }}</mat-option>
+								</mat-select>
 							</mat-form-field>
 						</div>
 
@@ -277,7 +292,7 @@
 				</div>
 			</mat-tab>
 
-			<mat-tab id="clearingTab" label="{{ 'Transportation.Transaction.ClearingProvisions' | translate }}">
+			<mat-tab id="clearingTab" label="{{ 'Transportation.Transaction.ClearingFile' | translate }}">
 				<div class="col-md-12 kt-margin-b-10-mobile kt-margin-b-10">
 					<div ngbDropdown class="d-inline-block float-right kt-margin-b-10">
 						<button class="kt-margin-l-5 btn btn-success" id="dropdownBasic1" ngbDropdownToggle> <i class="la la-ellipsis-h"></i> {{ 'General.Export' | translate }}</button>

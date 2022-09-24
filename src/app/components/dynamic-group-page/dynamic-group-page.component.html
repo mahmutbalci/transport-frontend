@@ -27,13 +27,12 @@
 		</ngb-panel>
 	</ngb-accordion>
 </form>
+
 <form [formGroup]="tableFilterForm" class="kt-form" autocomplete="off">
 	<div class="mat-table__wrapper">
 		<table mat-table [dataSource]="groupModel" class="mat-elevation-z8" #variableSort="matSort" matSort [matSortActive]="sortActive" [matSortDirection]="sortDirection" matSortDisableClear>
 			<ng-container matColumnDef="{{cl.key}}" *ngFor="let cl of column">
-				<mat-header-cell *matHeaderCellDef
-				[ngClass]="(cl.pipe==='interest' || cl.pipe==='currency' || cl.isSumBy)?'dynamic-mat-row-cell-currency':''"
-				[ngStyle]="(cl.key===getColumnsLastKeys())?{'padding-right':'5px'}:''">
+				<mat-header-cell *matHeaderCellDef [ngClass]="(cl.pipe==='interest' || cl.pipe==='currency' || cl.isSumBy)?'dynamic-mat-row-cell-currency':''" [ngStyle]="(cl.key===getColumnsLastKeys())?{'padding-right':'5px'}:''">
 					<table>
 						<tr mat-sort-header>
 							<td>
@@ -52,9 +51,9 @@
 						</tr>
 					</table>
 				</mat-header-cell>
+
 				<mat-cell *matCellDef="let element">
-					<div [ngClass]="element['isSumBy']?'dynamic-mat-row-cell-sumby':((cl.pipe==='currency' || cl.pipe==='interest')?'dynamic-mat-row-cell-currency':'')"
-						[ngStyle]="(cl.key===getColumnsLastKeys())?{'padding-right':'5px'}:''">
+					<div [ngClass]="element['isSumBy']?'dynamic-mat-row-cell-sumby':((cl.pipe==='currency' || cl.pipe==='interest')?'dynamic-mat-row-cell-currency':'')" [ngStyle]="(cl.key===getColumnsLastKeys())?{'padding-right':'5px'}:''">
 						<div *ngIf="cl.pipe==='currency'">
 							<span [ngClass]="(!element['isSumBy'] && cl.detailColumn && element[cl.detailColumn] && element[cl.detailColumn].length>0)?'kt-tooltip':''">{{element[cl.key] | currency:" ":"symbol-narrow" }}
 								<span *ngIf="(!element['isSumBy'] && cl.detailColumn && element[cl.detailColumn] && element[cl.detailColumn].length>0)" class="kt-tooltiptext">
@@ -63,16 +62,19 @@
 											<mat-header-cell style="width: 50%;" *matHeaderCellDef>{{'Issuing.Statement.StmtDate' | translate}}</mat-header-cell>
 											<mat-cell *matCellDef="let row">{{row.stmtDate | date:'dd.MM.yyyy'}}</mat-cell>
 										</ng-container>
+
 										<ng-container matColumnDef="bucketAmnt">
 											<mat-header-cell style="width: 50%;" *matHeaderCellDef>{{'Issuing.Statement.Balance' | translate}}</mat-header-cell>
 											<mat-cell *matCellDef="let row">{{row.bucketAmnt | currency:" ":"symbol-narrow"}}</mat-cell>
 										</ng-container>
+
 										<mat-header-row *matHeaderRowDef="displayedColumnsDetail"></mat-header-row>
 										<mat-row *matRowDef="let row; columns: displayedColumnsDetail"></mat-row>
 									</mat-table>
 								</span>
 							</span>
 						</div>
+
 						<div *ngIf="cl.pipe==='interest'">
 							<span>{{element[cl.key] | number:".4"}}</span>
 						</div>
@@ -97,11 +99,13 @@
 
 			<mat-header-row *matHeaderRowDef="getColumnsKeys()"></mat-header-row>
 			<mat-row *matRowDef="let row; columns: getColumnsKeys();"></mat-row>
+
 			<ng-container matColumnDef="groupHeader">
 				<td mat-cell [attr.colspan]="column.length" *matCellDef="let groupBy" (click)="groupClick(groupBy.key)">
 					<span><i [ngClass]="groupBy.down ? 'la la-arrow-circle-down mt-icon-resizeable-xs':'la la-arrow-circle-right mt-icon-resizeable-xs'" class="la la-arrow-circle-down mt-icon-resizeable-xs"></i><span> <strong>{{groupBy.initial}}</strong></span></span>
 				</td>
 			</ng-container>
+
 			<mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup"> </mat-row>
 		</table>
 		<div class="mat-table__message kt-font-danger" *ngIf="!model.hasItems && model.wasQuery">{{'General.NoRecordsFound' | translate }}</div>

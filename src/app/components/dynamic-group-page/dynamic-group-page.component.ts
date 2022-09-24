@@ -16,7 +16,6 @@ import { GridOptionsModel } from '@core/_base/layout/models/grid-options.model';
 	templateUrl: './dynamic-group-page.component.html',
 	styleUrls: ['./dynamic-group-page.component.scss']
 })
-
 export class DynamicGroupPageComponent implements OnInit, OnChanges {
 	lookupPipe: LookupPipe = new LookupPipe(new LangParserPipe());
 

@@ -4,7 +4,7 @@
 <div class="modal-body">
 	<p>{{ 'General.YourSessionIsAboutToExpire' | translate }}</p>
 	<p>{{ 'General.LogoutIn' | translate }}</p>
-	<p>{{ timeLeft }} {{ 'General.Seconds ' | translate }}.</p>
+	<p>{{ timeLeft }} {{ 'General.Seconds' | translate }}.</p>
 	<p>
 		<ngb-progressbar type="{{ getType() }}" [value]="progressed" [striped]="true" [animated]="true">
 			<i>{{ timeLeft }}</i>

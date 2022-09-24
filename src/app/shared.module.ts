@@ -38,6 +38,8 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { SortByCheckedPipe } from './pipes/sortByChecked.pipe';
 import { DynamicGroupPageComponent } from '@components/dynamic-group-page/dynamic-group-page.component';
 import { DynamicSpinnerComponent } from '@components/dynamic-spinner/dynamic-spinner.component';
+import { PtcnInfoComponent } from '@components/ptcn-info/ptcn-info.component';
+import { PtcnSearchComponent } from '@components/ptcn-search/ptcn-search.component';
 
 const _components = [
 	MultiAllSelectComponent,
@@ -46,7 +48,8 @@ const _components = [
 	MmultiLangInputPopupComponent,
 	MLockScreenComponent,
 	MDatepickerComponent,
-	MLockScreenComponent,
+	PtcnInfoComponent,
+	PtcnSearchComponent,
 	DynamicParamaterPageComponent,
 	DynamicParamaterPageDefComponent,
 	WorkflowApproveComponent,

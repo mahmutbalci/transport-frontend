@@ -5,9 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 	selector: 'm-json-viewer',
 	templateUrl: './json-viewer.component.html'
 })
-
 export class JsonViewerComponent implements OnInit {
-
 	jsonData: any[];
 
 	constructor(
@@ -17,6 +15,7 @@ export class JsonViewerComponent implements OnInit {
 		if (!data) {
 			data = '';
 		}
+
 		try {
 			this.jsonData = JSON.parse(data);
 		} catch (e) {

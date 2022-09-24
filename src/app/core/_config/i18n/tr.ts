@@ -84,6 +84,9 @@ export const locale = {
 		},
 
 		Transportation: {
+			Card: {
+				PtcnSearch: 'Ptcn Arama',
+			},
 			Transaction: {
 				StartDate: 'Başlangıç Tarihi',
 				EndDate: 'Bitiş Tarihi',
@@ -97,6 +100,8 @@ export const locale = {
 				Ptcn: 'Ptcn',
 				CardEncrypted: 'Şifreli Kart',
 				CardMask: 'Maskelenmiş Kart',
+				ClearCard: 'Açık Kart No',
+				KeyType: 'Key Type',
 				F01MessageType: 'Mesaj Tipi-F01',
 				F02: 'Pan Numarası-F02',
 				F03: 'İşleme Kodu-F03',
@@ -151,13 +156,10 @@ export const locale = {
 				HasCampaign: 'Kampanyalı Mı?',
 				OnlineProvisions: 'Online',
 				ClearingProvisions: 'Takas',
+				ClearingFile: 'Takas Dosyası',
 				TxnDateBegin: 'İşlem Tarihi Başlangıç',
 				TxnDateEnd: 'İşlem Tarihi Bitiş',
 				IsFileSuccess: 'Başarılı Dosya Getir',
-
-				Exception: {
-
-				},
 			},
 			Campaign: {
 				BeginDate: 'Başlangıç Tarihi',
@@ -174,6 +176,10 @@ export const locale = {
 				Budget: 'Bütçe',
 				DiscountRate: 'İndirim Oranı',
 				CampaignId: 'Kampanya Id',
+			},
+
+			Exception: {
+				KeyTypeNotNullForClearCard: 'Açık kart no ile birlikte KeyType seçilmelidir.',
 			},
 		},
 
@@ -460,7 +466,7 @@ export const locale = {
 			SessionTimeout: 'Oturum zaman aşımına uğradı',
 			YourSessionIsAboutToExpire: 'Oturumunuzun süresi dolmak üzere.',
 			LogoutIn: 'Çıkış yapılacak',
-			Seconds: 'saniye',
+			Seconds: 'Saniye',
 			Logout: 'Çıkış Yap',
 			StayConnected: 'Devam et',
 			MoreActions: 'Aksiyonlar',

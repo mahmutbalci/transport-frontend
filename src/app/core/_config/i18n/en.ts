@@ -84,6 +84,9 @@ export const locale = {
 		},
 
 		Transportation: {
+			Card: {
+				PtcnSearch: 'Ptcn Search',
+			},
 			Transaction: {
 				StartDate: 'Start Date',
 				EndDate: 'End Date',
@@ -97,6 +100,8 @@ export const locale = {
 				Ptcn: 'Ptcn',
 				CardEncrypted: 'Encrypted Card',
 				CardMask: 'Masked Card',
+				ClearCard: 'Clear Card No',
+				KeyType: 'Key Type',
 				F01MessageType: 'Message Type-F01',
 				F02: 'Pan Number-F02',
 				F03: 'Processing Code-F03',
@@ -151,13 +156,10 @@ export const locale = {
 				HasCampaign: 'Has Campaign?',
 				OnlineProvisions: 'Online',
 				ClearingProvisions: 'Clearing',
+				ClearingFile: 'Clearing File',
 				TxnDateBegin: 'Txn Date Begin',
 				TxnDateEnd: 'Txn Date End',
 				IsFileSuccess: 'Get Success File',
-
-				Exception: {
-
-				},
 			},
 			Campaign: {
 				BeginDate: 'Begin Date',
@@ -174,6 +176,11 @@ export const locale = {
 				Budget: 'Budget',
 				DiscountRate: 'Discount Rate',
 				CampaignId: 'Campaign Id',
+			},
+
+			Exception: {
+				KeyTypeNotNullForClearCard: 'KeyType must be selected with clear card number.',
+
 			},
 		},
 
@@ -460,7 +467,7 @@ export const locale = {
 			SessionTimeout: 'Session Timeout',
 			YourSessionIsAboutToExpire: 'Your session is about to expire.',
 			LogoutIn: 'Logout in',
-			Seconds: 'seconds',
+			Seconds: 'Seconds',
 			Logout: 'Logout',
 			StayConnected: 'Stay Connected',
 			MoreActions: 'More Actions',
