@@ -11,4 +11,6 @@ export class GetProvisionRequestDto extends BaseModel {
 	txnDateEnd: Date = new Date();
 	fileInfoGuid: number = null;
 	isFileSuccess: boolean = true;
+	clearCard: string = null;
+	keyType: string = null;
 }

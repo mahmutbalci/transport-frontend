@@ -10,6 +10,7 @@ import { ExcelExportService } from '@core/_base/layout/services/excel-export.ser
 import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { GetProvisionRequestDto } from '@models/transport/txn/getProvisionRequestDto.model';
 import { TxnTransactionService } from '@services/transport/txn/txnTransaction-service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
 	selector: 'kt-provision-monitoring',
@@ -162,9 +163,10 @@ export class ProvisionMonitoringComponent implements OnInit {
 	hasFormError: boolean = false;
 	selectedTab: number = 0;
 
-	cardMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, '**', ' ', '****', ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
-	cardBinMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
-	last4DigitsMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
+	cardNumberMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /['*']/, /['*']/, ' ',
+		/['*']/, /['*']/, /['*']/, /['*']/, ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
+	clearCardMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9,'*']/, /[0-9,'*']/, ' ',
+		/[0-9,'*']/, /[0-9,'*']/, /[0-9,'*']/, /[0-9,'*']/, ' ', /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, ' ', /[0-9]/, /[0-9]/, /[0-9]/,];
 	rrnNumberMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/];
 	authCodeMask = [/[0-9,A-Z,a-z]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
 	responseCodeMask = [/[0-9]/, /[0-9]/,];
@@ -183,13 +185,16 @@ export class ProvisionMonitoringComponent implements OnInit {
 	cfgYesNoNumeric: any[] = [];
 	txnCurrencyDefs: any[] = [];
 	cmpCampaignDefs: any[] = [];
+	keyTypeDefs: any[] = [];
 	offlineOnlineIndicators: any[] = [];
 
 	constructor(
 		private txnService: TxnTransactionService,
 		public dialog: MatDialog,
 		private layoutUtilsService: LayoutUtilsService,
-		private excelService: ExcelExportService,) { }
+		private excelService: ExcelExportService,
+		private translate: TranslateService,
+	) { }
 
 	ngOnInit() {
 		Object.keys(this.requestModel).forEach(name => {
@@ -207,10 +212,13 @@ export class ProvisionMonitoringComponent implements OnInit {
 		this.offlineOnlineIndicators.push({ code: '0', description: 'Offline' });
 		this.offlineOnlineIndicators.push({ code: '1', description: 'Online' });
 
-		this.txnService.api.getLookups(['CfgYesNoNumeric', 'TxnCurrencyDef', 'CmpCampaignDef',]).then(res => {
+		this.txnService.api.getLookups(['CfgYesNoNumeric', 'TxnCurrencyDef', 'CmpCampaignDef', 'KeyTypeDef',]).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
 			this.txnCurrencyDefs = res.find(x => x.name === 'TxnCurrencyDef').data;
 			this.cmpCampaignDefs = res.find(x => x.name === 'CmpCampaignDef').data;
+			this.keyTypeDefs = res.find(x => x.name === 'KeyTypeDef').data;
+
+			this.keyTypeDefs = this.keyTypeDefs.filter(x => x.code == '01' || x.code == '02');
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
@@ -220,7 +228,23 @@ export class ProvisionMonitoringComponent implements OnInit {
 	}
 
 	filterConfiguration(): any {
-		this.requestModel = <GetProvisionRequestDto>this.filterForm.value;
+		this.hasFormError = false;
+
+		this.requestModel = new GetProvisionRequestDto();
+		if (!this.requestModel.getFormValues(this.filterForm)) {
+			this.hasFormError = true;
+			return;
+		}
+
+		if (this.requestModel.clearCard) {
+			if (this.requestModel.keyType == null || !this.requestModel.clearCard) {
+				this.filterForm.controls['keyType'].markAsTouched();
+				this.hasFormError = true;
+				this.layoutUtilsService.showError(this.translate.instant('Transportation.Exception.KeyTypeNotNullForClearCard'));
+			}
+
+			this.requestModel.clearCard = this.requestModel.clearCard.replace(/\s/g, '');
+		}
 
 		if (this.requestModel.cardMask) {
 			this.requestModel.cardMask = this.requestModel.cardMask.replace(/\s/g, '');
@@ -240,6 +264,10 @@ export class ProvisionMonitoringComponent implements OnInit {
 					this.paginatorOnl.pageSize
 				);
 
+				if (this.hasFormError) {
+					return;
+				}
+
 				this.dataSourceOnl.load(queryParamsOnl, 'GetOnlineProvisions');
 				break;
 			case 1:
@@ -251,12 +279,18 @@ export class ProvisionMonitoringComponent implements OnInit {
 					this.paginatorClr.pageSize
 				);
 
+				if (this.hasFormError) {
+					return;
+				}
+
 				this.dataSourceClr.load(queryParamsClr, 'GetClearingTransactions');
 				break;
 		}
 	}
 
 	getData() {
+		this.dataSourceOnl.clear();
+		this.dataSourceClr.clear();
 		this.paginatorOnl.pageIndex = 0;
 		this.paginatorClr.pageIndex = 0;
 		this.loadDataSource();
@@ -350,6 +384,10 @@ export class ProvisionMonitoringComponent implements OnInit {
 				funcName = 'GetClearingTransactions';
 				gridColumns = this.gridColumnsClr;
 				break;
+		}
+
+		if (this.hasFormError) {
+			return;
 		}
 
 		this.excelService.exportAsExcelFileRouting(this.txnService,
