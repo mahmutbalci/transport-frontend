@@ -606,7 +606,7 @@ export const locale = {
 			RestrictionProfile: 'Restriction Profile',
 			TicketType: 'Auth Type',
 			AuthType: 'Entry Type',
-			IsBuiltInUser: 'System User',
+			IsBuiltInUser: 'Built-in User (multisession)',
 			SessionDuration: 'Session Duration (minute)',
 			ValidPasswordRegex: 'Password Regex',
 			BlockWrongPasswordCount: 'Block Wrong Password Count',

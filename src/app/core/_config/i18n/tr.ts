@@ -605,7 +605,7 @@ export const locale = {
 			RestrictionProfile: 'Kısıt Profili',
 			TicketType: 'Yetki Tipi',
 			AuthType: 'Giriş Tipi',
-			IsBuiltInUser: 'Sistem Kullanıcısı',
+			IsBuiltInUser: 'Yerleşik Kullanıcı (multisession)',
 			SessionDuration: 'Oturum Süresi (dakika)',
 			ValidPasswordRegex: 'Parola Deseni',
 			BlockWrongPasswordCount: 'Yanlış Şifre Sayısı',
