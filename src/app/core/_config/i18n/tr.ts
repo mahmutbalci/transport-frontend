@@ -174,6 +174,7 @@ export const locale = {
 				DailyTotalCount: 'Günlük Toplam Adet',
 				DailyTotalAmount: 'Günlük Toplam Tutar',
 				Budget: 'Bütçe',
+				UsedBudget: 'Kullanılan Bütçe',
 				DiscountRate: 'İndirim Oranı',
 				CampaignId: 'Kampanya Id',
 			},
