@@ -174,6 +174,7 @@ export const locale = {
 				DailyTotalCount: 'Daily Total Count',
 				DailyTotalAmount: 'Daily Total Amount',
 				Budget: 'Budget',
+				UsedBudget: 'Used Budget',
 				DiscountRate: 'Discount Rate',
 				CampaignId: 'Campaign Id',
 			},
