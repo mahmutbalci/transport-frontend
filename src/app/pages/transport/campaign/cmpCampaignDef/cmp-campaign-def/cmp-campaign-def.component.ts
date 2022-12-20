@@ -257,7 +257,7 @@ export class CmpCampaignDefComponent implements OnInit {
 		}
 
 		let row = <CmpCampaignDetModel>this.detailEntityForm.value;
-		row.campaignId = this.entityModel.guid === 0 ? null : this.entityModel.guid;
+		row.campaignId = this.entityModel.campaignId === 0 ? null : this.entityModel.campaignId;
 		this.entityModel.cmpCampaignDets.push(row);
 		this.dataSourceDetail.setData(this.entityModel.cmpCampaignDets);
 		this.detailEntityForm.reset();

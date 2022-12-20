@@ -40,11 +40,11 @@ export class ParameterDataSource extends BaseDataSource {
 						queryParams,
 						_filtrationFields
 					);
+
 					//set the datasource with filtered data:
 					this.entitySubject.next(result.items);
 					// set the paging info with the filtered data page info
 					this.paginatorTotalSubject.next(result.totalCount);
-
 				}),
 				catchError(err => of(new QueryResultsModel([], err))),
 				finalize(() => this.loadingSubject.next(false))
@@ -68,6 +68,7 @@ export class ParameterDataSource extends BaseDataSource {
 						queryParams,
 						_filtrationFields
 					);
+
 					//set the datasource with filtered data:
 					this.entitySubject.next(result.items);
 					// set the paging info with the filtered data page info
@@ -102,6 +103,7 @@ export class ParameterDataSource extends BaseDataSource {
 						queryParams,
 						_filtrationFields
 					);
+
 					//set the datasource with filtered data:
 					this.entitySubject.next(result.items);
 					// set the paging info with the filtered data page info

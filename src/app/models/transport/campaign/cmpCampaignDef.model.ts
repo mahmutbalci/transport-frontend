@@ -1,7 +1,7 @@
 import { BaseModel } from '@core/_base/crud/models/_base.model';
 
 export class CmpCampaignDefModel extends BaseModel {
-	guid: number = 0;
+	campaignId: number = 0; //16
 	institutionId: number = 0;
 	code: string = null; //5
 	description: string = null;
