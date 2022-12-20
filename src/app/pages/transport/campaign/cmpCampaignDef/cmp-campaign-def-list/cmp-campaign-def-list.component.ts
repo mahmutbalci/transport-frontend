@@ -106,7 +106,7 @@ export class CmpCampaignDefListComponent implements OnInit {
 				return;
 			}
 
-			this.entityService.delete(item.guid).subscribe(() => {
+			this.entityService.delete(item.campaignId).subscribe(() => {
 				this.layoutUtilsService.showNotification(_deleteMessage, MessageType.Delete);
 				this.loadDataSource();
 			}, (error) => {
