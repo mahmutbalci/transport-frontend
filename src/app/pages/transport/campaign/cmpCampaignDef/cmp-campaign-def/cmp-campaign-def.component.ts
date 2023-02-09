@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { LayoutUtilsService, MessageType } from '@core/_base/crud/utils/layout-utils.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -41,12 +41,14 @@ export class CmpCampaignDefComponent implements OnInit {
 	timeMask = [/[0-2]/, /[0-9]/, ':', /[0-5]/, /[0-9]/, ':', /[0-5]/, /[0-9]/,];
 	cmpCodeMask = [/[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/, /[0-9,A-Z,a-z]/,];
 	acqIdMask = [/[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/, /[0-9]/,];
+
 	numberMask = createNumberMask({
 		prefix: '',
 		suffix: '',
 		includeThousandsSeparator: false,
 		integerLimit: 10,
 	});
+
 	amountMask = createNumberMask({
 		prefix: '',
 		suffix: '',
@@ -55,13 +57,14 @@ export class CmpCampaignDefComponent implements OnInit {
 		allowDecimal: true,
 		decimalLimit: 2,
 	});
+
 	rateMask = createNumberMask({
 		prefix: '',
 		suffix: '',
 		includeThousandsSeparator: false,
-		integerLimit: 8,
-		allowDecimal: true,
-		decimalLimit: 5,
+		integerLimit: 3,
+		allowDecimal: false,
+		decimalLimit: 0,
 	});
 
 	// constructor
@@ -78,6 +81,7 @@ export class CmpCampaignDefComponent implements OnInit {
 			this.entityForm.addControl(name, new FormControl(this.entityModel[name]));
 		});
 		this.entityForm.addControl('campaignDays', new FormControl());
+		this.entityForm.get('discountRate').setValidators([Validators.min(1), Validators.max(100)]);
 
 		Object.keys(this.detailModel).forEach(name => {
 			this.detailEntityForm.addControl(name, new FormControl(this.detailModel[name]));
@@ -99,6 +103,10 @@ export class CmpCampaignDefComponent implements OnInit {
 					this.entityModel = res2.data;
 					this.entityModel._isEditMode = !this.isReadonly;
 					this.entityModel._isNew = false;
+
+					if (this.entityModel.discountRate <= 1) {
+						this.entityModel.discountRate *= 100;
+					}
 
 					this.dataSourceDetail.setData(this.entityModel.cmpCampaignDets);
 
@@ -163,26 +171,29 @@ export class CmpCampaignDefComponent implements OnInit {
 	save() {
 		this.isProcessing = true;
 
-		this.entityModel = new CmpCampaignDefModel();
-		if (!this.entityModel.getFormValues(this.entityForm)) {
+		let newEntity = new CmpCampaignDefModel();
+		if (!newEntity.getFormValues(this.entityForm)) {
 			this.isProcessing = false;
 			return;
 		}
 
 		let campaignDays: string[] = this.entityForm.controls['campaignDays'].value;
 		if (!campaignDays || campaignDays.length < 1) {
-			this.entityModel.weekday = null;
+			newEntity.weekday = null;
 		} else {
-			this.entityModel.weekday = '';
+			newEntity.weekday = '';
 			campaignDays.forEach(x => {
-				this.entityModel.weekday += x + this.splitChar;
+				newEntity.weekday += x + this.splitChar;
 			});
 
-			if (this.entityModel.weekday.substr(this.entityModel.weekday.length - 1, 1) === this.splitChar) {
-				this.entityModel.weekday = this.entityModel.weekday.substr(0, this.entityModel.weekday.length - 1);
+			if (newEntity.weekday.substr(newEntity.weekday.length - 1, 1) === this.splitChar) {
+				newEntity.weekday = newEntity.weekday.substr(0, newEntity.weekday.length - 1);
 			}
 		}
 
+		newEntity.discountRate /= 100;
+
+		this.entityModel = newEntity;
 		if (this.entityModel._isNew) {
 			this.create();
 		} else {
