@@ -17,7 +17,8 @@ export class CmpCampaignDefModel extends BaseModel {
 	dailyTotalAmount: number = 0;
 	budget: number = 0;
 	discountRate: number = 0;
-	weekday: string = null; //20
+	weekday: string = null;
+	remainingBudget: number = null;
 
 	cmpCampaignDets: CmpCampaignDetModel[] = [];
 }
@@ -25,7 +26,7 @@ export class CmpCampaignDefModel extends BaseModel {
 
 export class CmpCampaignDetModel extends BaseModel {
 	guid: number = 0;
-	campaignId: number = null; //16
-	cardDigits: string = null; //10
-	d042AcqId: string = null; //15
+	campaignId: number = null; 
+	cardDigits: string = null; 
+	d042AcqId: string = null; 
 }
