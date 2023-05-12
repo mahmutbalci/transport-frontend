@@ -1,6 +1,6 @@
 // Angular
 import { Component, OnInit } from '@angular/core';
-// Transport
+// APP Gateway
 import { ToggleOptions } from '@core/_base/metronic';
 // Layout
 import { LayoutConfigService } from '@core/_base/layout';

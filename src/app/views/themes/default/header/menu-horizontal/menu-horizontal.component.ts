@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import * as objectPath from 'object-path';
 // Layout
 import { LayoutConfigService, MenuConfigService, MenuHorizontalService, MenuOptions } from '@core/_base/layout';
-// Transport
+// APP Gateway
 import { OffcanvasOptions } from '@core/_base/metronic';
 // HTML Class
 import { HtmlClassService } from '../../html-class.service';
