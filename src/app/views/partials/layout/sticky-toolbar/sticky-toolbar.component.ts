@@ -1,6 +1,6 @@
 // Angular
 import { Component } from '@angular/core';
-// Transport
+// APP Gateway
 import { OffcanvasOptions } from '@core/_base/metronic';
 
 @Component({

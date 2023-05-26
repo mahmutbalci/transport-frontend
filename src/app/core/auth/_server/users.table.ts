@@ -12,7 +12,7 @@ export class UsersTable {
 			pic: './assets/media/users/300_25.jpg',
 			fullname: 'Sean',
 			occupation: 'CEO',
-			companyName: 'Transport Application',
+			companyName: 'APP Gateway',
 			phone: '456669067890',
 			address: {
 				addressLine: 'L-12-20 Vertex, Cybersquare',
@@ -38,8 +38,8 @@ export class UsersTable {
 			roles: [2], // Manager
 			pic: './assets/media/users/100_2.jpg',
 			fullname: 'Megan',
-			occupation: 'Deputy Head of Transport Application in Istanbul office',
-			companyName: 'Transport Application',
+			occupation: 'Deputy Head of APP Gateway in Istanbul office',
+			companyName: 'APP Gateway',
 			phone: '456669067891',
 			address: {
 				addressLine: '3487  Ingram Road',
@@ -66,7 +66,7 @@ export class UsersTable {
 			pic: './assets/media/users/default.jpg',
 			fullname: 'Ginobili Maccari',
 			occupation: 'CFO',
-			companyName: 'Transport Application',
+			companyName: 'APP Gateway',
 			phone: '456669067892',
 			address: {
 				addressLine: '1467  Griffin Street',

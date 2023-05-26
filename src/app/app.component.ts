@@ -50,7 +50,7 @@ export const CUSTOM_DATE_FORMATS = {
 })
 export class AppComponent implements OnInit, OnDestroy {
 	// Public properties
-	title = 'Transport Application';
+	title = 'APP Gateway';
 	loader: boolean;
 	private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
