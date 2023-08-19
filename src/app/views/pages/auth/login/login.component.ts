@@ -105,7 +105,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 				
 				
 				this.memberDefList = resp.data;
+
 				sessionStorage.setItem('institutionId', this.memberDefList[0].institutionId);
+
+
+
 				
 			}, responseErr => {
 				if (!isNullOrUndefined(responseErr.exception)) {
@@ -167,7 +171,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	submit() {
 		const controls = this.loginForm.controls;
-		controls.institutionId.setValue(sessionStorage.getItem('institutionId')); 
+
+		const intValue: number = parseInt(sessionStorage.getItem('institutionId'), 10);
+		controls.institutionId.setValue(intValue);
+		
 		/** check form */
 		if (this.loginForm.invalid) {
 			Object.keys(controls).forEach(controlName =>
