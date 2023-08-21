@@ -106,7 +106,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 				
 				this.memberDefList = resp.data;
 
-				sessionStorage.setItem('institutionId', this.memberDefList[0].institutionId);
+				sessionStorage.setItem('institutionLoginId', this.memberDefList[0].institutionId);
 
 
 
@@ -172,7 +172,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 	submit() {
 		const controls = this.loginForm.controls;
 
-		const intValue: number = parseInt(sessionStorage.getItem('institutionId'), 10);
+		const intValue: number = parseInt(sessionStorage.getItem('institutionLoginId'), 10);
 		controls.institutionId.setValue(intValue);
 		
 		/** check form */
@@ -191,7 +191,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			clientSecret: controls['clientSecret'].value,
 			institutionId: controls['institutionId'].value,
 		};
-		
+		console.log(authData)
 		let memberName = this.memberDefList.find(member => member.institutionId === authData.institutionId).description;
 		sessionStorage.setItem('memberName', memberName);
 
