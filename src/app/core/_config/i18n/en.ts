@@ -13,7 +13,7 @@ export const locale = {
 			New: 'New',
 			Actions: 'Actions',
 			CreatePost: 'Create New Post',
-			Reports: 'Reports',
+			Reports: 'Report',
 			Apps: 'Apps',
 			Dashboard: 'Dashboard',
 
@@ -26,8 +26,20 @@ export const locale = {
 				Txn: {
 					Title: 'Transaction',
 					ProvisionMonitoring: 'Provision Monitoring',
+					
+				},
+				Reports: {
+					Title: 'Reports',					
+					DailyMonitoring: 'Daily Report',
+					MonthlyMonitoring: 'Monthly Report',
+
+				},
+				Merchant: {
+					Title: 'Mapping Merchant',
+					MappingMerchantDefinition: 'Mapping Merchant Definition',
 				},
 			},
+			
 			Common: {
 				Title: 'System',
 				Member: {
@@ -180,7 +192,43 @@ export const locale = {
 				CampaignId: 'Campaign Id',
 				CampaignCode: 'Campaign Code',
 			},
-
+			ReportsDaily: {
+				F13: 'Txn Date',
+				F39ResponseCode: 'Response Code',
+				F42MerchantId: 'Merchant Id',
+				F43City: 'Merchant City',
+				F43Name: 'Merchant Name',
+				OfflineOnlineIndicator: 'Offline/Online Indicator',
+			
+				McCount :'Mc Count',	
+				VisaCount :'Visa Count',	
+				TroyCount :'Troy Count',	
+				OtherCount: 'Other Count',	
+				TotalAmount: 'Total Amount',			
+				TotalCount:'Total Count',				
+				TotalCampaignAmount: 'Total Campaign Amount',				
+				TotalCampaignCount: 'Total Campaign Count',
+			},
+			ReportsMonthly: {
+				Month: 'Ay',
+				F43AcceptorLocation: 'Acceptor Location-F43',			
+				OfflineOnlineIndicator: 'Offline/Online Indicator',
+				Bin: 'BIN',
+				SuccessCount: 'Response Code',				
+				TotalCount: 'Total Count',
+				SuccessTotalAmount:'Success Total Amount',
+				FailTotalAmount:'Fail Total Amount',
+				TotalAmount:'Total Amount'
+			},
+			Merchant: {
+				BankCode: 'Bank Code',
+				D042SourceAcqId: 'D042SourceAcqId',
+				D042DestAcqId: 'D042DestAcqId',
+				D042AcqId: 'D042AcqId',
+				TerminalId: 'Terminal Id',
+				MerchantName:'Merchant Name',
+				InstitutionId:'Institution Id'
+			},
 			Exception: {
 				KeyTypeNotNullForClearCard: 'KeyType must be selected with clear card number.',
 

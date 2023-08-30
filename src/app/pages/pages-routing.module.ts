@@ -68,6 +68,15 @@ const routes: Routes = [
 				loadChildren: './transport/txn/transportTxn.module#TransportTxnModule'
 			},
 			{
+				path: 'transport/txn',
+				loadChildren: './transport/txn/mappingMerchant.module#MappingMerchantModule'
+			},
+			{
+				path: 'transport/report',
+				loadChildren: './transport/report/transportReport.module#TransportReportModule'
+			},
+			
+			{
 				path: 'error/403',
 				component: ErrorPageComponent,
 				data: {
