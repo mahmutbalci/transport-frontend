@@ -2,6 +2,7 @@ import { BaseModel } from '@core/_base/crud/models/_base.model';
 
 export class GetReportMonthlyRequestDto extends BaseModel {
 	month: string = null
+	endMonth : string = null
 	f39ResponseCode:string = null
 	f43Location : string = null
 	indicator: string = null

@@ -209,7 +209,8 @@ export const locale = {
 		
 			},
 			ReportsMonthly: {
-				Month: 'Ay',
+				Month: 'Başlangıç Ay',
+				EndMonth: 'Bitiş Ay',
 				F43AcceptorLocation: 'Acceptor Location-F43',				
 				OfflineOnlineIndicator: 'Offline/Online Gösterge',
 				Bin: 'BIN',

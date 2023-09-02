@@ -210,7 +210,8 @@ export const locale = {
 				TotalCampaignCount: 'Total Campaign Count',
 			},
 			ReportsMonthly: {
-				Month: 'Ay',
+				Month: 'Start Month',
+				EndMonth: 'Last Month',
 				F43AcceptorLocation: 'Acceptor Location-F43',			
 				OfflineOnlineIndicator: 'Offline/Online Indicator',
 				Bin: 'BIN',

@@ -28,6 +28,7 @@ export class MonthlyMonitoringComponent implements OnInit {
 	gridColumnsOnl = [
 		{
 			month: 'Transportation.ReportsMonthly.Month',
+			endMonth: 'Transportation.ReportsMonthly.Month',
 			f43Location: 'Transportation.ReportsMonthly.F43AcceptorLocation',
 			indicator: 'Transportation.ReportsMonthly.OfflineOnlineIndicator',
 			bin: 'Transportation.ReportsMonthly.Bin',
@@ -47,6 +48,7 @@ export class MonthlyMonitoringComponent implements OnInit {
 	gridColumnsClr = [
 		{
 			month: 'Transportation.ReportsMonthly.Month',
+			endMonth: 'Transportation.ReportsMonthly.EndMonth',
 			f43Location: 'Transportation.ReportsMonthly.F43AcceptorLocation',
 			indicator: 'Transportation.ReportsMonthly.OfflineOnlineIndicator',
 			bin: 'Transportation.ReportsMonthly.Bin',

@@ -9,6 +9,7 @@ import { HtmlClassService } from '../../html-class.service';
 @Component({
 	selector: 'kt-brand',
 	templateUrl: './brand.component.html',
+	styleUrls: ['./brand.component.scss'],
 })
 export class BrandComponent implements OnInit, AfterViewInit {
 	// Public properties

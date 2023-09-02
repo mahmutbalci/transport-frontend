@@ -30,14 +30,22 @@
 					<div class="row">
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
 							<mat-form-field class="mat-form-field-fluid">
-								<input matInput [matDatepicker]="month" formControlName="month" placeholder="{{ 'Transportation.ReportsMonthly.Month' | translate }}" readonly="true">
+								<input matInput [matDatepicker]="month" formControlName="month" placeholder="{{ 'Transportation.ReportsMonthly.Month' | translate }}" readonly="true" required>
 								<mat-datepicker-toggle matSuffix [for]="month"></mat-datepicker-toggle>
 								<mat-datepicker #month></mat-datepicker>
 							</mat-form-field>
 
 							
 						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput [matDatepicker]="endMonth" formControlName="endMonth" placeholder="{{ 'Transportation.ReportsMonthly.EndMonth' | translate }}" >
+								<mat-datepicker-toggle matSuffix [for]="endMonth"></mat-datepicker-toggle>
+								<mat-datepicker #endMonth></mat-datepicker>
+							</mat-form-field>
 
+							
+						</div>
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile" [hidden]="true">
 							<mat-form-field class="mat-form-field-fluid">
 								<input matInput  formControlName="f43Location" placeholder="{{ 'Transportation.ReportsMonthly.F43AcceptorLocation' | translate }}" >
@@ -108,7 +116,12 @@
 							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ gridColumnsOnl[0].month | translate }}</mat-header-cell>
 							<mat-cell *matCellDef="let row">{{ row.month }}</mat-cell>
 						</ng-container>
-
+						<div [hidden]="true">
+						<ng-container matColumnDef="endMonth" >
+							<mat-header-cell  *matHeaderCellDef mat-sort-header [hidden]="true">{{ gridColumnsOnl[0].endMonth | translate }}</mat-header-cell>
+							<mat-cell *matCellDef="let row" [hidden]="true">{{ row.endMonth }}</mat-cell>
+						</ng-container>
+					    </div>
 						<ng-container matColumnDef="f43Location">
 							<mat-header-cell *matHeaderCellDef mat-sort-header>{{ gridColumnsOnl[0].f43Location | translate }}</mat-header-cell>
 							<mat-cell *matCellDef="let row">{{ row.f43Location }}</mat-cell>
