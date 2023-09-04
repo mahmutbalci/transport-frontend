@@ -1,0 +1,32 @@
+<div class="row">
+<div class="col-md-6">
+ 
+    <canvas baseChart
+                [data]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></canvas>
+  </div>
+  <div class="col-md-6">
+		<canvas baseChart
+		  [data]="pieChartData"
+		  [labels]="pieChartLabels"
+		  [chartType]="pieChartType"
+		  [colors]="pieChartColors"
+		  [options]="pieChartOptions"
+		  (chartHover)="chartHovered($event)"
+		  (chartClick)="chartClicked($event)">
+		</canvas>
+  </div>
+</div>
+<div class="col-md-12 text-center" style="margin-top: 10px;height: 50%">
+    <ng-container ktPortletTools>
+		<button id="btnGet" class="custom-button btn btn-brand" (click)="randomizeType()" >
+			<i class="la la-filter"></i>{{ 'Menu.Chart.Title' | translate }}
+		</button>
+
+	</ng-container>
+</div>
+ 

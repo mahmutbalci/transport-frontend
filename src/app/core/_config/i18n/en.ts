@@ -81,6 +81,10 @@ export const locale = {
 					Title: 'Parameter'
 				}
 			},
+			Chart: {
+				Title: 'Change',
+				
+			},
 		},
 
 		Transportation: {
