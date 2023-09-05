@@ -1,0 +1,14 @@
+.custom-button {
+	color: white;
+	border: none;
+	border-radius: 4px;
+	padding: 10px 20px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	float: right;
+  }
+  
+  /* Düğme üzerine gelindiğinde stil değişikliği */
+  .custom-button:hover {
+	background-color: #5eb3ec;
+  }

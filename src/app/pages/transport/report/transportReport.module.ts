@@ -13,11 +13,12 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { ThemeModule } from 'app/views/themes/default/theme.module';
 import { DailyMonitoringComponent } from './dailyMonitoring/daily-monitoring/daily-monitoring.component';
 import { MonthlyMonitoringComponent } from './monthlyMonitoring/monthly-monitoring/monthly-monitoring.component';
-
+import { DoughnutChartComponent } from '@pages/chart/app-doughnut-chart/app-doughnut-chartt.component';
 
 const routes: Routes = [
 	{ path: 'dailyMonitoring', component: DailyMonitoringComponent },
 	{ path: 'monthlyMonitoring', component: MonthlyMonitoringComponent },
+	{ path: 'chartMonitoring' , component: DoughnutChartComponent},
 
 ];
 
@@ -39,7 +40,8 @@ const routes: Routes = [
 	],
 	declarations: [
 		DailyMonitoringComponent,
-		MonthlyMonitoringComponent
+		MonthlyMonitoringComponent,
+		DoughnutChartComponent
 	],
 	entryComponents: [],
 	exports: [RouterModule]
