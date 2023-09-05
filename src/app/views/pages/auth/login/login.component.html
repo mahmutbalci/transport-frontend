@@ -18,11 +18,12 @@
 		<!--begin::Form-->
 		<form class="kt-form" [formGroup]="loginForm" autocomplete="off">
 			<div class="form-group">
-				<mat-form-field>
-					<mat-select placeholder="{{ 'Auth.Input.InstitutionId' | translate }}" formControlName="institutionId" required>
-						<mat-option id="institutionId" [value]="item.institutionId" *ngFor="let item of memberDefList"> {{item.description}}</mat-option>
-					</mat-select>
+			
+			    <mat-form-field>
+					<input style="display: none;" matInput placeholder="{{ 'Auth.Input.InstitutionId' | translate }}"  [value]="memberDefList[0]?.institutionId"  formControlName="institutionId" required>
+					<ng-container  id="institutionId" ><strong>{{memberDefList[0]?.countryCode + memberDefList[0]?.institutionId}}</strong></ng-container>
 				</mat-form-field>
+				
 			</div>
 
 			<div class="form-group">

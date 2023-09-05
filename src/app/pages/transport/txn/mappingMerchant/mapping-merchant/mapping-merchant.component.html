@@ -1,0 +1,76 @@
+<kt-portlet [options]="{headLarge: true, enableSticky: true}" [loading$]="loading$">
+	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+		<ng-container ktPortletTitle>
+			<div class="kt-portlet__head-title">
+				<h3 class="kt-portlet__head-title" id="title">
+					{{ 'Menu.Transportation.Merchant.MappingMerchantDefinition' | translate }} | {{ getComponentTitle() }}
+				</h3>
+			</div>
+		</ng-container>
+
+		<ng-container ktPortletTools>
+			<a id="btnBack" class="kt-margin-l-5 btn btn-brand" (click)="goBack()">
+				<span><i class="la la-mail-reply"></i><span>{{ 'General.Back' | translate }}</span></span>
+			</a>
+
+			<a id="btnClear" *ngIf="entityModel._isNew" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-secondary" (click)="clearScreen()">
+				<span><i class="la la-recycle"></i><span>{{ 'General.Clear' | translate }}</span></span>
+			</a>
+
+			<div *ngIf="'add'|checkAuth">
+				<a id="btnSave" *ngIf="entityModel._isNew" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-save"></i><span>{{ 'General.Save' | translate }}</span></span>
+				</a>
+
+				<a id="btnUpdate" *ngIf="entityModel._isEditMode" [class.disabled]="isProcessing || isEditModeDetail" class="kt-margin-l-5 btn btn-brand" (click)="save()">
+					<span><i class="la la-edit"></i><span>{{ 'General.Update' | translate }}</span></span>
+				</a>
+			</div>
+		</ng-container>
+	</kt-portlet-header>
+
+	<kt-portlet-body>
+		<form [formGroup]="entityForm" [checkauth]="isReadonly" class="kt-form ">
+			<div class="kt-form__section kt-form__section--first">
+				<div class="kt-form__group">
+					<div class="row">
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+									<input matInput placeholder="{{ 'Transportation.Merchant.BankCode' | translate }}"
+									   formControlName="bankCode" maxlength="3" readonly="{{ entityModel._isEditMode }}" type="number"
+									  required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Merchant.D042SourceAcqId' | translate }}" formControlName="d042SourceAcqId" readonly="{{ entityModel._isEditMode }}" maxlength="4000" stringUpper required>
+							</mat-form-field>
+						</div>
+
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Merchant.D042DestAcqId' | translate }}"  formControlName="d042DestAcqId" maxlength="4000" readonly="{{ entityModel._isEditMode }}" stringUpper required>
+							</mat-form-field>
+						</div>
+
+						
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Merchant.D042AcqId' | translate }}" formControlName="d042AcqId" maxlength="4000" readonly="{{ entityModel._isEditMode }}" stringUpper required>
+							</mat-form-field>
+						</div>
+						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile" [hidden]="true">
+							<mat-form-field class="mat-form-field-fluid">
+								<input matInput placeholder="{{ 'Transportation.Merchant.TerminalId' | translate }}"  formControlName="terminalId" maxlength="4000" readonly="{{ entityModel._isEditMode }}" stringUpper required>
+							</mat-form-field>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		
+		</form>
+	</kt-portlet-body>
+</kt-portlet>
+  

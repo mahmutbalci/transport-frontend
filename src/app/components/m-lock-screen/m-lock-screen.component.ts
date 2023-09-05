@@ -5,6 +5,7 @@ import { AuthService } from '@core/auth/_services/auth.service';
 import { LayoutConfigService } from '@core/_base/layout/services/layout-config.service';
 import { UserIdleService } from 'angular-user-idle';
 
+
 @Component({
 	selector: 'm-lock-screen',
 	templateUrl: './m-lock-screen.component.html'
@@ -21,7 +22,7 @@ export class MLockScreenComponent implements OnInit {
 		private configService: LayoutConfigService,
 		private authService: AuthService,
 		private router: Router,
-		private userIdle: UserIdleService,
+		 private userIdle: UserIdleService,
 	) {
 		this.configService.onConfigUpdated$.subscribe(model => {
 			const config = model;
@@ -68,7 +69,7 @@ export class MLockScreenComponent implements OnInit {
 		this.matdialog.closeAll();
 		let routerStateSnapshot = this.router.routerState.snapshot;
 		this.router.navigate(['/auth/login'], { queryParams: { 'url': routerStateSnapshot.url } });
-		this.userIdle.stopWatching();
+		 this.userIdle.stopWatching();
 	}
 
 	stayConnected() {

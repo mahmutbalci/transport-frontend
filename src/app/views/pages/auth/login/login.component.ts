@@ -1,3 +1,4 @@
+import { InstitutionDefinitionService } from './../../../../services/common/member/institutionDefinition.service';
 // Angular
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -95,11 +96,21 @@ export class LoginComponent implements OnInit, OnDestroy {
 			window.location.reload();
 			return;
 		}
-
+		
 		this.initLoginForm();
 		this.auth.fillInstutions().pipe(
 			tap(resp => {
+				
+				
+				
+				
 				this.memberDefList = resp.data;
+
+				sessionStorage.setItem('institutionLoginId', this.memberDefList[0].institutionId);
+
+
+
+				
 			}, responseErr => {
 				if (!isNullOrUndefined(responseErr.exception)) {
 					this.authNoticeService.setNotice(responseErr.exception.message, 'danger');
@@ -154,12 +165,16 @@ export class LoginComponent implements OnInit, OnDestroy {
 			])],
 		});
 	}
-
+	
 	/**
 	 * Form Submit
 	 */
 	submit() {
 		const controls = this.loginForm.controls;
+
+		const intValue: number = parseInt(sessionStorage.getItem('institutionLoginId'), 10);
+		controls.institutionId.setValue(intValue);
+		
 		/** check form */
 		if (this.loginForm.invalid) {
 			Object.keys(controls).forEach(controlName =>
@@ -176,7 +191,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			clientSecret: controls['clientSecret'].value,
 			institutionId: controls['institutionId'].value,
 		};
-
+		console.log(authData)
 		let memberName = this.memberDefList.find(member => member.institutionId === authData.institutionId).description;
 		sessionStorage.setItem('memberName', memberName);
 
