@@ -20,11 +20,12 @@ import { LayoutUtilsService, MessageType } from '@core/_base/crud';
 
 /**
  * ! Just example => Should be removed in development
- */
+*/
 const DEMO_PARAMS = {
 	CLIENT_ID: null,
 	CLIENT_SECRET: null,
 	INSTITUTION_ID: null,
+	COUNTRY_CODE:null
 };
 
 @Component({
@@ -69,6 +70,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		private activatedRoute: ActivatedRoute,
 		private translationService: TranslationService,
 		private zone: NgZone,
+		
 		private layoutUtilsService: LayoutUtilsService,
 	) {
 		this.unsubscribe = new Subject();
@@ -77,7 +79,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 				this.previusUrl = params.url;
 			}
 		});
+		
 		dynSub.unsubscribe();
+		
 	}
 
 	/**
@@ -98,8 +102,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
 		this.initLoginForm();
 		this.auth.fillInstutions().pipe(
-			tap(resp => {
-				this.memberDefList = resp.data;
+
+			tap(resp => {				
+				this.memberDefList = resp.data;				
+
 			}, responseErr => {
 				if (!isNullOrUndefined(responseErr.exception)) {
 					this.authNoticeService.setNotice(responseErr.exception.message, 'danger');
@@ -129,7 +135,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 		this.unsubscribe.complete();
 		this.loading = false;
 	}
-
+	
 	/**
 	 * Form initalization
 	 * Default params, validators
@@ -149,9 +155,11 @@ export class LoginComponent implements OnInit, OnDestroy {
 			])],
 			institutionId: [DEMO_PARAMS.INSTITUTION_ID, Validators.compose([
 				Validators.required,
-				Validators.minLength(1),
-				Validators.maxLength(4)
+				Validators.minLength(6),
+				Validators.maxLength(6)
 			])],
+			
+			
 		});
 	}
 
@@ -160,6 +168,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 */
 	submit() {
 		const controls = this.loginForm.controls;
+
+		const institutionIdAndCountryCode: string = controls['institutionId'].value;
+		const stringDeneme = institutionIdAndCountryCode.substring(3, 6)==""?institutionIdAndCountryCode:institutionIdAndCountryCode.substring(3, 6);
+        const institutionId: number = parseInt(stringDeneme);
+        const countryCode: string = institutionIdAndCountryCode.substring(0,3);
+		controls.institutionId.setValue(institutionId);		
+
 		/** check form */
 		if (this.loginForm.invalid) {
 			Object.keys(controls).forEach(controlName =>
@@ -167,21 +182,26 @@ export class LoginComponent implements OnInit, OnDestroy {
 			);
 			return;
 		}
-
+		controls.institutionId.setValue(institutionIdAndCountryCode);
 		this.loading = true;
 		this.isDisable = true;
 
 		const authData = {
 			clientId: controls['clientId'].value,
 			clientSecret: controls['clientSecret'].value,
-			institutionId: controls['institutionId'].value,
+			institutionId: institutionId,
+			countryCode: countryCode
 		};
+
 
 		let memberName = this.memberDefList.find(member => member.institutionId === authData.institutionId).description;
 		sessionStorage.setItem('memberName', memberName);
 
+		
+		 
+
 		this.determineLocalIp();
-		this.auth.login(authData.clientId, authData.clientSecret, authData.institutionId)
+		this.auth.login(authData.clientId, authData.clientSecret, authData.institutionId,authData.countryCode)
 			.pipe(
 				tap(authTokenModel => {
 					if (authTokenModel && authTokenModel.success) {
@@ -231,7 +251,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 							sessionStorage.setItem('userEvent', 'login');
 							sessionStorage.setItem('user', JSON.stringify(res1.data));
 							sessionStorage.setItem('userCode', authData.clientId);
-							sessionStorage.setItem('institutionId', authData.institutionId);
+							sessionStorage.setItem('institutionId', authData.institutionId.toString());
 							sessionStorage.setItem('userClaims', JSON.stringify(res1.data.userRoleIds));
 
 							this.auth.saveAccessData(authTokenModel, res1.data.userRoleIds);
@@ -298,8 +318,19 @@ export class LoginComponent implements OnInit, OnDestroy {
 				pc.close();
 			});
 		};
-	}
 
+		
+	}            
+	
 	onLanguageChange(lang: any): void {
 	}
+	allowNumbersOnly(event) {
+	
+		const inputChar = String.fromCharCode(event.charCode);
+	  
+		// Yalnızca rakam karakterlerine izin vermek için bir kontrol yapın
+		if (!/^[0-9]+$/.test(inputChar)) {
+		  event.preventDefault();
+		}
+	  }
 }

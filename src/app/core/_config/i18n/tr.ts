@@ -700,6 +700,7 @@ export const locale = {
 				InstitutionId: 'Kurum',
 				UserCode: 'Kullanıcı Adı',
 				UserInfo: 'Kullanıcı Bilgisi',
+				CountryCode:'Ülke Kodu'
 			},
 			Validation: {
 				AgreementRequired: 'Sözleşmeyi kabul ediyorum.',
