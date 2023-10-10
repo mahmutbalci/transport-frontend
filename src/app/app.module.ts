@@ -85,6 +85,9 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
 import { TransportApi } from '@services/transport.api';
 import { CampaignServiceModule } from '@services/transport/campaign/campaign-service.module';
 import { TransportTxnServiceModule } from '@services/transport/txn/transportTxn-service.module';
+import { MappingMerchantServiceModule } from '@services/transport/txn/mappingMerchant-service.module';
+import { ReportDailyServiceModule } from '@services/transport/report/reportDaily-service.module';
+import { ReportMonthlyServiceModule } from '@services/transport/report/reportMonthly-service.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	wheelSpeed: 0.5,
@@ -138,7 +141,10 @@ registerLocaleData(localetr, localetrExtra);
 		LogServiceModule,
 		MemberServiceModule,
 		TxnServiceModule,
+		ReportDailyServiceModule,
+		ReportMonthlyServiceModule,
 		CampaignServiceModule,
+		MappingMerchantServiceModule,
 		TransportTxnServiceModule,
 		FrameworkServiceModule,
 		SharedModule,

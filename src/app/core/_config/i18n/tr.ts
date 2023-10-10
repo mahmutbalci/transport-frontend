@@ -13,7 +13,7 @@ export const locale = {
 			New: 'Yeni',
 			Actions: 'Aksiyonlar',
 			CreatePost: 'Yeni Gönderi Oluştur',
-			Reports: 'Raporlar',
+			Report: 'Raporlar',
 			Apps: 'Uygulamalar',
 			Dashboard: 'Anasayfa',
 
@@ -25,9 +25,20 @@ export const locale = {
 				},
 				Txn: {
 					Title: 'İşlemler',
-					ProvisionMonitoring: 'Provizyon Gözlem',
+					ProvisionMonitoring: 'Provizyon Gözlem',					
+
 				},
-			},
+				Reports: {
+					Title: 'Raporlar',				
+					DailyMonitoring: 'Günlük Rapor',
+					MonthlyMonitoring: 'Aylık Rapor',
+
+				},
+				Merchant: {
+					Title: 'İş Yeri',
+					MappingMerchantDefinition: 'İş Yeri Yönlendirme',
+				},
+			},			
 			Common: {
 				Title: 'Sistem',
 				Member: {
@@ -179,6 +190,44 @@ export const locale = {
 				DiscountRate: 'İndirim Oranı',
 				CampaignId: 'Kampanya Id',
 				CampaignCode: 'Kampanya Kodu',
+			},
+			ReportsDaily: {
+				F13: 'İşlem Tarihi',
+				F39ResponseCode: 'Cevap Kodu',
+				F42MerchantId: 'İş Yeri Id',
+				F43Location:'İş Yeri Adı',
+				OfflineOnlineIndicator: 'Indicator',
+				McCount :'MC Adet',	
+				VisaCount :'Visa Adet',	
+				TroyCount :'Troy Adet',	
+				OtherCount: 'Diğer Adet',	
+				TotalAmount: 'Toplam Tutar',			
+				TotalCount:'Toplam Adet',				
+				TotalCampaignAmount: 'Toplam Kampanya Tutarı',				
+				TotalCampaignCount: 'Toplam Kampanya Sayısı',
+				
+		
+			},
+			ReportsMonthly: {
+				Month: 'Başlangıç Ay',
+				EndMonth: 'Bitiş Ay',
+				F43AcceptorLocation: 'Acceptor Location-F43',				
+				OfflineOnlineIndicator: 'Offline/Online Gösterge',
+				Bin: 'BIN',
+				SuccessCount: 'Başarılı Adet',				
+				TotalCount:'Toplam Sayım',
+				SuccessTotalAmount:'Başarılı Toplam Tutar',
+				FailTotalAmount:'Başarısız Toplam Tutar',
+				TotalAmount:'Toplam Tutar'
+			},
+			Merchant: {
+				BankCode: 'Banka Kodu',
+				D042SourceAcqId: 'D042SourceAcqId',
+				D042DestAcqId: 'D042DestAcqId',
+				D042AcqId: 'D042AcqId',
+				TerminalId: 'Terminal Id',
+				MerchantName:'Ticari Isim',
+				InstitutionId:'Kurum Id'
 			},
 
 			Exception: {
