@@ -165,7 +165,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 			])],
 			institutionId: [DEMO_PARAMS.INSTITUTION_ID, Validators.compose([
 				Validators.required,
-				Validators.minLength(6),
+				Validators.minLength(5),
 				Validators.maxLength(6)
 			])],
 			
@@ -177,13 +177,30 @@ export class LoginComponent implements OnInit, OnDestroy {
 	 * Form Submit
 	 */
 	submit() {
+		let institutionIdParsed = "";
+		let institutionId = 0;
+		let countryCode = "";
 		const controls = this.loginForm.controls;
 
 
 		const institutionIdAndCountryCode: string = controls['institutionId'].value;
-		const stringDeneme = institutionIdAndCountryCode.substring(3, 6)==""?institutionIdAndCountryCode:institutionIdAndCountryCode.substring(3, 6);
-        const institutionId: number = parseInt(stringDeneme);
-        const countryCode: string = institutionIdAndCountryCode.substring(0,3);
+		if (institutionIdAndCountryCode.length === 5 ) {
+			let institutionIdParsed = institutionIdAndCountryCode.substring(2, 5)==""?institutionIdAndCountryCode:institutionIdAndCountryCode.substring(2, 5);
+          institutionId = parseInt(institutionIdParsed);
+         countryCode = institutionIdAndCountryCode.substring(0,2);
+		} else  {
+			institutionIdParsed = institutionIdAndCountryCode.substring(3, 6)==""?institutionIdAndCountryCode:institutionIdAndCountryCode.substring(3, 6);
+			institutionId = parseInt(institutionIdParsed);
+			if (institutionIdAndCountryCode.charAt(0) == "0")
+			{
+				
+				countryCode = institutionIdAndCountryCode.substring(1,3);
+			}
+			else {
+				countryCode = institutionIdAndCountryCode.substring(0,3);
+			}
+		}
+		
 		controls.institutionId.setValue(institutionId);		
 
 
@@ -205,8 +222,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 			countryCode: countryCode
 		};
 
-		let memberName = this.memberDefList.find(member => member.institutionId === authData.institutionId).description;
-		sessionStorage.setItem('memberName', memberName);
+		// // let memberName = this.memberDefList.find(member => authData.institutionId === authData.institutionId).description;
+		// // sessionStorage.setItem('memberName', memberName);
 
 		
 		 
