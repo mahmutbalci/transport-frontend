@@ -20,7 +20,12 @@
 				<div class="kt-login__info">
 					<div class="kt-login__copyright">
 						© {{ today| date: 'yyyy' }}
+						<div *ngIf="showEnvName">{{ envName }}</div>
 					</div>
+					
+
+				
+				
 					<div class="kt-login__menu">
 						<!-- <a href="" target=”_blank” class="kt-link">{{ 'Auth.General.Contact' | translate }}</a> -->
 					</div>
