@@ -20,8 +20,11 @@
 			<div class="form-group">
 			
 			    <mat-form-field>
-					<input style="display: none;" matInput placeholder="{{ 'Auth.Input.InstitutionId' | translate }}"  [value]="memberDefList[0]?.institutionId"  formControlName="institutionId" required>
-					<ng-container  id="institutionId" ><strong>{{memberDefList[0]?.countryCode + memberDefList[0]?.institutionId}}</strong></ng-container>
+
+					<mat-label>{{  'Auth.Input.CountryCode' | translate }}-{{ 'Auth.Input.InstitutionId' | translate }}</mat-label>
+					<input matInput type="text" placeholder="{{ 'Auth.Input.CountryCode' | translate }}-{{ 'Auth.Input.InstitutionId' | translate }}" (keypress)="allowNumbersOnly($event)" formControlName="institutionId" minlength="5" maxlength="6" required autocomplete="off" />
+
+
 				</mat-form-field>
 				
 			</div>

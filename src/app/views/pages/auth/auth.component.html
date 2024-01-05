@@ -4,7 +4,9 @@
 		<div class="kt-grid__item kt-grid__item--order-tablet-and-mobile-2 kt-grid kt-grid--hor kt-login__aside" style="background-image: url(./assets/media/bg/bg-2.jpg);">
 			<div class="kt-grid__item">
 				<a href="javascript:;" class="kt-login__logo">
+
 					<img src="./assets/media/logos/company-logo.png" height="250px" alt="">
+
 				</a>
 			</div>
 
@@ -18,7 +20,12 @@
 				<div class="kt-login__info">
 					<div class="kt-login__copyright">
 						© {{ today| date: 'yyyy' }}
+						<div *ngIf="showEnvName">{{ envName }}</div>
 					</div>
+					
+
+				
+				
 					<div class="kt-login__menu">
 						<!-- <a href="" target=”_blank” class="kt-link">{{ 'Auth.General.Contact' | translate }}</a> -->
 					</div>

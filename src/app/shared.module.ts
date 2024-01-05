@@ -40,7 +40,7 @@ import { DynamicGroupPageComponent } from '@components/dynamic-group-page/dynami
 import { DynamicSpinnerComponent } from '@components/dynamic-spinner/dynamic-spinner.component';
 import { PtcnInfoComponent } from '@components/ptcn-info/ptcn-info.component';
 import { PtcnSearchComponent } from '@components/ptcn-search/ptcn-search.component';
-
+import { ConfirmationDialogPageComponent } from '@components/confirmation-dialog-page/confirmation-dialog-page.component';
 const _components = [
 	MultiAllSelectComponent,
 	DynamicQueryBuilderComponent,
@@ -56,7 +56,8 @@ const _components = [
 	DynamicHistoryPageComponent,
 	DynamicGroupPageComponent,
 	JsonViewerComponent,
-	DynamicSpinnerComponent
+	DynamicSpinnerComponent,
+	ConfirmationDialogPageComponent
 ];
 
 const _pipes = [

@@ -1,0 +1,38 @@
+.cool-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	bottom:0
+  }
+  .mat-dialog-actions
+  {
+	
+	margin-left: auto;
+  }
+
+  .notification-button-class {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	
+	  background-color: #5d78ff;
+	  color: white;
+	  border-radius: 15px 15 15 15px;
+	  margin-right: 10px;
+	  margin-top: 10px;
+	  padding: 10px 20px;
+	  font-size: 15px;
+  
+	  &:hover {
+		background-color: #4056b8;
+	  }
+  
+	  &:focus {
+		outline: none;
+	  }
+  
+	  &:active {
+		background-color: #2d3d7e;
+	  }
+	}
