@@ -8,11 +8,11 @@ export const environment = {
 	transportApiUrl: 'https://testway.advancedpaymentplatforms.com/Transportation/api',
 	crystalQuartzUrl: 'https://testway.advancedpaymentplatforms.com:8088/quartz/',
 
-	/*
-	baseUrl: 'http://transportation.provisionpay.com:1908/api',
-	commonApiUrl: 'http://transportation.provisionpay.com:1908/api',
-	frameworkApiUrl: 'http://transportation.provisionpay.com:1908/api',
-	transportApiUrl: 'http://transportation.provisionpay.com:1908/api',
-	crystalQuartzUrl: 'http://transportation.provisionpay.com:8088/quartz/',
-	*/
+	//------NecTest---------------
+	// baseUrl: 'http://10.10.191.12:8012//api',
+	// commonApiUrl: 'http://10.10.191.12:8012/api',
+	// frameworkApiUrl: 'http://10.10.191.12:8012/api',
+	// transportApiUrl: 'http://10.10.191.12:8012/api',
+	// crystalQuartzUrl: 'http://10.10.191.12:8088/quartz/',
+	
 };

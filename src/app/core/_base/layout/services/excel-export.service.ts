@@ -8,7 +8,7 @@ import { LookupPipe } from 'app/pipes/lookup.pipe';
 import { DatePipe, CurrencyPipe, SlicePipe } from '@angular/common';
 import { RateFormatPipe, DivideTo100Pipe, RateTimes100FormatPipe } from '@core/pipes/rate-mask-pipe';
 import { CardNumberFormatPipe } from '@core/pipes/card-number-format-pipe';
-import { BaseDataSource, LayoutUtilsService } from '@core/_base/crud';
+import { BaseDataSource, LayoutUtilsService, MessageType } from '@core/_base/crud';
 import { QueryParamsModel } from '@core/_base/crud/models/query-params.model';
 import { ODataParamsModel } from '@core/_base/crud/models/odata-params.model';
 import { ODataResultsModel } from '@core/_base/crud/models/odata-results.model';
@@ -18,8 +18,10 @@ import { FirstLetterPipe, JoinPipe } from '@core/_base/metronic';
 import { ArnFormatPipe } from '@core/pipes/arn-mask-pipe';
 import { MatDialog } from '@angular/material';
 import { DynamicSpinnerComponent } from '@components/dynamic-spinner/dynamic-spinner.component';
+import { ConfirmationDialogPageComponent } from '@components/confirmation-dialog-page/confirmation-dialog-page.component'
 import { LastUpdatedPipe } from 'app/pipes/lastupdated-pipe';
-
+import { Subscription } from 'rxjs';
+import { style } from '@angular/animations';
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
 const EXCEL_EXTENSION = '.xlsx';
 
@@ -28,6 +30,7 @@ const EXCEL_EXTENSION = '.xlsx';
 export class ExcelExportService extends BaseDataSource {
 	lookupPipe: LookupPipe = new LookupPipe(new LangParserPipe());
 	dialogRef: any;
+	private apiSubscription: Subscription;
 	constructor(
 		private translate: TranslateService,
 		private dialog: MatDialog,
@@ -36,8 +39,9 @@ export class ExcelExportService extends BaseDataSource {
 
 	public exportAsExcelFileRouting(service: BaseService, queryParams: QueryParamsModel, routing: string, excelFileName: string, columns?: any[], lookupObjectList?: any, pipeObjectList?: any): void {
 		this.openLoadDialog();
+		
 		try {
-			service.findFiltered(queryParams, routing).subscribe(result => {
+			this.apiSubscription =	service.findFiltered(queryParams, routing).subscribe(result => {
 				if (result.items != null && result.items.length > 0) {
 					this.prepareLookUpData(result.items, excelFileName, columns, lookupObjectList, pipeObjectList);
 				}
@@ -46,9 +50,11 @@ export class ExcelExportService extends BaseDataSource {
 				}
 			}, (error) => {
 				this.closeLoadDialog();
+				
 				this.layoutUtilsService.showError(error);
 			});
 		} catch (e) {
+		
 			this.closeLoadDialog();
 			this.layoutUtilsService.showError(e);
 		}
@@ -70,7 +76,7 @@ export class ExcelExportService extends BaseDataSource {
 		this.openLoadDialog();
 		try {
 			service.lastFilter$.next(queryParams);
-			service.findAll().subscribe(res => {
+			this.apiSubscription = service.findAll().subscribe(res => {
 				let result = this.baseFilter(res.items, queryParams, _filtrationFields);
 				if (result.items != null && result.items.length > 0) {
 					this.prepareLookUpData(result.items, excelFileName, columns, lookupObjectList, pipeObjectList);
@@ -89,7 +95,7 @@ export class ExcelExportService extends BaseDataSource {
 		this.openLoadDialog();
 		try {
 			service.lastFilter$.next(queryParams);
-			service.findAllWithEndPointSuffix(enpointSuffix).subscribe(res => {
+			this.apiSubscription = service.findAllWithEndPointSuffix(enpointSuffix).subscribe(res => {
 				let result = this.baseFilter(res.items, queryParams, _filtrationFields);
 				if (result.items != null && result.items.length > 0) {
 					this.prepareLookUpData(result.items, excelFileName, columns, lookupObjectList, pipeObjectList);
@@ -107,7 +113,7 @@ export class ExcelExportService extends BaseDataSource {
 	public exportAsExcelFileParameter(service: BaseService, queryParams: ODataParamsModel, excelFileName: string, columns?: any[], lookupObjectList?: any, pipeObjectList?: any): void {
 		this.openLoadDialog();
 		try {
-			service.getOData(queryParams).subscribe(res => {
+			this.apiSubscription = service.getOData(queryParams).subscribe(res => {
 				let result = new ODataResultsModel(res);
 				if (result.items != null && result.items.length > 0) {
 					this.prepareLookUpData(result.items, excelFileName, columns, lookupObjectList, pipeObjectList);
@@ -266,15 +272,50 @@ export class ExcelExportService extends BaseDataSource {
 		FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
 		this.closeLoadDialog();
 	}
-
+	async confirmCancellation(): Promise<boolean> {
+		const result =  this.showConfirmationDialog('İptal etmek istediğinizden emin misiniz?');
+		return result;
+	}
+	 showConfirmationDialog(message: string): Promise<boolean> {
+		const dialogRef = this.dialog.open(ConfirmationDialogPageComponent, {
+		  data: {
+			title : message
+		  },
+		});
+	
+		return dialogRef.afterClosed().toPromise();
+	}
+	
 	openLoadDialog() {
 		this.dialogRef = this.dialog.open(DynamicSpinnerComponent, {
-			disableClose: true,
+			disableClose: false,
 			id: 'mExcelLoadScreenComponent-dialog-' + new Date().getTime(),
 			data: {
 				title: 'General.PleaseWaitWhileProcessing'
 			}
 		});
+		this.dialogRef.afterOpened().subscribe(async () => {
+			const cancelButton = document.querySelector('.mat-dialog-container .your-cancel-button-class');
+		
+				if (cancelButton)
+				{
+					cancelButton.addEventListener('click', async () => {
+						const confirmCancel = await this.confirmCancellation()
+						
+						if (confirmCancel)
+						{
+					
+							this.layoutUtilsService.showNotification("Excel Dosya İndirme İşlemi İptal Edildi")
+						    this.apiSubscription.unsubscribe();
+				   		    this.dialogRef.close(); 
+						}
+						else {
+						
+							this.layoutUtilsService.showError("ss")
+						}
+			  });
+			}
+		  });
 	}
 
 	closeLoadDialog() {
