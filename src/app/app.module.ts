@@ -1,6 +1,6 @@
 // Angular
 import { BrowserModule, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule , CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -88,6 +88,8 @@ import { TransportTxnServiceModule } from '@services/transport/txn/transportTxn-
 import { MappingMerchantServiceModule } from '@services/transport/txn/mappingMerchant-service.module';
 import { ReportDailyServiceModule } from '@services/transport/report/reportDaily-service.module';
 import { ReportMonthlyServiceModule } from '@services/transport/report/reportMonthly-service.module';
+// import { NotificationModule } from './notification/notification.module';
+import { NotifierModule } from 'angular-notifier';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 	wheelSpeed: 0.5,
@@ -115,6 +117,7 @@ export function hljsLanguages(): HighlightLanguage[] {
 }
 registerLocaleData(localetr, localetrExtra);
 @NgModule({
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	declarations: [AppComponent],
 	imports: [
 		BrowserAnimationsModule,
@@ -152,7 +155,8 @@ registerLocaleData(localetr, localetrExtra);
 		MatSortModule,
 		FormsModule,
 		AngularEditorModule,
-		NgxJsonViewerModule
+		NgxJsonViewerModule,	
+		
 	],
 	exports: [],
 	providers: [

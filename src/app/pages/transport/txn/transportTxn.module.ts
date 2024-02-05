@@ -12,11 +12,50 @@ import { CoreModule } from '@core/core.module';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { ThemeModule } from 'app/views/themes/default/theme.module';
 import { ProvisionMonitoringComponent } from './provisionMonitoring/provision-monitoring/provision-monitoring.component';
-
+import { NotifierModule ,NotifierOptions} from 'angular-notifier';
 const routes: Routes = [
 	{ path: 'provisionMonitoring', component: ProvisionMonitoringComponent },
 ];
-
+const customNotifierOptions: NotifierOptions = {
+	position: {
+		  horizontal: {
+			  position: 'left',
+			  distance: 120
+		  },
+		  vertical: {
+			  position: 'bottom',
+			  distance: 12,
+			  gap: 10
+		  }
+	  },
+	theme: 'material',
+	behaviour: {
+	  autoHide: 5000,
+	  onClick: 'hide',
+	  onMouseover: 'pauseAutoHide',
+	  showDismissButton: true,
+	  stacking: 4
+	},
+	animations: {
+	  enabled: true,
+	  show: {
+		preset: 'slide',
+		speed: 300,
+		easing: 'ease'
+	  },
+	  hide: {
+		preset: 'fade',
+		speed: 300,
+		easing: 'ease',
+		offset: 50
+	  },
+	  shift: {
+		speed: 300,
+		easing: 'ease'
+	  },
+	  overlap: 150
+	}
+  };
 @NgModule({
 	imports: [
 		CommonModule,
@@ -31,7 +70,8 @@ const routes: Routes = [
 		SharedModule,
 		MatChipsModule,
 		RouterModule.forChild(routes),
-		TranslateModule.forChild()
+		TranslateModule.forChild(),
+		NotifierModule,
 	],
 	declarations: [
 		ProvisionMonitoringComponent,

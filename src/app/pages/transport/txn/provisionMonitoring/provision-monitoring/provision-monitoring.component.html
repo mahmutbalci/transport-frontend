@@ -1,8 +1,12 @@
+
 <kt-alert *ngIf="dataSourceOnl.hasError()" [duration]="10000" type="warn" (close)="dataSourceOnl.clearError()">{{ dataSourceOnl.getErrorMessage() }}</kt-alert>
 <kt-alert *ngIf="dataSourceClr.hasError()" [duration]="10000" type="warn" (close)="dataSourceClr.clearError()">{{ dataSourceClr.getErrorMessage()} }</kt-alert>
 
 <kt-portlet [options]="{headLarge: true}">
+	
 	<kt-portlet-header [class]="'kt-portlet__head--lg'">
+	
+
 		<ng-container ktPortletTitle>
 			<div class="kt-portlet__head-title">
 				<h3 class="kt-portlet__head-title">
@@ -11,7 +15,6 @@
 				</h3>
 			</div>
 		</ng-container>
-
 		<ng-container ktPortletTools>
 			<a id="btnGet" class="kt-margin-l-5 btn btn-brand" [class.disabled]="(dataSourceOnl.loading$ | async) || (dataSourceClr.loading$ | async)" (click)="getData()">
 				<i class="la la-search	"></i>{{ 'General.Get' | translate }}
@@ -22,7 +25,9 @@
 			</a>
 		</ng-container>
 </kt-portlet-header>
+<div>
 
+</div>
 	<kt-portlet-body class="kt-margin-b-30">
 		<form [formGroup]="filterForm" class="kt-form">
 			<div class="kt-form__section kt-form__section--first">
@@ -93,33 +98,58 @@
 						</div>
 
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile">
-							<mat-form-field class="mat-form-field-fluid">
+							<!-- <mat-form-field class="mat-form-field-fluid">
 								<input matInput placeholder="{{ 'Transportation.Transaction.F39' | translate }}" formControlName="f39ResponseCode" [textMask]="{mask: responseCodeMask, guide:false}">
-							</mat-form-field>
+							</mat-form-field> -->
+							<mat-form-field >
+								<mat-label>{{ 'Transportation.Transaction.F39' | translate }}</mat-label>
+								<mat-select [(value)]="selectedOptions" (click)="GetloadDataF39ResponseCode()" multiple formControlName="f39ResponseCode" >
+								  <mat-option *ngFor="let option of options" [value]="option" >
+									{{ option.value }}
+								  </mat-option>
+								</mat-select>
+							  </mat-form-field>
+						  
+							  <mat-chip-list>
+								<mat-chip *ngFor="let option of selectedOptions" [selectable]="true"
+										  [removable]="true" (removed)="onRemove(option)">
+								  {{ option.value }}
+								  <mat-icon matChipRemove >cancel</mat-icon>
+								</mat-chip>
+							  </mat-chip-list>
+							  <!-- <mat-chip-list>
+								<mat-chip *ngFor="let option of options" [selectable]="true"
+										  [removable]="true" (removed)="onRemove(option)">
+								  {{ option.value }}
+								  <mat-icon matChipRemove>cancel</mat-icon>
+								</mat-chip>
+							  </mat-chip-list> -->
 						</div>
-
+						
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="selectedTab===1">
 							<mat-form-field class="mat-form-field-fluid">
 								<input matInput placeholder="{{ 'Transportation.Transaction.FileId' | translate }}" formControlName="fileInfoGuid" [textMask]="{mask: guidNumberMask, guide:false}">
 							</mat-form-field>
 						</div>
-
 						<div class="col-md-3 kt-margin-b-10 kt-margin-b-10-mobile" *ngIf="selectedTab===1">
 							<br>
 							<mat-checkbox id="isFileSuccess" formControlName="isFileSuccess">{{ 'Transportation.Transaction.IsFileSuccess' | translate }}</mat-checkbox>
 						</div>
-
+					
 					</div>
 				</div>
 			</div>
+			
 		</form>
-
+		
+		<notifier-container ></notifier-container>
 		<mat-tab-group id="tabGroup" [(selectedIndex)]="selectedTab">
 			<mat-tab id="onlineTab" label="{{ 'Transportation.Transaction.OnlineProvisions' | translate }}">
 				<div class="col-md-12 kt-margin-b-10-mobile kt-margin-b-10">
 					<div ngbDropdown class="d-inline-block float-right kt-margin-b-10">
 						<button class="kt-margin-l-5 btn btn-success" id="dropdownBasic1" ngbDropdownToggle> <i class="la la-ellipsis-h"></i> {{ 'General.Export' | translate }}</button>
 						<div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+						
 							<button id="excelExport0" class="dropdown-item" (click)="exportAsXLSX(true)"><i class="kt-nav__link-icon la la-file-excel-o"></i>{{ 'General.ExcelExportAll' | translate }}</button>
 							<button id="excelExport1" (click)="exportAsXLSX(false)" class="dropdown-item"> <i class="m-nav__link-icon la la-file-excel-o"></i>{{ 'General.ExcelExportCurrent' | translate }}</button>
 							<button id="excelExport2" class="dropdown-item"> <i class="m-nav__link-icon la la-file-excel-o"></i>Print</button>
@@ -127,6 +157,7 @@
 					</div>
 				</div>
 
+				
 				<div class="mat-table__wrapper">
 					<mat-table id="grdOnl" class="lmat-elevation-z8" [dataSource]="dataSourceOnl" #sortOnl="matSort" (matSortChange)="changeSortOnl()" matSort matSortActive="f07" matSortDirection="desc" matSortDisableClear>
 						<ng-container matColumnDef="txnGuid">
@@ -532,7 +563,7 @@
 
 					<div class="mat-table__message kt-font-danger" *ngIf="!dataSourceClr.hasItems && dataSourceClr.wasQuery">{{ 'General.NoRecordsFound' | translate }}</div>
 				</div>
-
+			
 				<div class="mat-table__bottom">
 					<mat-spinner [diameter]="20" *ngIf="dataSourceClr.loading$ | async"></mat-spinner>
 					<mat-paginator #paginatorClr (page)="changePaginator()" [pageSize]="10" [pageSizeOptions]="[10, 20, 50]" [length]="dataSourceClr.paginatorTotal$ | async" [showFirstLastButtons]="true"></mat-paginator>
@@ -540,4 +571,6 @@
 			</mat-tab>
 		</mat-tab-group>
 	</kt-portlet-body>
+	
+	
 </kt-portlet>

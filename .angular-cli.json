@@ -1,4 +1,7 @@
+
+
 {
+	
 	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
 	"project": {
 		"name": "default"
@@ -24,11 +27,13 @@
 			"prefix": "kt",
 			"styles": [
 				"styles.scss",
+				"src/styles.css",
 				"assets/vendors/base/vendors.bundle.css",
 				"assets/demo/default/base/style.bundle.css",
 				"node_modules/material-design-icons/iconfont/material-icons.css",
 				"assets/mxgraph/css/common.css",
-				"node_modules/bootstrap/dist/css/bootstrap.css"
+				"node_modules/bootstrap/dist/css/bootstrap.css",
+  				"node_modules/angular-notifier/styles/styles.css"
 			],
 			"scripts": [
 				"assets/vendors/base/vendors.bundle.js",

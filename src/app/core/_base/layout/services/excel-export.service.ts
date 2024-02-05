@@ -30,6 +30,7 @@ const EXCEL_EXTENSION = '.xlsx';
 export class ExcelExportService extends BaseDataSource {
 	lookupPipe: LookupPipe = new LookupPipe(new LangParserPipe());
 	dialogRef: any;
+	
 	private apiSubscription: Subscription;
 	constructor(
 		private translate: TranslateService,
@@ -37,20 +38,30 @@ export class ExcelExportService extends BaseDataSource {
 		private layoutUtilsService: LayoutUtilsService,
 	) { super() }
 
-	public exportAsExcelFileRouting(service: BaseService, queryParams: QueryParamsModel, routing: string, excelFileName: string, columns?: any[], lookupObjectList?: any, pipeObjectList?: any): void {
+	public exportAsExcelFileRouting(service: BaseService, queryParams: QueryParamsModel, routing: string, excelFileName: string, columns?: any[], lookupObjectList?: any, pipeObjectList?: any
+		,successCallback?: (fileName: string) => void, 
+		errorCallback?: (error: any) => void  
+	): void {
 		this.openLoadDialog();
 		
 		try {
 			this.apiSubscription =	service.findFiltered(queryParams, routing).subscribe(result => {
 				if (result.items != null && result.items.length > 0) {
 					this.prepareLookUpData(result.items, excelFileName, columns, lookupObjectList, pipeObjectList);
+					if (successCallback) {
+						successCallback(excelFileName); 
+					  }
+					
 				}
 				else {
 					this.closeLoadDialog();
+					
 				}
 			}, (error) => {
 				this.closeLoadDialog();
-				
+				if (errorCallback) {
+					errorCallback(error); 
+				  }
 				this.layoutUtilsService.showError(error);
 			});
 		} catch (e) {
@@ -235,6 +246,7 @@ export class ExcelExportService extends BaseDataSource {
 	}
 
 	exportAsExcelFile(json: any[], excelFileName: string, columns?: any[]): void {
+		
 		let _json = json;
 		if (columns
 			&& columns.length > 0
@@ -246,6 +258,7 @@ export class ExcelExportService extends BaseDataSource {
 
 		const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array', ignoreEC: false });
 		this.saveAsExcelFile(excelBuffer, excelFileName);
+		
 	}
 
 	prepareExcelData(json: any[], columns: any[]): any[] {
@@ -270,6 +283,7 @@ export class ExcelExportService extends BaseDataSource {
 			type: EXCEL_TYPE
 		});
 		FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+		
 		this.closeLoadDialog();
 	}
 	async confirmCancellation(): Promise<boolean> {
