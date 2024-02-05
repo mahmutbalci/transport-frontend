@@ -11,12 +11,16 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 import { GetProvisionRequestDto } from '@models/transport/txn/getProvisionRequestDto.model';
 import { TxnTransactionService } from '@services/transport/txn/txnTransaction-service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { NotifierService } from "angular-notifier";
+import { DatePipe } from '@angular/common';
 @Component({
 	selector: 'kt-provision-monitoring',
 	templateUrl: './provision-monitoring.component.html',
+	styleUrls: ['./provision-monitoring.component.css'],
+	providers: [DatePipe]
 })
 export class ProvisionMonitoringComponent implements OnInit {
+	
 	loadingSubject = new BehaviorSubject<boolean>(false);
 	loading$ = this.loadingSubject.asObservable();
 	dataSourceOnl: FilteredDataSource;
@@ -179,7 +183,6 @@ export class ProvisionMonitoringComponent implements OnInit {
 		includeThousandsSeparator: false,
 		integerLimit: 16,
 	});
-
 	lookupObjectList: any[] = [];
 	pipeObjectList: any[] = [];
 	cfgYesNoNumeric: any[] = [];
@@ -187,14 +190,23 @@ export class ProvisionMonitoringComponent implements OnInit {
 	cmpCampaignDefs: any[] = [];
 	keyTypeDefs: any[] = [];
 	offlineOnlineIndicators: any[] = [];
-
+	selectedOptions: any[] = [];	
+	options: any[] = [];
+	private readonly notifier: NotifierService;
 	constructor(
 		private txnService: TxnTransactionService,
 		public dialog: MatDialog,
 		private layoutUtilsService: LayoutUtilsService,
 		private excelService: ExcelExportService,
 		private translate: TranslateService,
-	) { }
+		notifierService: NotifierService,
+		private datePipe: DatePipe
+	) { 
+		this.notifier = notifierService
+		this.filterForm = new FormGroup({
+			f39ResponseCode: new FormControl([]) 
+		});
+	}
 
 	ngOnInit() {
 		Object.keys(this.requestModel).forEach(name => {
@@ -212,49 +224,72 @@ export class ProvisionMonitoringComponent implements OnInit {
 		this.offlineOnlineIndicators.push({ code: '0', description: 'Offline' });
 		this.offlineOnlineIndicators.push({ code: '1', description: 'Online' });
 
-		this.txnService.api.getLookups(['CfgYesNoNumeric', 'TxnCurrencyDef', 'CmpCampaignDef', 'KeyTypeDef',]).then(res => {
+		
+
+		this.txnService.api.getLookups(['CfgYesNoNumeric', 'TxnCurrencyDef', 'CmpCampaignDef', 'KeyTypeDef']).then(res => {
 			this.cfgYesNoNumeric = res.find(x => x.name === 'CfgYesNoNumeric').data;
 			this.txnCurrencyDefs = res.find(x => x.name === 'TxnCurrencyDef').data;
 			this.cmpCampaignDefs = res.find(x => x.name === 'CmpCampaignDef').data;
-			this.keyTypeDefs = res.find(x => x.name === 'KeyTypeDef').data;
-
+			this.keyTypeDefs = res.find(x => x.name === 'KeyTypeDef').data;			
 			this.keyTypeDefs = this.keyTypeDefs.filter(x => x.code == '01' || x.code == '02');
 		}, (error) => {
 			this.layoutUtilsService.showError(error);
 		});
-
 		this.dataSourceOnl = new FilteredDataSource(this.txnService);
-		this.dataSourceClr = new FilteredDataSource(this.txnService);
+		this.dataSourceClr = new FilteredDataSource(this.txnService);		
+		
+	}
+
+	
+	onRemove(option: any): void {
+		const index = this.selectedOptions.indexOf(option);
+		
+		if (index >= 0) {
+			
+			this.selectedOptions.splice(index, 1);
+			this.options.splice(index, 1);
+			
+		}
 	}
 
 	filterConfiguration(): any {
 		this.hasFormError = false;
 
 		this.requestModel = new GetProvisionRequestDto();
+		
+		
 		if (!this.requestModel.getFormValues(this.filterForm)) {
 			this.hasFormError = true;
 			return;
 		}
-
+		
 		if (this.requestModel.clearCard) {
 			if (this.requestModel.keyType == null || !this.requestModel.clearCard) {
 				this.filterForm.controls['keyType'].markAsTouched();
 				this.hasFormError = true;
 				this.layoutUtilsService.showError(this.translate.instant('Transportation.Exception.KeyTypeNotNullForClearCard'));
 			}
-
+			
 			this.requestModel.clearCard = this.requestModel.clearCard.replace(/\s/g, '');
 		}
-
+		
 		if (this.requestModel.cardMask) {
 			this.requestModel.cardMask = this.requestModel.cardMask.replace(/\s/g, '');
 		}
-
+		const selectedF39ResponseCodes = this.filterForm.get('f39ResponseCode').value;
+		if (selectedF39ResponseCodes && selectedF39ResponseCodes.length > 0) {			
+			const f39ResponseCodeString = selectedF39ResponseCodes.map(option => option.value).join(',');
+			
+			this.requestModel.f39ResponseCode = f39ResponseCodeString;
+		}
+	
+		
 		return this.requestModel;
 	}
 
 	loadDataSource() {
 		switch (this.selectedTab) {
+			
 			case 0:
 				const queryParamsOnl = new QueryParamsModel(
 					this.filterConfiguration(),
@@ -288,7 +323,52 @@ export class ProvisionMonitoringComponent implements OnInit {
 		}
 	}
 
+	GetloadDataF39ResponseCode() {	
+		
+		this.options = [
+			{ value: '00', id: 0 },
+			{ value: '01', id: 1 },
+			{ value: '03', id: 2 },
+			{ value: '04', id: 3 },
+			{ value: '05', id: 4 },
+			{ value: '07', id: 5 },
+			{ value: '09', id: 6 },
+			{ value: '12', id: 7 },
+			{ value: '13', id: 8 },
+			{ value: '14', id: 9 },
+			{ value: '15', id: 10 },
+			{ value: '22', id: 11 },
+			{ value: '30', id: 12 },
+			{ value: '33', id: 13 },
+			{ value: '36', id: 14 },
+			{ value: '38', id: 15 },
+			{ value: '41', id: 16 },
+			{ value: '43', id: 17 },
+			{ value: '51', id: 18 },
+			{ value: '53', id: 19 },
+			{ value: '54', id: 20 },
+			{ value: '55', id: 21 },
+			{ value: '56', id: 22 },
+			{ value: '57', id: 23 },
+			{ value: '58', id: 24 },
+			{ value: '59', id: 25 },
+			{ value: '61', id: 26 },
+			{ value: '62', id: 27 },
+			{ value: '63', id: 28 },
+			{ value: '65', id: 29 },
+			{ value: '75', id: 30 },
+			{ value: '76', id: 31 },
+			{ value: '77', id: 32 },
+			{ value: '78', id: 33 },
+			{ value: '79', id: 34 },
+			{ value: '88', id: 35 },
+			{ value: '89', id: 36 },
+			{ value: '91', id: 37 },
+			{ value: '96', id: 38 }
+		  ];
+	}
 	getData() {
+		
 		this.dataSourceOnl.clear();
 		this.dataSourceClr.clear();
 		this.paginatorOnl.pageIndex = 0;
@@ -347,7 +427,9 @@ export class ProvisionMonitoringComponent implements OnInit {
 		this.pipeObjectList.push({ key: 'createDate', value: 'date', format: 'dd.MM.yyyy' });
 		this.pipeObjectList.push({ key: 'discountRate', value: 'rateTimes100', fixedLength: 5 });
 	}
-
+	formatDate(date: Date): string {
+		return this.datePipe.transform(date, 'dd yyyy HH:mm:ss');
+	  }
 	exportAsXLSX(exportAll: boolean): void {
 		if (this.lookupObjectList.length === 0) {
 			this.addLookupObject();
@@ -389,16 +471,30 @@ export class ProvisionMonitoringComponent implements OnInit {
 		if (this.hasFormError) {
 			return;
 		}
-
+		
+		this.notifier.notify('info', fileName+" Dosyası İndirilmeye başladı..");
 		this.excelService.exportAsExcelFileRouting(this.txnService,
 			queryParams,
 			funcName,
 			fileName,
 			gridColumns,
 			this.lookupObjectList,
-			this.pipeObjectList);
+			this.pipeObjectList, (successfulFileName) => {
+				
+				this.notifier.notify('success', this.formatDate(queryParams.filter.txnDateEnd)   + " tarihinde indirilen " +successfulFileName+ " dosyası başarıyla indirildi.");
+				
+			  },
+			  (error) => {
+				console.error("Dosya indirme işlemi sırasında bir hata oluştu:", error);
+				
+				this.notifier.notify('error',  this.formatDate(queryParams.filter.txnDateEnd)   + "tarihinde indirilen " +fileName+ " dosyası işlemi başarısız oldu.");
+			  }
+			);
 
-		this.loadDataSource();
+			
+			
+			this.loadDataSource();
+			
 	}
 
 	clearScreen() {

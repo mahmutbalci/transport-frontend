@@ -1,16 +1,29 @@
-<kt-portlet [options]="{headLarge: true, enableSticky: true}">
+<kt-portlet [options]="{ headLarge: true, enableSticky: true }">
 	<kt-portlet-header [class]="'kt-portlet__head--lg'">
-		<ng-container ktPortletTitle>
-			<div class="kt-portlet__head-title">
-				<h3 class="kt-portlet__head-title">
-					{{title | translate}}
-				</h3>
-			</div>
-		</ng-container>
-	</kt-portlet-header>
-	<kt-portlet-body>
-		<div class="spinner-center-element">
-			<mat-progress-spinner color="primary" mode="indeterminate"  class="spinner-center-progress"> </mat-progress-spinner>
+	  <ng-container ktPortletTitle>
+		<div class="kt-portlet__head-title">
+		  <h3 class="kt-portlet__head-title">
+			{{ title | translate }}
+		  </h3>
 		</div>
+	  </ng-container>
+	</kt-portlet-header> 
+	<kt-portlet-body>
+	  
+	  <div class="spinner-center-element">
+		<mat-progress-spinner color="primary" mode="indeterminate" class="spinner-center-progress"></mat-progress-spinner>
+	  </div>
+	  
 	</kt-portlet-body>
-</kt-portlet>
+
+	
+	 
+  </kt-portlet>
+
+	<div class="cool-header">
+		<div class="mat-dialog-actions">		 
+		  <button class="your-cancel-button-class" mat-button>İptal</button>
+		</div>
+	  </div>
+
+ 

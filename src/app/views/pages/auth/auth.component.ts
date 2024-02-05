@@ -5,6 +5,8 @@ import { LayoutConfigService, SplashScreenService } from '@core/_base/layout';
 import { TranslationService } from '@core/_base/metronic';
 // Auth
 import { AuthNoticeService } from '@core/auth';
+//Environment
+import { environment } from 'environments/environment';
 
 @Component({
 	selector: 'kt-auth',
@@ -16,7 +18,8 @@ export class AuthComponent implements OnInit {
 	// Public properties
 	today: number = Date.now();
 	headerLogo: string;
-
+	envName: string = environment.envName;
+	showEnvName: boolean = environment.showEnvName;
 	/**
 	 * Component constructor
 	 *
